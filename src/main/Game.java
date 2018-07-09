@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -20,9 +19,9 @@ public class Game {
     initGame();
     printBoard();
     do {
-      getHumanSpot();
+      humanMove();
       if (!gameIsOver() && !tie()) {
-        evalBoard();
+        computerMove();
       }
     } while (!gameIsOver() && !tie()); // repeat if not game-over
     System.out.print("Game over\n");
@@ -34,16 +33,13 @@ public class Game {
     currentPlayer = "X";  // cross plays first
   }
 
-  public static String nextPlayer() {
-    if (currentPlayer == "X") {
-      return "O";
-    } else {
-      return "X";
-    }
+  /** Print the game board */
+  public static void printBoard() {
+    System.out.println(" " + board[0] + " | " + board[1] + " | " + board[2] + "\n===+===+===\n" + " " + board[3] + " | " + board[4] + " | " + board[5] + "\n===+===+===\n" + " " + board[6] + " | " + board[7] + " | " + board[8] + "\n"); // print all the board cells
   }
 
   /** Update global variables "board" and "currentPlayer". */
-  public static void getHumanSpot() {
+  public static void humanMove() {
     boolean validInput = false;  // for input validation
     System.out.print("Enter [0-8]:\n");
     do {
@@ -57,7 +53,15 @@ public class Game {
     } while (!validInput);  // repeat until input is valid
   }
 
-  public static void evalBoard() {
+  public static String nextPlayer() {
+    if (currentPlayer == "X") {
+      return "O";
+    } else {
+      return "X";
+    }
+  }
+
+  public static void computerMove() {
     boolean foundSpot = false;
     do {
       if (board[4] == "4") {
@@ -75,19 +79,6 @@ public class Game {
     } while (!foundSpot);
     printBoard();
   }
-
-  /** Return true if the game was just won */
-  public static boolean gameIsOver() {
-    return board[0] == board[1] && board[1] == board[2] ||
-      board[3] == board[4] && board[4] == board[5] ||
-      board[6] == board[7] && board[7] == board[8] ||
-      board[0] == board[3] && board[3] == board[6] ||
-      board[1] == board[4] && board[4] == board[7] ||
-      board[2] == board[5] && board[5] == board[8] ||
-      board[0] == board[4] && board[4] == board[8] ||
-      board[2] == board[4] && board[4] == board[6];
-  }
-
 
   public static int getBestMove() {
     ArrayList<String> availableSpaces = new ArrayList<String>();
@@ -124,6 +115,18 @@ public class Game {
     }
   }
 
+  /** Return true if the game was just won */
+  public static boolean gameIsOver() {
+    return board[0] == board[1] && board[1] == board[2] ||
+      board[3] == board[4] && board[4] == board[5] ||
+      board[6] == board[7] && board[7] == board[8] ||
+      board[0] == board[3] && board[3] == board[6] ||
+      board[1] == board[4] && board[4] == board[7] ||
+      board[2] == board[5] && board[5] == board[8] ||
+      board[0] == board[4] && board[4] == board[8] ||
+      board[2] == board[4] && board[4] == board[6];
+  }
+
   /** Return true if it is a draw (no more empty cell) */
   // TODO: maybe there is an easeir way to check this
   public static boolean tie() {
@@ -137,10 +140,4 @@ public class Game {
            board[7] != "7" &&
            board[8] != "8";
   }
-
-  /** Print the game board */
-  public static void printBoard() {
-    System.out.println(" " + board[0] + " | " + board[1] + " | " + board[2] + "\n===+===+===\n" + " " + board[3] + " | " + board[4] + " | " + board[5] + "\n===+===+===\n" + " " + board[6] + " | " + board[7] + " | " + board[8] + "\n"); // print all the board cells
-  }
-
 }
