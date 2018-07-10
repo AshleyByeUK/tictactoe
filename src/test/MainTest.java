@@ -1,4 +1,11 @@
-public class Main {
+import computer.ComputerPlayer;
+import console.ConsoleUI;
+import human.HumanPlayer;
+import tictacttoe.Game;
+import tictacttoe.Player;
+import tictacttoe.UserInterface;
+
+public class MainTest {
 
   public static void main(String[] args) {
     UserInterface console = new ConsoleUI();

@@ -1,3 +1,5 @@
+package tictacttoe;
+
 public interface Player {
 
   String getToken();

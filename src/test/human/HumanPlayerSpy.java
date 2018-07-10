@@ -1,3 +1,7 @@
+package human;
+
+import tictacttoe.Game;
+
 public class HumanPlayerSpy extends HumanPlayer {
 
   public boolean playedMove;

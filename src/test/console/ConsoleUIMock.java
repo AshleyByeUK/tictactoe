@@ -1,4 +1,6 @@
-public class ConsoleUISpy extends ConsoleUI {
+package console;
+
+public class ConsoleUIMock extends ConsoleUI {
 
   public String callersName;
   public String lastMessage;
@@ -23,7 +25,7 @@ public class ConsoleUISpy extends ConsoleUI {
   }
 
   @Override
-  public void sendMessage(String message) {
+  public void showMessage(String message) {
     lastMessage = message;
   }
 }

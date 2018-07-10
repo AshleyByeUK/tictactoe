@@ -1,17 +1,17 @@
+package tictacttoe;
+
 public class Game {
 
   public String[] board = {"0", "1", "2", "3", "4", "5", "6", "7", "8"};
-  public String currentState;
+  private Player[] players;
   public int currentPlayer;
   private UserInterface userInterface;
-  private Player[] players;
   private int movesMade;
 
   public Game(Player player1, Player player2, UserInterface userInterface) {
     this.userInterface = userInterface;
     players = new Player[]{player1, player2};
     currentPlayer = 0;
-    currentState = "ready";
   }
 
   public String[] getBoard() {
@@ -22,20 +22,14 @@ public class Game {
     currentPlayer = player;
   }
 
-  public String getCurrentState() {
-    return currentState;
-  }
-
   public UserInterface getUserInterface() {
     return userInterface;
   }
 
   public void play() {
-    do
-      if (!gameIsOver() && !isTied())
-        playTurn();
-    while (!gameIsOver() && !isTied());
-    userInterface.gameOver();
+    while (!gameIsOver() && !gameIsTied())
+      userInterface.showBoardStateForLastTurn(board, nextTurn());
+    userInterface.showGameOver();
   }
 
   public boolean gameIsOver() {
@@ -49,28 +43,27 @@ public class Game {
         board[2] == board[4] && board[4] == board[6];
   }
 
-  public boolean isTied() {
+  public boolean gameIsTied() {
     return movesMade == 9;
   }
 
-  public void playTurn() {
-    currentState = "playing";
+  public String nextTurn() {
+    movesMade++;
     int spot = players[currentPlayer].playTurn(this);
     board[spot] = players[currentPlayer].getToken();
-    userInterface.printBoard(board, players[currentPlayer].getName());
+    String lastPlayersName = players[currentPlayer].getName();
     currentPlayer = nextPlayer();
-    movesMade++;
+    return lastPlayersName;
   }
 
   public int nextPlayer() {
-    if (currentPlayer == 0) {
+    if (currentPlayer == 0)
       return 1;
-    } else {
+    else
       return 0;
-    }
   }
 
-  boolean isAvailablePosition(int spot) {
+  public boolean positionIsAvailable(int spot) {
     String s = board[spot];
     return s != "X" && s != "O";
   }

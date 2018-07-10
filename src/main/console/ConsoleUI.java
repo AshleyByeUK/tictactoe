@@ -1,11 +1,14 @@
+package console;
+
 import java.util.Scanner;
+import tictacttoe.UserInterface;
 
 public class ConsoleUI implements UserInterface {
 
   public Scanner input = new Scanner(System.in); // the input Scanner
 
   @Override
-  public void printBoard(String[] board, String lastPlayersName) {
+  public void showBoardStateForLastTurn(String[] board, String lastPlayersName) {
     System.out.println("Board after " + lastPlayersName + "'s turn:\n");
     System.out.println(
         " " + formatToken(board[0]) + " | " + formatToken(board[1]) + " | " + formatToken(board[2])
@@ -24,7 +27,7 @@ public class ConsoleUI implements UserInterface {
   }
 
   @Override
-  public void printAvailablePositions(String[] board) {
+  public void showAvailablePositions(String[] board) {
     System.out.println("Available positions:\n");
     System.out.println(
         " " + formatPosition(board[0]) + " | " + formatPosition(board[1]) + " | " + formatPosition(board[2])
@@ -43,8 +46,8 @@ public class ConsoleUI implements UserInterface {
   }
 
   @Override
-  public void gameOver() {
-    System.out.print("Game over\n");
+  public void showGameOver() {
+    System.out.print("tictacttoe.Game over\n");
   }
 
   @Override
@@ -54,7 +57,7 @@ public class ConsoleUI implements UserInterface {
   }
 
   @Override
-  public void sendMessage(String message) {
+  public void showMessage(String message) {
     System.out.println(message);
   }
 }

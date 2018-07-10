@@ -1,3 +1,8 @@
+package human;
+
+import tictacttoe.Game;
+import tictacttoe.Player;
+
 public class HumanPlayer implements Player {
 
   protected final String name;
@@ -29,18 +34,18 @@ public class HumanPlayer implements Player {
   }
 
   private String getInputForPlayer(Game game, int spotsAvailable) {
-    game.getUserInterface().printAvailablePositions(game.getBoard());
+    game.getUserInterface().showAvailablePositions(game.getBoard());
     return game.getUserInterface().getInputForPlayer(name, spotsAvailable);
   }
 
   private boolean validInput(String spot, int spotsAvailable, Game game) {
     if (isValidInput(spot, spotsAvailable))
-      if (game.isAvailablePosition(Integer.parseInt(spot)))
+      if (game.positionIsAvailable(Integer.parseInt(spot)))
         return true;
       else
-        game.getUserInterface().sendMessage("Position is taken");
+        game.getUserInterface().showMessage("Position is taken");
     else
-      game.getUserInterface().sendMessage("Invalid input");
+      game.getUserInterface().showMessage("Invalid input");
     return false;
   }
 

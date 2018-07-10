@@ -1,26 +1,31 @@
-import static org.junit.jupiter.api.Assertions.*;
+package human;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import console.ConsoleUIMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tictacttoe.Game;
+import tictacttoe.Player;
 
 class HumanPlayerTest {
 
-  private ConsoleUISpy consoleSpy;
+  private ConsoleUIMock mockConsoleUI;
   private Player player;
   private Game game;
 
   private void assertInvalidInput(String input) {
-    consoleSpy.setUserInputValue(input);
+    mockConsoleUI.setUserInputValue(input);
     player.playTurn(game);
 
-    assertEquals("Invalid input", consoleSpy.lastMessage);
+    assertEquals("Invalid input", mockConsoleUI.lastMessage);
   }
 
   @BeforeEach
   void setUp() {
-    consoleSpy = new ConsoleUISpy();
+    mockConsoleUI = new ConsoleUIMock();
     player = new HumanPlayer("X", "human");
-    game = new Game(player, player, consoleSpy);
+    game = new Game(player, player, mockConsoleUI);
   }
 
   @Test

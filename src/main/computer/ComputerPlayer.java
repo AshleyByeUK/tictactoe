@@ -1,5 +1,9 @@
+package computer;
+
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
+import tictacttoe.Game;
+import tictacttoe.Player;
 
 public class ComputerPlayer implements Player {
 
@@ -37,7 +41,7 @@ public class ComputerPlayer implements Player {
         foundSpot = true;
       } else {
         spot = getBestMove();
-        if (game.isAvailablePosition(spot)) {
+        if (game.positionIsAvailable(spot)) {
           foundSpot = true;
         } else {
           foundSpot = false;
