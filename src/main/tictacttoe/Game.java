@@ -2,7 +2,7 @@ package tictacttoe;
 
 public class Game {
 
-  public String[] board = {"0", "1", "2", "3", "4", "5", "6", "7", "8"};
+  public int[] board = new int[9];
   private Player[] players;
   public int currentPlayer;
   private UserInterface userInterface;
@@ -12,9 +12,11 @@ public class Game {
     this.userInterface = userInterface;
     players = new Player[]{player1, player2};
     currentPlayer = 0;
+    for (int i = 0; i < board.length; i++)
+      board[i] = -1;
   }
 
-  public String[] getBoard() {
+  public int[] getBoard() {
     return board;
   }
 
@@ -33,14 +35,19 @@ public class Game {
   }
 
   public boolean gameIsOver() {
-    return board[0] == board[1] && board[1] == board[2] ||
-        board[3] == board[4] && board[4] == board[5] ||
-        board[6] == board[7] && board[7] == board[8] ||
-        board[0] == board[3] && board[3] == board[6] ||
-        board[1] == board[4] && board[4] == board[7] ||
-        board[2] == board[5] && board[5] == board[8] ||
-        board[0] == board[4] && board[4] == board[8] ||
-        board[2] == board[4] && board[4] == board[6];
+    return isGameOver(0, 1, 2) ||
+            isGameOver(3, 4, 5) ||
+            isGameOver(6, 7, 8) ||
+            isGameOver(0, 3, 6) ||
+            isGameOver(1, 4, 7) ||
+            isGameOver(2, 5, 8) ||
+            isGameOver(0, 4, 8) ||
+            isGameOver(2, 4, 6);
+  }
+
+  private boolean isGameOver(int pos1, int pos2, int pos3) {
+    return board[pos1] != -1 && board[pos2] != -1 && board[pos3] != -1
+        && board[pos1] == board[pos2] && board[pos2] == board[pos3];
   }
 
   public boolean gameIsTied() {
@@ -50,7 +57,7 @@ public class Game {
   public String nextTurn() {
     movesMade++;
     int spot = players[currentPlayer].playTurn(this);
-    board[spot] = players[currentPlayer].getToken();
+    board[spot] = currentPlayer;
     String lastPlayersName = players[currentPlayer].getName();
     currentPlayer = nextPlayer();
     return lastPlayersName;
@@ -64,7 +71,6 @@ public class Game {
   }
 
   public boolean positionIsAvailable(int spot) {
-    String s = board[spot];
-    return s != "X" && s != "O";
+    return board[spot] == -1;
   }
 }

@@ -24,7 +24,7 @@ class HumanPlayerTest {
   @BeforeEach
   void setUp() {
     mockConsoleUI = new ConsoleUIMock();
-    player = new HumanPlayer("X", "human");
+    player = new HumanPlayer("human");
     game = new Game(player, player, mockConsoleUI);
   }
 

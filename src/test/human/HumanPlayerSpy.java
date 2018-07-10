@@ -7,8 +7,8 @@ public class HumanPlayerSpy extends HumanPlayer {
   public boolean playedMove;
   public int move;
 
-  public HumanPlayerSpy(String token, String name) {
-    super(token, name);
+  public HumanPlayerSpy(String name) {
+    super(name);
   }
 
   @Override

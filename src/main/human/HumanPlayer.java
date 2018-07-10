@@ -6,16 +6,9 @@ import tictacttoe.Player;
 public class HumanPlayer implements Player {
 
   protected final String name;
-  private final String token;
 
-  public HumanPlayer(String token, String name) {
-    this.token = token;
+  public HumanPlayer(String name) {
     this.name = name;
-  }
-
-  @Override
-  public String getToken() {
-    return token;
   }
 
   @Override

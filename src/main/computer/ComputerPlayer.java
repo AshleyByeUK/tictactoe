@@ -1,24 +1,24 @@
 package computer;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import tictacttoe.Game;
 import tictacttoe.Player;
 
 public class ComputerPlayer implements Player {
 
-  private final String token;
   private final String name;
+  private final Random random;
   private Game game;
 
-  public ComputerPlayer(String token, String name) {
-    this.token = token;
-    this.name = name;
+  public ComputerPlayer(String name) {
+    this(name, ThreadLocalRandom.current());
   }
 
-  @Override
-  public String getToken() {
-    return token;
+  public ComputerPlayer(String name, Random random) {
+    this.name = name;
+    this.random = random;
   }
 
   @Override
@@ -33,56 +33,50 @@ public class ComputerPlayer implements Player {
   }
 
   public int computerMove() {
-    boolean foundSpot = false;
     int spot = 4;
-    do {
-      if (game.board[spot] == "4") {
-        game.board[spot] = "O";
+    boolean foundSpot = false;
+    while (!foundSpot) {
+      if (game.board[spot] == -1) {
+        game.board[spot] = game.currentPlayer;
         foundSpot = true;
       } else {
         spot = getBestMove();
-        if (game.positionIsAvailable(spot)) {
-          foundSpot = true;
-        } else {
-          foundSpot = false;
-        }
+        foundSpot = game.positionIsAvailable(spot);
       }
-    } while (!foundSpot);
+    }
     return spot;
   }
 
   public int getBestMove() {
-    ArrayList<String> availableSpaces = new ArrayList<String>();
+    ArrayList<Integer> availableSpaces = new ArrayList<>();
     boolean foundBestMove = false;
     int spot = 100;
-    for (String s : game.board) {
-      if (s != "X" && s != "O") {
-        availableSpaces.add(s);
+    for (int i = 0; i < game.board.length; i++) {
+      if (game.board[i] == -1) {
+        availableSpaces.add(i);
       }
     }
-    for (String as : availableSpaces) {
-      spot = Integer.parseInt(as);
-      game.board[spot] = "O";
+    for (int as : availableSpaces) {
+      spot = as;
+      game.board[spot] = game.currentPlayer;
       if (game.gameIsOver()) {
-        foundBestMove = true;
-        game.board[spot] = as;
+        game.board[spot] = -1;
         return spot;
       } else {
-        game.board[spot] = "X";
+        game.board[spot] = game.nextPlayer();
         if (game.gameIsOver()) {
-          foundBestMove = true;
-          game.board[spot] = as;
+          game.board[spot] = -1;
           return spot;
         } else {
-          game.board[spot] = as;
+          game.board[spot] = -1;
         }
       }
     }
     if (foundBestMove) {
       return spot;
     } else {
-      int n = ThreadLocalRandom.current().nextInt(0, availableSpaces.size());
-      return Integer.parseInt(availableSpaces.get(n));
+      int n = random.nextInt(availableSpaces.size());
+      return availableSpaces.get(n);
     }
   }
 }

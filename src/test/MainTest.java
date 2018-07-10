@@ -9,8 +9,10 @@ public class MainTest {
 
   public static void main(String[] args) {
     UserInterface console = new ConsoleUI();
-    Player human = new HumanPlayer("X", "Player 1");
-    Player computer = new ComputerPlayer("O", "Player 2");
+    console.setPlayerOneToken("1");
+    console.setPlayerTwoToken("£");
+    Player human = new HumanPlayer("Player 1");
+    Player computer = new ComputerPlayer("Player 2");
     Game game = new Game(human, computer, console);
     game.play();
   }
