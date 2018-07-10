@@ -6,49 +6,54 @@ import console.ConsoleUIMock;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tictactoe.GameMock;
+import tictactoe.BoardSpy;
+import tictactoe.CentreTokenBoardSpy;
 import tictactoe.Player;
+import tictactoe.TyingBoardSpy;
+import tictactoe.WinningBoardSpy;
 
 class ComputerPlayerTest {
 
   private ConsoleUIMock mockConsoleUI;
   private Player player;
-  private GameMock mockGame;
+  private BoardSpy boardStub;
 
   @BeforeEach
   void setUp() {
     mockConsoleUI = new ConsoleUIMock();
     Random randomStub = new RandomStub();
     player = new ComputerPlayer("computer", randomStub);
-    mockGame = new GameMock(player, player, mockConsoleUI);
   }
 
   @Test
   void choosesCentreSpotIfAvailable() {
-    assertEquals(4, player.playTurn(mockGame));
+    boardStub = new BoardSpy();
+    player.playTurn(boardStub, mockConsoleUI);
+
+    assertEquals(4, boardStub.tokenPlacedInPosition);
   }
 
   @Test
   void choosesWinningSpotIfAvailable() {
-    mockGame.setCurrentPlayer(1);
-    mockGame.setBoard(new int[]{1, 1, -1, 0, 0, -1, 0, -1, -1});
+    boardStub = new WinningBoardSpy();
+    player.playTurn(boardStub, mockConsoleUI);
 
-    assertEquals(2, player.playTurn(mockGame));
+    assertEquals(2, boardStub.tokenPlacedInPosition);
   }
 
   @Test
   void stopsOppositionWinning() {
-    mockGame.setCurrentPlayer(1);
-    mockGame.setBoard(new int[]{0, 0, -1, 1, 1, -1, -1, -1, 0});
+    boardStub = new TyingBoardSpy();
+    player.playTurn(boardStub, mockConsoleUI);
 
-    assertEquals(2, player.playTurn(mockGame));
+    assertEquals(2, boardStub.tokenPlacedInPosition);
   }
 
   @Test
   void choosesRandomPositionIfNoWinningOrBlockingMoves() {
-    mockGame.setCurrentPlayer(1);
-    mockGame.setBoard(new int[]{-1, -1, -1, -1, 0, -1, -1, -1, -1});
+    boardStub = new CentreTokenBoardSpy();
+    player.playTurn(boardStub, mockConsoleUI);
 
-    assertEquals(0, player.playTurn(mockGame));
+    assertEquals(0, boardStub.tokenPlacedInPosition);
   }
 }

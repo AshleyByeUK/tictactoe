@@ -4,5 +4,5 @@ public interface Player {
 
   String getName();
 
-  int playTurn(Game game);
+  void playTurn(Board board, UserInterface ui);
 }

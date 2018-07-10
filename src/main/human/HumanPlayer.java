@@ -1,7 +1,8 @@
 package human;
 
-import tictactoe.Game;
+import tictactoe.Board;
 import tictactoe.Player;
+import tictactoe.UserInterface;
 
 public class HumanPlayer implements Player {
 
@@ -17,28 +18,29 @@ public class HumanPlayer implements Player {
   }
 
   @Override
-  public int playTurn(Game game) {
+  public void playTurn(Board board, UserInterface ui) {
     String spot;
-    int spotsAvailable = game.getBoard().length - 1;
     do
-      spot = getInputForPlayer(game, spotsAvailable);
-    while (!validInput(spot, spotsAvailable, game));
-    return Integer.parseInt(spot);
+      spot = getInputForPlayer(board, ui);
+    while (!validInput(spot, board, ui));
+    board.placeToken(Integer.parseInt(spot));
   }
 
-  private String getInputForPlayer(Game game, int spotsAvailable) {
-    game.getUserInterface().showAvailablePositions(game.getBoard());
-    return game.getUserInterface().getInputForPlayer(name, spotsAvailable);
+  private String getInputForPlayer(Board board, UserInterface ui) {
+    ui.showAvailablePositions(board);
+    return ui.getInputForPlayer(name, board.getPositions().length - 1);
   }
 
-  private boolean validInput(String spot, int spotsAvailable, Game game) {
-    if (isValidInput(spot, spotsAvailable))
-      if (game.positionIsAvailable(Integer.parseInt(spot)))
+  boolean validInput(String spot, Board board, UserInterface ui) {
+    if (isValidInput(spot, board.getPositions().length - 1))
+      if (board.positionIsAvailable(Integer.parseInt(spot))) {
+        System.out.println("valid? " + true);
         return true;
+      }
       else
-        game.getUserInterface().showMessage("Position is taken");
+        ui.showMessage("Position is taken");
     else
-      game.getUserInterface().showMessage("Invalid input");
+      ui.showMessage("Invalid input");
     return false;
   }
 

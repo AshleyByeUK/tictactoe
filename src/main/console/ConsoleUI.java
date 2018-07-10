@@ -1,6 +1,7 @@
 package console;
 
 import java.util.Scanner;
+import tictactoe.Board;
 import tictactoe.UserInterface;
 
 public class ConsoleUI implements UserInterface {
@@ -24,14 +25,15 @@ public class ConsoleUI implements UserInterface {
   }
 
   @Override
-  public void showBoardStateForLastTurn(int[] board, String lastPlayersName) {
+  public void showBoardStateForLastTurn(Board board, String lastPlayersName) {
+    int[] pos = board.getPositions();
     System.out.println("Board after " + lastPlayersName + "'s turn:\n");
     System.out.println(
-        " " + formatToken(board[0]) + " | " + formatToken(board[1]) + " | " + formatToken(board[2])
+        " " + formatToken(pos[0]) + " | " + formatToken(pos[1]) + " | " + formatToken(pos[2])
             + "\n===+===+===\n"
-            + " " + formatToken(board[3]) + " | " + formatToken(board[4]) + " | " + formatToken(board[5])
+            + " " + formatToken(pos[3]) + " | " + formatToken(pos[4]) + " | " + formatToken(pos[5])
             + "\n===+===+===\n"
-            + " " + formatToken(board[6]) + " | " + formatToken(board[7]) + " | " + formatToken(board[8])
+            + " " + formatToken(pos[6]) + " | " + formatToken(pos[7]) + " | " + formatToken(pos[8])
             + "\n");
   }
 
@@ -43,20 +45,21 @@ public class ConsoleUI implements UserInterface {
   }
 
   @Override
-  public void showAvailablePositions(int[] board) {
+  public void showAvailablePositions(Board board) {
+    int[] pos = board.getPositions();
     System.out.println("Available positions:\n");
     System.out.println(
-        " " + formatPosition(board, 0) + " | " + formatPosition(board, 1) + " | " + formatPosition(board, 2)
+        " " + formatPosition(pos, 0) + " | " + formatPosition(pos, 1) + " | " + formatPosition(pos, 2)
             + "\n===+===+===\n"
-            + " " + formatPosition(board, 3) + " | " + formatPosition(board, 4) + " | " + formatPosition(board, 5)
+            + " " + formatPosition(pos, 3) + " | " + formatPosition(pos, 4) + " | " + formatPosition(pos, 5)
             + "\n===+===+===\n"
-            + " " + formatPosition(board, 6) + " | " + formatPosition(board, 7) + " | " + formatPosition(board, 8)
+            + " " + formatPosition(pos, 6) + " | " + formatPosition(pos, 7) + " | " + formatPosition(pos, 8)
             + "\n");
   }
 
-  private String formatPosition(int[] board, int position) {
-    if (board[position] == -1)
-      return Integer.toString(position);
+  private String formatPosition(int[] positions, int pos) {
+    if (positions[pos] == -1)
+      return Integer.toString(pos);
     else
       return " ";
   }

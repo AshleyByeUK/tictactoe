@@ -16,16 +16,6 @@ public class GameTest {
   private HumanPlayerSpy player2Spy;
   private Game game;
 
-  private void assertGameIsNotOver(int[] board) {
-    game.board = board;
-    assertFalse(game.gameIsOver());
-  }
-
-  private void assertGameIsOver(int[] board) {
-    game.board = board;
-    assertTrue(game.gameIsOver());
-  }
-
   @BeforeEach
   void setUp() {
     mockConsoleUI = new ConsoleUIMock();
@@ -55,55 +45,11 @@ public class GameTest {
 
   @Test
   void playerTwoCanGoFirst() {
-    game.setCurrentPlayer(1);
+    game.setFirstPlayer(1);
     game.nextTurn();
 
     assertTrue(player2Spy.playedMove);
     assertEquals("player2", mockConsoleUI.callersName);
     assertFalse(player1Spy.playedMove);
-  }
-
-  @Test
-  void positionIsAvailable() {
-    assertTrue(game.positionIsAvailable(1));
-  }
-
-  @Test
-  void positionIsNotAvailable() {
-    game.board[1] = 1;
-
-    assertFalse(game.positionIsAvailable(1));
-  }
-
-  @Test
-  void afterNineMovesTheGameIsTied() {
-    for (int i = 0; i < 9; i++)
-      game.nextTurn();
-
-    assertTrue(game.gameIsTied());
-  }
-
-  @Test
-  void gameNotOver() {
-    assertGameIsNotOver(new int[]{1, 0, 1, -1, -1, -1, -1, -1, -1});
-    assertGameIsNotOver(new int[]{-1, -1, -1, 1, 0, 1, -1, -1, -1});
-    assertGameIsNotOver(new int[]{-1, -1, -1, -1, -1, -1, 0, 1, 1});
-    assertGameIsNotOver(new int[]{1, -1, -1, 0, -1, -1, 1, -1, -1});
-    assertGameIsNotOver(new int[]{-1, 1, -1, -1, 0, -1, -1, 1, -1});
-    assertGameIsNotOver(new int[]{-1, -1, 1, -1, -1, 0, -1, -1, 1});
-    assertGameIsNotOver(new int[]{1, -1, -1, -1, 0, -1, -1, -1, 1});
-    assertGameIsNotOver(new int[]{-1, -1, 0, -1, 1, -1, 1, -1, -1});
-  }
-
-  @Test
-  void gameOver() {
-    assertGameIsOver(new int[]{1, 1, 1, -1, -1, -1, -1, -1, -1});
-    assertGameIsOver(new int[]{-1, -1, -1, 1, 1, 1, -1, -1, -1});
-    assertGameIsOver(new int[]{-1, -1, -1, -1, -1, -1, 1, 1, 1});
-    assertGameIsOver(new int[]{1, -1, -1, 1, -1, -1, 1, -1, -1});
-    assertGameIsOver(new int[]{-1, 1, -1, -1, 1, -1, -1, 1, -1});
-    assertGameIsOver(new int[]{-1, -1, 1, -1, -1, 1, -1, -1, 1});
-    assertGameIsOver(new int[]{1, -1, -1, -1, 1, -1, -1, -1, 1});
-    assertGameIsOver(new int[]{-1, -1, 1, -1, 1, -1, 1, -1, -1});
   }
 }

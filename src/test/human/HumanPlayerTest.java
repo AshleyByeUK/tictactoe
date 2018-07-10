@@ -1,22 +1,23 @@
 package human;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import console.ConsoleUIMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tictactoe.Game;
-import tictactoe.Player;
+import tictactoe.Board;
+import tictactoe.BoardSpy;
 
 class HumanPlayerTest {
 
   private ConsoleUIMock mockConsoleUI;
-  private Player player;
-  private Game game;
+  private HumanPlayer player;
+  private Board board;
 
   private void assertInvalidInput(String input) {
     mockConsoleUI.setUserInputValue(input);
-    player.playTurn(game);
+    player.validInput(input, board, mockConsoleUI);
 
     assertEquals("Invalid input", mockConsoleUI.lastMessage);
   }
@@ -25,7 +26,7 @@ class HumanPlayerTest {
   void setUp() {
     mockConsoleUI = new ConsoleUIMock();
     player = new HumanPlayer("human");
-    game = new Game(player, player, mockConsoleUI);
+    board = new Board();
   }
 
   @Test
@@ -42,5 +43,13 @@ class HumanPlayerTest {
   void outOfRangeUserInput() {
     assertInvalidInput("-1");
     assertInvalidInput("9");
+  }
+
+  @Test
+  void validMovePlacesTokenOnBoard() {
+    BoardSpy boardSpy = new BoardSpy();
+    player.playTurn(boardSpy, mockConsoleUI);
+
+    assertTrue(boardSpy.placeTokenCalled);
   }
 }

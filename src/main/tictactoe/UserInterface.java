@@ -2,9 +2,9 @@ package tictactoe;
 
 public interface UserInterface {
 
-  void showBoardStateForLastTurn(int[] board, String lastPlayersName);
+  void showBoardStateForLastTurn(Board board, String lastPlayersName);
 
-  void showAvailablePositions(int[] board);
+  void showAvailablePositions(Board board);
 
   void showMessage(String message);
 

@@ -16,7 +16,7 @@ public class ConsoleUIMock extends ConsoleUI {
   private String mockUserInput() {
     timesCalled++;
     if (timesCalled > 1)
-      return "0";
+      return "4";
     return input;
   }
 

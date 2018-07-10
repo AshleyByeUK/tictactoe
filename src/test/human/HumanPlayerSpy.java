@@ -1,20 +1,19 @@
 package human;
 
-import tictactoe.Game;
+import tictactoe.Board;
+import tictactoe.UserInterface;
 
 public class HumanPlayerSpy extends HumanPlayer {
 
   public boolean playedMove;
-  public int move;
 
   public HumanPlayerSpy(String name) {
     super(name);
   }
 
   @Override
-  public int playTurn(Game game) {
+  public void playTurn(Board board, UserInterface ui) {
     playedMove = true;
-    game.getUserInterface().getInputForPlayer(name, 8);
-    return move++;
+    ui.getInputForPlayer(name, 8);
   }
 }

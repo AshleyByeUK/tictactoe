@@ -1,11 +1,11 @@
 package computer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import tictactoe.Game;
+import tictactoe.Board;
 import tictactoe.Player;
+import tictactoe.UserInterface;
 
 public class ComputerPlayer implements Player {
 
@@ -27,47 +27,39 @@ public class ComputerPlayer implements Player {
   }
 
   @Override
-  public int playTurn(Game game) {
-    return computeBestMove(game);
+  public void playTurn(Board board, UserInterface ui) {
+    board.placeToken(computeBestMove(board));
   }
 
-  public int computeBestMove(Game game) {
-    List<Integer> availableSpaces = computeAvailablePositions(game);
+  private int computeBestMove(Board board) {
+    List<Integer> availableSpaces = board.getAvailablePositions();
 
     for (int as : availableSpaces)
       if (isBestPosition(as))
         return as;
-      else if (isGameEndingPosition(as, game, game.getCurrentPlayer()))
+      else if (isGameEndingPosition(as, board, board.getCurrentPlayer()))
         return as;
-      else if (isGameEndingPosition(as, game, game.getNextPlayer()))
+      else if (isGameEndingPosition(as, board, board.getNextPlayer()))
         return as;
       else
-        revertBoard(as, game);
+        revertBoard(as, board);
 
     return availableSpaces.get(random.nextInt(availableSpaces.size()));
-  }
-
-  private List<Integer> computeAvailablePositions(Game game) {
-    List<Integer> availableSpaces = new ArrayList<>();
-    for (int i = 0; i < game.getBoard().length; i++)
-      if (game.getBoard()[i] == -1)
-        availableSpaces.add(i);
-    return availableSpaces;
   }
 
   private boolean isBestPosition(int as) {
     return as == 4;
   }
 
-  private boolean isGameEndingPosition(int spot, Game game, int player) {
-    game.getBoard()[spot] = player;
-    if (game.gameIsOver())
-      return revertBoard(spot, game);
+  private boolean isGameEndingPosition(int spot, Board board, int player) {
+    board.getPositions()[spot] = player;
+    if (board.gameIsOver())
+      return revertBoard(spot, board);
     return false;
   }
 
-  private boolean revertBoard(int spot, Game game) {
-    game.getBoard()[spot] = -1;
+  private boolean revertBoard(int spot, Board board) {
+    board.getPositions()[spot] = -1;
     return true;
   }
 }
