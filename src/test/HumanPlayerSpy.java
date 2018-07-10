@@ -10,7 +10,7 @@ public class HumanPlayerSpy extends HumanPlayer {
   @Override
   public int playTurn(Game game) {
     playedMove = true;
-    game.getUserInterface().getPlayersMove(name);
+    game.getUserInterface().getInputForPlayer(name, 8);
     return move++;
   }
 }

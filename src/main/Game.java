@@ -14,6 +14,10 @@ public class Game {
     currentState = "ready";
   }
 
+  public String[] getBoard() {
+    return board;
+  }
+
   public void setFirstPlayer(int player) {
     currentPlayer = player;
   }
@@ -68,7 +72,7 @@ public class Game {
     }
   }
 
-  boolean isValidPosition(int spot) {
+  boolean isAvailablePosition(int spot) {
     String s = board[spot];
     return s != "X" && s != "O";
   }

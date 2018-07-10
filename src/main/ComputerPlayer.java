@@ -37,7 +37,7 @@ public class ComputerPlayer implements Player {
         foundSpot = true;
       } else {
         spot = getBestMove();
-        if (game.isValidPosition(spot)) {
+        if (game.isAvailablePosition(spot)) {
           foundSpot = true;
         } else {
           foundSpot = false;

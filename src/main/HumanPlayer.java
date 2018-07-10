@@ -20,14 +20,34 @@ public class HumanPlayer implements Player {
 
   @Override
   public int playTurn(Game game) {
-    boolean validInput = false;  // for input validation
-    int spot;
-    do {
-      spot = game.getUserInterface().getPlayersMove(name);
-      if (game.isValidPosition(spot)) {
-        validInput = true;  // input okay, exit loop
-      }
-    } while (!validInput);  // repeat until input is valid
-    return spot;
+    String spot;
+    int spotsAvailable = game.getBoard().length - 1;
+    do
+      spot = game.getUserInterface().getInputForPlayer(name, spotsAvailable);
+    while (!validInput(spot, spotsAvailable, game));
+    return Integer.parseInt(spot);
+  }
+
+  private boolean validInput(String spot, int spotsAvailable, Game game) {
+    if (isValidInput(spot, spotsAvailable))
+      if (game.isAvailablePosition(Integer.parseInt(spot)))
+        return true;
+      else
+        game.getUserInterface().sendMessage("Position is taken");
+    else
+      game.getUserInterface().sendMessage("Invalid input");
+    return false;
+  }
+
+  private boolean isValidInput(String input, int spotsAvailable) {
+    boolean valid = false;
+    try {
+      int spot = Integer.parseInt(input);
+      if (spot >= 0 && spot <= spotsAvailable)
+        valid = true;
+    } catch (NumberFormatException e) {
+      // Intentionally empty.
+    }
+    return valid;
   }
 }

@@ -4,5 +4,7 @@ public interface UserInterface {
 
   void gameOver();
 
-  int getPlayersMove(String name);
+  String getInputForPlayer(String name, int maxOption);
+
+  void sendMessage(String message);
 }
