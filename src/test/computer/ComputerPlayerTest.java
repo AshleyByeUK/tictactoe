@@ -6,49 +6,49 @@ import console.ConsoleUIMock;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tictacttoe.Game;
-import tictacttoe.Player;
+import tictactoe.GameMock;
+import tictactoe.Player;
 
 class ComputerPlayerTest {
 
   private ConsoleUIMock mockConsoleUI;
   private Player player;
-  private Game game;
+  private GameMock mockGame;
 
   @BeforeEach
   void setUp() {
     mockConsoleUI = new ConsoleUIMock();
     Random randomStub = new RandomStub();
     player = new ComputerPlayer("computer", randomStub);
-    game = new Game(player, player, mockConsoleUI);
+    mockGame = new GameMock(player, player, mockConsoleUI);
   }
 
   @Test
-  void choosesMiddleSpotIfAvailable() {
-    assertEquals(4, player.playTurn(game));
+  void choosesCentreSpotIfAvailable() {
+    assertEquals(4, player.playTurn(mockGame));
   }
 
   @Test
   void choosesWinningSpotIfAvailable() {
-    game.currentPlayer = 1;
-    game.board = new int[]{1, 1, -1, 0, 0, -1, 0, -1, -1};
+    mockGame.setCurrentPlayer(1);
+    mockGame.setBoard(new int[]{1, 1, -1, 0, 0, -1, 0, -1, -1});
 
-    assertEquals(2, player.playTurn(game));
+    assertEquals(2, player.playTurn(mockGame));
   }
 
   @Test
   void stopsOppositionWinning() {
-    game.currentPlayer = 1;
-    game.board = new int[]{0, 0, -1, 1, 1, -1, -1, -1, 0};
+    mockGame.setCurrentPlayer(1);
+    mockGame.setBoard(new int[]{0, 0, -1, 1, 1, -1, -1, -1, 0});
 
-    assertEquals(2, player.playTurn(game));
+    assertEquals(2, player.playTurn(mockGame));
   }
 
   @Test
   void choosesRandomPositionIfNoWinningOrBlockingMoves() {
-    game.currentPlayer = 1;
-    game.board = new int[]{-1, -1, -1, -1, 0, -1, -1, -1, -1};
+    mockGame.setCurrentPlayer(1);
+    mockGame.setBoard(new int[]{-1, -1, -1, -1, 0, -1, -1, -1, -1});
 
-    assertEquals(0, player.playTurn(game));
+    assertEquals(0, player.playTurn(mockGame));
   }
 }

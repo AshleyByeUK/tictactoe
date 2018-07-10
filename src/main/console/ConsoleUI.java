@@ -1,7 +1,7 @@
 package console;
 
 import java.util.Scanner;
-import tictacttoe.UserInterface;
+import tictactoe.UserInterface;
 
 public class ConsoleUI implements UserInterface {
 

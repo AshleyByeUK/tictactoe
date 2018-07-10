@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import console.ConsoleUIMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tictacttoe.Game;
-import tictacttoe.Player;
+import tictactoe.Game;
+import tictactoe.Player;
 
 class HumanPlayerTest {
 

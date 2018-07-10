@@ -1,7 +1,7 @@
 package human;
 
-import tictacttoe.Game;
-import tictacttoe.Player;
+import tictactoe.Game;
+import tictactoe.Player;
 
 public class HumanPlayer implements Player {
 

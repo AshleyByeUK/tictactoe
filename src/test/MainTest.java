@@ -1,9 +1,9 @@
 import computer.ComputerPlayer;
 import console.ConsoleUI;
 import human.HumanPlayer;
-import tictacttoe.Game;
-import tictacttoe.Player;
-import tictacttoe.UserInterface;
+import tictactoe.Game;
+import tictactoe.Player;
+import tictactoe.UserInterface;
 
 public class MainTest {
 

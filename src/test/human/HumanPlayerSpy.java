@@ -1,6 +1,6 @@
 package human;
 
-import tictacttoe.Game;
+import tictactoe.Game;
 
 public class HumanPlayerSpy extends HumanPlayer {
 

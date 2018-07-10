@@ -8,7 +8,6 @@ import console.ConsoleUIMock;
 import human.HumanPlayerSpy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tictacttoe.Game;
 
 public class GameTest {
 
@@ -56,7 +55,7 @@ public class GameTest {
 
   @Test
   void playerTwoCanGoFirst() {
-    game.setFirstPlayer(1);
+    game.setCurrentPlayer(1);
     game.nextTurn();
 
     assertTrue(player2Spy.playedMove);

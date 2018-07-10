@@ -1,10 +1,10 @@
-package tictacttoe;
+package tictactoe;
 
 public class Game {
 
-  public int[] board = new int[9];
+  int[] board = new int[9];
   private Player[] players;
-  public int currentPlayer;
+  private int currentPlayer;
   private UserInterface userInterface;
   private int movesMade;
 
@@ -12,16 +12,24 @@ public class Game {
     this.userInterface = userInterface;
     players = new Player[]{player1, player2};
     currentPlayer = 0;
+    initialiseBoard();
+  }
+
+  private void initialiseBoard() {
     for (int i = 0; i < board.length; i++)
       board[i] = -1;
   }
 
-  public int[] getBoard() {
-    return board;
+  public void setCurrentPlayer(int player) {
+    currentPlayer = player;
   }
 
-  public void setFirstPlayer(int player) {
-    currentPlayer = player;
+  public int getCurrentPlayer() {
+    return currentPlayer;
+  }
+
+  public int[] getBoard() {
+    return board;
   }
 
   public UserInterface getUserInterface() {
@@ -59,11 +67,11 @@ public class Game {
     int spot = players[currentPlayer].playTurn(this);
     board[spot] = currentPlayer;
     String lastPlayersName = players[currentPlayer].getName();
-    currentPlayer = nextPlayer();
+    currentPlayer = getNextPlayer();
     return lastPlayersName;
   }
 
-  public int nextPlayer() {
+  public int getNextPlayer() {
     if (currentPlayer == 0)
       return 1;
     else

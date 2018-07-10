@@ -1,4 +1,4 @@
-package tictacttoe;
+package tictactoe;
 
 public interface UserInterface {
 

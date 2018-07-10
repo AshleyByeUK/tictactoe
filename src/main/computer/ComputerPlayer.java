@@ -1,16 +1,16 @@
 package computer;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import tictacttoe.Game;
-import tictacttoe.Player;
+import tictactoe.Game;
+import tictactoe.Player;
 
 public class ComputerPlayer implements Player {
 
   private final String name;
   private final Random random;
-  private Game game;
 
   public ComputerPlayer(String name) {
     this(name, ThreadLocalRandom.current());
@@ -28,55 +28,46 @@ public class ComputerPlayer implements Player {
 
   @Override
   public int playTurn(Game game) {
-    this.game = game;
-    return computerMove();
+    return computeBestMove(game);
   }
 
-  public int computerMove() {
-    int spot = 4;
-    boolean foundSpot = false;
-    while (!foundSpot) {
-      if (game.board[spot] == -1) {
-        game.board[spot] = game.currentPlayer;
-        foundSpot = true;
-      } else {
-        spot = getBestMove();
-        foundSpot = game.positionIsAvailable(spot);
-      }
-    }
-    return spot;
+  public int computeBestMove(Game game) {
+    List<Integer> availableSpaces = computeAvailablePositions(game);
+
+    for (int as : availableSpaces)
+      if (isBestPosition(as))
+        return as;
+      else if (isGameEndingPosition(as, game, game.getCurrentPlayer()))
+        return as;
+      else if (isGameEndingPosition(as, game, game.getNextPlayer()))
+        return as;
+      else
+        revertBoard(as, game);
+
+    return availableSpaces.get(random.nextInt(availableSpaces.size()));
   }
 
-  public int getBestMove() {
-    ArrayList<Integer> availableSpaces = new ArrayList<>();
-    boolean foundBestMove = false;
-    int spot = 100;
-    for (int i = 0; i < game.board.length; i++) {
-      if (game.board[i] == -1) {
+  private List<Integer> computeAvailablePositions(Game game) {
+    List<Integer> availableSpaces = new ArrayList<>();
+    for (int i = 0; i < game.getBoard().length; i++)
+      if (game.getBoard()[i] == -1)
         availableSpaces.add(i);
-      }
-    }
-    for (int as : availableSpaces) {
-      spot = as;
-      game.board[spot] = game.currentPlayer;
-      if (game.gameIsOver()) {
-        game.board[spot] = -1;
-        return spot;
-      } else {
-        game.board[spot] = game.nextPlayer();
-        if (game.gameIsOver()) {
-          game.board[spot] = -1;
-          return spot;
-        } else {
-          game.board[spot] = -1;
-        }
-      }
-    }
-    if (foundBestMove) {
-      return spot;
-    } else {
-      int n = random.nextInt(availableSpaces.size());
-      return availableSpaces.get(n);
-    }
+    return availableSpaces;
+  }
+
+  private boolean isBestPosition(int as) {
+    return as == 4;
+  }
+
+  private boolean isGameEndingPosition(int spot, Game game, int player) {
+    game.getBoard()[spot] = player;
+    if (game.gameIsOver())
+      return revertBoard(spot, game);
+    return false;
+  }
+
+  private boolean revertBoard(int spot, Game game) {
+    game.getBoard()[spot] = -1;
+    return true;
   }
 }
