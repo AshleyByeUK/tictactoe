@@ -23,9 +23,14 @@ public class HumanPlayer implements Player {
     String spot;
     int spotsAvailable = game.getBoard().length - 1;
     do
-      spot = game.getUserInterface().getInputForPlayer(name, spotsAvailable);
+      spot = getInputForPlayer(game, spotsAvailable);
     while (!validInput(spot, spotsAvailable, game));
     return Integer.parseInt(spot);
+  }
+
+  private String getInputForPlayer(Game game, int spotsAvailable) {
+    game.getUserInterface().printAvailablePositions(game.getBoard());
+    return game.getUserInterface().getInputForPlayer(name, spotsAvailable);
   }
 
   private boolean validInput(String spot, int spotsAvailable, Game game) {

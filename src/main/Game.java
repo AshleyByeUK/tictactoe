@@ -31,13 +31,10 @@ public class Game {
   }
 
   public void play() {
-    do {
-      if (!gameIsOver() && !isTied()) {
-        userInterface.printBoard(board, players[currentPlayer].getName());
+    do
+      if (!gameIsOver() && !isTied())
         playTurn();
-      }
-    } while (!gameIsOver() && !isTied()); // repeat if not game-over
-    userInterface.printBoard(board, players[currentPlayer].getName());
+    while (!gameIsOver() && !isTied());
     userInterface.gameOver();
   }
 
@@ -60,6 +57,7 @@ public class Game {
     currentState = "playing";
     int spot = players[currentPlayer].playTurn(this);
     board[spot] = players[currentPlayer].getToken();
+    userInterface.printBoard(board, players[currentPlayer].getName());
     currentPlayer = nextPlayer();
     movesMade++;
   }

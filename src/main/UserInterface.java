@@ -1,10 +1,12 @@
 public interface UserInterface {
 
-  void printBoard(String[] board, String name);
+  void printBoard(String[] board, String lastPlayersName);
 
-  void gameOver();
+  void printAvailablePositions(String[] board);
+
+  void sendMessage(String message);
 
   String getInputForPlayer(String name, int maxOption);
 
-  void sendMessage(String message);
+  void gameOver();
 }
