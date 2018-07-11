@@ -2,31 +2,34 @@ package tictactoe;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static tictactoe.Game.GameState.ENDED;
 
+import computer.ComputerPlayer;
 import human.HumanPlayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class GameTest extends TurnPresenter {
 
+  private boolean presenterShouldEndGame;
+  private TurnResponseModel responseModel;
   private HumanPlayer player1;
   private HumanPlayer player2;
   private Game game;
 
-  @BeforeEach
-  void setUp() {
-    player1 = new HumanPlayer("player1");
-    player2 = new HumanPlayer("player2");
-    game = new Game(player1, player2);
-  }
-
-  private TurnResponseModel responseModel;
-
   @Override
   public void present(TurnResponseModel responseModel) {
     this.responseModel = responseModel;
-    game.gameState = ENDED;
+    game.gameState = presenterShouldEndGame ? ENDED : game.gameState;
+  }
+  
+  @BeforeEach
+  void setUp() {
+    presenterShouldEndGame = true;
+    player1 = new HumanPlayer("player1");
+    player2 = new HumanPlayer("player2");
+    game = new Game(player1, player2);
   }
 
   @Test
@@ -79,6 +82,7 @@ public class GameTest extends TurnPresenter {
 
   @Test
   void gameEndsWhenPlayersAreTied() {
+    presenterShouldEndGame = false;
     game.board.positions = new int[]{0, 1, 0, 0, 1, 1, 1, 0, -1};
     game.board.movesMade = 8;
     player1.receiveInput("8");
@@ -105,5 +109,17 @@ public class GameTest extends TurnPresenter {
     assertEquals("game_over", responseModel.gameState);
     assertEquals("winner", responseModel.gameResult);
     assertArrayEquals(new int[]{0, 0, 0, 1, 1, -1, -1, -1, -1}, responseModel.board);
+  }
+
+  @Test
+  void computerCanPlayAgainstComputer() {
+    presenterShouldEndGame = false;
+    Player computer1 = new ComputerPlayer("computer1");
+    Player computer2 = new ComputerPlayer("computer2");
+    game = new Game(computer1, computer2);
+    game.play(this);
+
+    assertEquals("game_over", responseModel.gameState);
+    assertTrue(game.board.movesMade > 0);
   }
 }
