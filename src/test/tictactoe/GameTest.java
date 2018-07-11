@@ -1,55 +1,109 @@
 package tictactoe;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static tictactoe.Game.GameState.ENDED;
 
-import console.ConsoleUIMock;
-import human.HumanPlayerSpy;
+import human.HumanPlayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class GameTest {
+public class GameTest extends TurnPresenter {
 
-  private ConsoleUIMock mockConsoleUI;
-  private HumanPlayerSpy player1Spy;
-  private HumanPlayerSpy player2Spy;
+  private HumanPlayer player1;
+  private HumanPlayer player2;
   private Game game;
 
   @BeforeEach
   void setUp() {
-    mockConsoleUI = new ConsoleUIMock();
-    player1Spy = new HumanPlayerSpy("player1");
-    player2Spy = new HumanPlayerSpy("player2");
-    game = new Game(player1Spy, player2Spy, mockConsoleUI);
+    player1 = new HumanPlayer("player1");
+    player2 = new HumanPlayer("player2");
+    game = new Game(player1, player2);
+  }
+
+  private TurnResponseModel responseModel;
+
+  @Override
+  public void present(TurnResponseModel responseModel) {
+    this.responseModel = responseModel;
+    game.gameState = ENDED;
   }
 
   @Test
-  void playerOneMakesTheFirstMove() {
-    game.nextTurn();
+  void gameWaitsForPlayerInput() {
+    game.play(this);
 
-    assertTrue(player1Spy.playedMove);
-    assertEquals("player1", mockConsoleUI.callersName);
-    assertFalse(player2Spy.playedMove);
-  }
-
-  @Test
-  void playerTwoMakesTheSecondMove() {
-    game.nextTurn();
-    game.nextTurn();
-
-    assertTrue(player1Spy.playedMove);
-    assertTrue(player2Spy.playedMove);
-    assertEquals("player2", mockConsoleUI.callersName);
+    assertEquals(0, responseModel.currentPlayer);
+    assertEquals("player1", responseModel.currentPlayerName);
+    assertEquals("user_input_required", responseModel.turnResult);
+    assertEquals("playing", responseModel.gameState);
+    assertArrayEquals(new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1}, responseModel.board);
+    assertEquals(0, game.getCurrentPlayer());
   }
 
   @Test
   void playerTwoCanGoFirst() {
     game.setFirstPlayer(1);
-    game.nextTurn();
+    game.play(this);
 
-    assertTrue(player2Spy.playedMove);
-    assertEquals("player2", mockConsoleUI.callersName);
-    assertFalse(player1Spy.playedMove);
+    assertEquals(1, responseModel.currentPlayer);
+    assertEquals("player2", responseModel.currentPlayerName);
+    assertEquals(1, game.getCurrentPlayer());
+  }
+
+  @Test
+  void gameWaitsForValidPlayerInput() {
+    player1.receiveInput("invalid");
+    game.play(this);
+
+    assertEquals(0, responseModel.currentPlayer);
+    assertEquals("player1", responseModel.currentPlayerName);
+    assertEquals("user_input_invalid", responseModel.turnResult);
+    assertEquals("playing", responseModel.gameState);
+    assertArrayEquals(new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1}, responseModel.board);
+    assertEquals(0, game.getCurrentPlayer());
+  }
+
+  @Test
+  void gamePlayMovesToNextPlayerAfterValidTurn() {
+    player1.receiveInput("4");
+    game.play(this);
+
+    assertEquals(0, responseModel.currentPlayer);
+    assertEquals("player1", responseModel.currentPlayerName);
+    assertEquals("turn_complete", responseModel.turnResult);
+    assertEquals("playing", responseModel.gameState);
+    assertArrayEquals(new int[]{-1, -1, -1, -1, 0, -1, -1, -1, -1}, responseModel.board);
+    assertEquals(1, game.getCurrentPlayer());
+  }
+
+  @Test
+  void gameEndsWhenPlayersAreTied() {
+    game.board.positions = new int[]{0, 1, 0, 0, 1, 1, 1, 0, -1};
+    game.board.movesMade = 8;
+    player1.receiveInput("8");
+    game.play(this);
+
+    assertEquals(0, responseModel.currentPlayer);
+    assertEquals("player1", responseModel.currentPlayerName);
+    assertEquals("turn_complete", responseModel.turnResult);
+    assertEquals("game_over", responseModel.gameState);
+    assertEquals("tied_game", responseModel.gameResult);
+    assertArrayEquals(new int[]{0, 1, 0, 0, 1, 1, 1, 0, 0}, responseModel.board);
+  }
+
+  @Test
+  void gameEndsWhenPlayerWins() {
+    game.board.positions = new int[]{0, 0, -1, 1, 1, -1, -1, -1, -1};
+    game.board.movesMade = 4;
+    player1.receiveInput("2");
+    game.play(this);
+
+    assertEquals(0, responseModel.currentPlayer);
+    assertEquals("player1", responseModel.currentPlayerName);
+    assertEquals("turn_complete", responseModel.turnResult);
+    assertEquals("game_over", responseModel.gameState);
+    assertEquals("winner", responseModel.gameResult);
+    assertArrayEquals(new int[]{0, 0, 0, 1, 1, -1, -1, -1, -1}, responseModel.board);
   }
 }

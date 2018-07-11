@@ -1,9 +1,12 @@
 package human;
 
+import static tictactoe.PlayerResponse.INPUT_REQUIRED;
+import static tictactoe.PlayerResponse.INVALID_INPUT;
+import static tictactoe.PlayerResponse.TURN_COMPLETE;
+
 import tictactoe.Board;
 import tictactoe.Player;
-import tictactoe.TurnResult;
-import tictactoe.UserInterface;
+import tictactoe.PlayerResponse;
 
 public class HumanPlayer implements Player {
 
@@ -21,37 +24,26 @@ public class HumanPlayer implements Player {
   }
 
   @Override
-  public TurnResult playTurn(Board board, UserInterface ui) {
+  public PlayerResponse playTurn(Board board) {
     if (positionToPlay == null)
-      return TurnResult.INPUT_REQUIRED;
-    else if (!validInput(positionToPlay, board, ui))
-      return TurnResult.INVALID_INPUT;
+      return INPUT_REQUIRED;
+    else if (!validInput(positionToPlay, board))
+      return INVALID_INPUT;
+    else {
+      return takeTurn(board);
+    }
+  }
 
-//    String spot;
-//    do
-//      spot = getInputForPlayer(board, ui);
-//    while (!validInput(spot, board, ui));
+  private PlayerResponse takeTurn(Board board) {
     board.placeToken(Integer.parseInt(positionToPlay));
     positionToPlay = null;
-
-    return TurnResult.TURN_COMPLETE;
+    return TURN_COMPLETE;
   }
 
-  private String getInputForPlayer(Board board, UserInterface ui) {
-    ui.showAvailablePositions(board);
-    return ui.getInputForPlayer(name, board.getPositions().length - 1);
-  }
-
-  boolean validInput(String spot, Board board, UserInterface ui) {
+  boolean validInput(String spot, Board board) {
     if (isValidInput(spot, board.getPositions().length - 1))
-      if (board.positionIsAvailable(Integer.parseInt(spot))) {
-        System.out.println("valid? " + true);
+      if (board.positionIsAvailable(Integer.parseInt(spot)))
         return true;
-      }
-      else
-        ui.showMessage("Position is taken");
-    else
-      ui.showMessage("Invalid input");
     return false;
   }
 
@@ -59,8 +51,7 @@ public class HumanPlayer implements Player {
     boolean valid = false;
     try {
       int spot = Integer.parseInt(input);
-      if (spot >= 0 && spot <= spotsAvailable)
-        valid = true;
+      valid = (spot >= 0 && spot <= spotsAvailable);
     } catch (NumberFormatException e) {
       // Intentionally empty.
     }

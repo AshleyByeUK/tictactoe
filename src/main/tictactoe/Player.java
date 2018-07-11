@@ -4,5 +4,5 @@ public interface Player {
 
   String getName();
 
-  TurnResult playTurn(Board board, UserInterface ui);
+  PlayerResponse playTurn(Board board);
 }
