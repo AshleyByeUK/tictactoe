@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import tictactoe.Board;
 import tictactoe.Player;
+import tictactoe.TurnResult;
 import tictactoe.UserInterface;
 
 public class ComputerPlayer implements Player {
@@ -27,8 +28,9 @@ public class ComputerPlayer implements Player {
   }
 
   @Override
-  public void playTurn(Board board, UserInterface ui) {
+  public TurnResult playTurn(Board board, UserInterface ui) {
     board.placeToken(computeBestMove(board));
+    return TurnResult.TURN_COMPLETE;
   }
 
   private int computeBestMove(Board board) {

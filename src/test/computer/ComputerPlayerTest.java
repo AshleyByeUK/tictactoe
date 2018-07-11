@@ -1,6 +1,7 @@
 package computer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static tictactoe.TurnResult.*;
 
 import console.ConsoleUIMock;
 import java.util.Random;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import tictactoe.BoardSpy;
 import tictactoe.CentreTokenBoardSpy;
 import tictactoe.Player;
+import tictactoe.TurnResult;
 import tictactoe.TyingBoardSpy;
 import tictactoe.WinningBoardSpy;
 
@@ -16,7 +18,7 @@ class ComputerPlayerTest {
 
   private ConsoleUIMock mockConsoleUI;
   private Player player;
-  private BoardSpy boardStub;
+  private BoardSpy boardSpy;
 
   @BeforeEach
   void setUp() {
@@ -27,33 +29,41 @@ class ComputerPlayerTest {
 
   @Test
   void choosesCentreSpotIfAvailable() {
-    boardStub = new BoardSpy();
-    player.playTurn(boardStub, mockConsoleUI);
+    boardSpy = new BoardSpy();
+    player.playTurn(boardSpy, mockConsoleUI);
 
-    assertEquals(4, boardStub.tokenPlacedInPosition);
+    assertEquals(4, boardSpy.tokenPlacedInPosition);
   }
 
   @Test
   void choosesWinningSpotIfAvailable() {
-    boardStub = new WinningBoardSpy();
-    player.playTurn(boardStub, mockConsoleUI);
+    boardSpy = new WinningBoardSpy();
+    player.playTurn(boardSpy, mockConsoleUI);
 
-    assertEquals(2, boardStub.tokenPlacedInPosition);
+    assertEquals(2, boardSpy.tokenPlacedInPosition);
   }
 
   @Test
   void stopsOppositionWinning() {
-    boardStub = new TyingBoardSpy();
-    player.playTurn(boardStub, mockConsoleUI);
+    boardSpy = new TyingBoardSpy();
+    player.playTurn(boardSpy, mockConsoleUI);
 
-    assertEquals(2, boardStub.tokenPlacedInPosition);
+    assertEquals(2, boardSpy.tokenPlacedInPosition);
   }
 
   @Test
   void choosesRandomPositionIfNoWinningOrBlockingMoves() {
-    boardStub = new CentreTokenBoardSpy();
-    player.playTurn(boardStub, mockConsoleUI);
+    boardSpy = new CentreTokenBoardSpy();
+    player.playTurn(boardSpy, mockConsoleUI);
 
-    assertEquals(0, boardStub.tokenPlacedInPosition);
+    assertEquals(0, boardSpy.tokenPlacedInPosition);
+  }
+
+  @Test
+  void informsWhenTurnIsComplete() {
+    boardSpy = new BoardSpy();
+    TurnResult result = player.playTurn(boardSpy, mockConsoleUI);
+
+    assertEquals(TURN_COMPLETE, result);
   }
 }

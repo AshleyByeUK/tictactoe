@@ -1,6 +1,7 @@
 package human;
 
 import tictactoe.Board;
+import tictactoe.TurnResult;
 import tictactoe.UserInterface;
 
 public class HumanPlayerSpy extends HumanPlayer {
@@ -12,8 +13,9 @@ public class HumanPlayerSpy extends HumanPlayer {
   }
 
   @Override
-  public void playTurn(Board board, UserInterface ui) {
+  public TurnResult playTurn(Board board, UserInterface ui) {
     playedMove = true;
     ui.getInputForPlayer(name, 8);
+    return null;
   }
 }

@@ -2,14 +2,17 @@ package human;
 
 import tictactoe.Board;
 import tictactoe.Player;
+import tictactoe.TurnResult;
 import tictactoe.UserInterface;
 
 public class HumanPlayer implements Player {
 
   protected final String name;
+  private String positionToPlay;
 
   public HumanPlayer(String name) {
     this.name = name;
+    positionToPlay = null;
   }
 
   @Override
@@ -18,12 +21,20 @@ public class HumanPlayer implements Player {
   }
 
   @Override
-  public void playTurn(Board board, UserInterface ui) {
-    String spot;
-    do
-      spot = getInputForPlayer(board, ui);
-    while (!validInput(spot, board, ui));
-    board.placeToken(Integer.parseInt(spot));
+  public TurnResult playTurn(Board board, UserInterface ui) {
+    if (positionToPlay == null)
+      return TurnResult.INPUT_REQUIRED;
+    else if (!validInput(positionToPlay, board, ui))
+      return TurnResult.INVALID_INPUT;
+
+//    String spot;
+//    do
+//      spot = getInputForPlayer(board, ui);
+//    while (!validInput(spot, board, ui));
+    board.placeToken(Integer.parseInt(positionToPlay));
+    positionToPlay = null;
+
+    return TurnResult.TURN_COMPLETE;
   }
 
   private String getInputForPlayer(Board board, UserInterface ui) {
@@ -54,5 +65,9 @@ public class HumanPlayer implements Player {
       // Intentionally empty.
     }
     return valid;
+  }
+
+  public void receiveInput(String value) {
+    positionToPlay = value;
   }
 }
