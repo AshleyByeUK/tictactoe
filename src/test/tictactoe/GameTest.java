@@ -23,13 +23,21 @@ public class GameTest extends TurnPresenter {
     this.responseModel = responseModel;
     game.gameState = presenterShouldEndGame ? ENDED : game.gameState;
   }
-  
+
   @BeforeEach
   void setUp() {
     presenterShouldEndGame = true;
     player1 = new HumanPlayer("player1");
     player2 = new HumanPlayer("player2");
     game = new Game(player1, player2);
+  }
+
+  @Test
+  void setsCurrentAndNextPlayerOnBoard() {
+    game.play(this);
+
+    assertEquals(0, game.board.getCurrentPlayer());
+    assertEquals(1, game.board.getNextPlayer());
   }
 
   @Test

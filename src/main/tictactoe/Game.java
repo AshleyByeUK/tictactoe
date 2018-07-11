@@ -25,7 +25,8 @@ public class Game {
 
   public void play(TurnPresenter presenter) {
     while (gameState == PLAYING) {
-      TurnResponseModel responseModel = initialiseResponseModel();
+      TurnResponseModel responseModel = initialiseResponseModelForTurn();
+      updateBoardWithCurrentAndNextPlayersForTurn();
       PlayerResponse response = players[currentPlayer].playTurn(board);
 
       if (response == INPUT_REQUIRED)
@@ -39,13 +40,18 @@ public class Game {
     }
   }
 
-  private TurnResponseModel initialiseResponseModel() {
+  private TurnResponseModel initialiseResponseModelForTurn() {
     TurnResponseModel responseModel = new TurnResponseModel();
     responseModel.currentPlayer = currentPlayer;
     responseModel.currentPlayerName = players[currentPlayer].getName();
     responseModel.board = board.getPositions();
     responseModel.gameState = "playing";
     return responseModel;
+  }
+
+  private void updateBoardWithCurrentAndNextPlayersForTurn() {
+    board.setCurrentPlayer(currentPlayer);
+    board.setNextPlayer(nextPlayer());
   }
 
   private void updateResponseModelAndEndTurn(TurnResponseModel responseModel) {
