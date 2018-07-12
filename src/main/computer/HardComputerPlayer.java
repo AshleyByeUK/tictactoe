@@ -1,7 +1,5 @@
 package computer;
 
-import java.util.Arrays;
-import java.util.List;
 import tictactoe.Board;
 import tictactoe.Player;
 import tictactoe.PlayerResponse;

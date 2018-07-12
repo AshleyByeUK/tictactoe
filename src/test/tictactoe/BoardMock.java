@@ -1,6 +1,4 @@
-package computer;
-
-import tictactoe.Board;
+package tictactoe;
 
 public class BoardMock extends Board {
 

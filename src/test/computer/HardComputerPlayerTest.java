@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
+import tictactoe.BoardMock;
 import tictactoe.Player;
 
 public class HardComputerPlayerTest {
