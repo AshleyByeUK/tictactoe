@@ -23,7 +23,7 @@ public class Game {
     currentPlayer = player;
   }
 
-  public void play(TurnPresenter presenter) {
+  public boolean play(TurnPresenter presenter) {
     while (gameState == PLAYING) {
       TurnResponseModel responseModel = initialiseResponseModelForTurn();
       updateBoardWithCurrentAndNextPlayersForTurn();
@@ -38,6 +38,8 @@ public class Game {
 
       presenter.present(responseModel);
     }
+
+    return true;
   }
 
   private TurnResponseModel initialiseResponseModelForTurn() {
