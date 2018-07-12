@@ -1,4 +1,6 @@
-import computer.MediumComputerPlayer;
+import computer.ComputerPlayer;
+import computer.ArtificialIntelligence;
+import computer.MediumArtificialIntelligence;
 import console.ConsoleUI;
 import human.HumanPlayer;
 import tictactoe.Game;
@@ -13,7 +15,8 @@ public class MainTest {
     console.setPlayerOneToken("1");
     console.setPlayerTwoToken("£");
     Player human = new HumanPlayer("Player 1");
-    Player computer = new MediumComputerPlayer("Player 2");
+    ArtificialIntelligence ai = new MediumArtificialIntelligence();
+    Player computer = new ComputerPlayer("Player 2", ai);
     TurnPresenter presenter = new TurnPresenter();
     Game game = new Game(human, computer);
     game.play(presenter);

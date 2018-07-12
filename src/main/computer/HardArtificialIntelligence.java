@@ -1,30 +1,20 @@
 package computer;
 
 import tictactoe.Board;
-import tictactoe.Player;
-import tictactoe.PlayerResponse;
 
-public class HardComputerPlayer implements Player {
+public class HardArtificialIntelligence implements ArtificialIntelligence {
 
-  private String name;
   private int thisPlayer;
   private int otherPlayer;
 
-  public HardComputerPlayer(String name) {
-    this.name = name;
+  public HardArtificialIntelligence() {
   }
 
   @Override
-  public String getName() {
-    return name;
-  }
-
-  @Override
-  public PlayerResponse playTurn(Board board) {
+  public int computeBestMove(Board board) {
     thisPlayer = board.getCurrentPlayer();
     otherPlayer = board.getNextPlayer();
-    board.placeToken(minimax(board).bestPosition);
-    return PlayerResponse.TURN_COMPLETE;
+    return minimax(board).bestPosition;
   }
 
   private MinimaxResult minimax(Board board) {
@@ -61,23 +51,23 @@ public class HardComputerPlayer implements Player {
     }
   }
 
-  private void maximise(int ap, Board board, MinimaxResult bestResult) {
+  private void maximise(int pos, Board board, MinimaxResult bestResult) {
     swapPlayerOrder(board);
     int currentScore = minimax(board).bestScore;
     swapPlayerOrder(board);
     if (currentScore > bestResult.bestScore) {
       bestResult.bestScore = currentScore;
-      bestResult.bestPosition = ap;
+      bestResult.bestPosition = pos;
     }
   }
 
-  private void minimise(int ap, Board board, MinimaxResult bestResult) {
+  private void minimise(int pos, Board board, MinimaxResult bestResult) {
     swapPlayerOrder(board);
     int currentScore = minimax(board).bestScore;
     swapPlayerOrder(board);
     if (currentScore < bestResult.bestScore) {
       bestResult.bestScore = currentScore;
-      bestResult.bestPosition = ap;
+      bestResult.bestPosition = pos;
     }
   }
 

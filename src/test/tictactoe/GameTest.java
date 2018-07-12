@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static tictactoe.Game.GameState.ENDED;
 
-import computer.MediumComputerPlayer;
+import computer.ComputerPlayer;
+import computer.HardArtificialIntelligence;
+import computer.MediumArtificialIntelligence;
 import human.HumanPlayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -120,8 +122,8 @@ public class GameTest extends TurnPresenter {
   @Test
   void computerCanPlayAgainstComputer() {
     presenterShouldEndGame = false;
-    Player computer1 = new MediumComputerPlayer("computer1");
-    Player computer2 = new MediumComputerPlayer("computer2");
+    Player computer1 = new ComputerPlayer("computer1", new MediumArtificialIntelligence());
+    Player computer2 = new ComputerPlayer("computer2", new HardArtificialIntelligence());
     game = new Game(computer1, computer2);
     game.play(this);
 

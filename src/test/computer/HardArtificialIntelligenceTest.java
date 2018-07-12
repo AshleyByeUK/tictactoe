@@ -4,11 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tictactoe.BoardMock;
 import tictactoe.Player;
 
-public class HardComputerPlayerTest {
+public class HardArtificialIntelligenceTest {
+
+  private Player player;
 
   private BoardMock configureBoard(int[] positions, int currentPlayer) {
     BoardMock board = new BoardMock();
@@ -18,10 +21,14 @@ public class HardComputerPlayerTest {
     return board;
   }
 
+  @BeforeEach
+  void setUp() {
+    ArtificialIntelligence ai = new HardArtificialIntelligence();
+    player = new ComputerPlayer("computer", ai);
+  }
+
   @Test
   void choosesWinningPositionWhenOnlyOneSpaceAvailable() {
-    Player player = new HardComputerPlayer("computer");
-
     BoardMock board = configureBoard(new int[]{-1, 1, 0, 0, 1, 1, 0, 0, 1}, 0);
     player.playTurn(board);
 
@@ -32,7 +39,6 @@ public class HardComputerPlayerTest {
 
   @Test
   void choosesWinningPositionWhenThreeSpacesAvailable() {
-    Player player = new HardComputerPlayer("computer");
     BoardMock board = configureBoard(new int[]{0, -1, 1, 0, -1, -1, 1, 1, 0}, 0);
     player.playTurn(board);
 
@@ -43,7 +49,6 @@ public class HardComputerPlayerTest {
 
   @Test
   void choosesWinningPositionWhenFiveSpacesAvailable() {
-    Player player = new HardComputerPlayer("computer");
     BoardMock board = configureBoard(new int[]{0, -1, 1, 0, -1, 1, -1, -1, -1}, 0);
     player.playTurn(board);
 
@@ -54,7 +59,6 @@ public class HardComputerPlayerTest {
 
   @Test
   void blocksOtherPlayerFromWinning() {
-    Player player = new HardComputerPlayer("computer");
     BoardMock board = configureBoard(new int[]{1, 0, 0, -1, -1, -1, 1, -1, -1}, 0);
     player.playTurn(board);
 

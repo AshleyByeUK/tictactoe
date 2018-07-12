@@ -13,7 +13,7 @@ import tictactoe.PlayerResponse;
 import tictactoe.TyingBoardSpy;
 import tictactoe.WinningBoardSpy;
 
-class MediumComputerPlayerTest {
+class MediumArtificialIntelligenceTest {
 
   private Player player;
   private BoardSpy boardSpy;
@@ -21,7 +21,8 @@ class MediumComputerPlayerTest {
   @BeforeEach
   void setUp() {
     Random randomStub = new RandomStub();
-    player = new MediumComputerPlayer("computer", randomStub);
+    ArtificialIntelligence ai = new MediumArtificialIntelligence(randomStub);
+    player = new ComputerPlayer("computer", ai);
   }
 
   @Test
