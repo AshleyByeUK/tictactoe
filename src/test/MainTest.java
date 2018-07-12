@@ -1,17 +1,16 @@
-import computer.ComputerPlayer;
 import computer.ArtificialIntelligence;
+import computer.ComputerPlayer;
 import computer.MediumArtificialIntelligence;
 import console.ConsoleUI;
 import human.HumanPlayer;
 import tictactoe.Game;
 import tictactoe.Player;
 import tictactoe.TurnPresenter;
-import tictactoe.UserInterface;
 
 public class MainTest {
 
   public static void main(String[] args) {
-    UserInterface console = new ConsoleUI();
+    ConsoleUI console = new ConsoleUI();
     console.setPlayerOneToken("1");
     console.setPlayerTwoToken("£");
     Player human = new HumanPlayer("Player 1");

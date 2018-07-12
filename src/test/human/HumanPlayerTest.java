@@ -9,14 +9,13 @@ import static tictactoe.PlayerResponse.TURN_COMPLETE;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tictactoe.Board;
-import tictactoe.BoardSpy;
+import tictactoe.BoardMock;
 import tictactoe.PlayerResponse;
 
 class HumanPlayerTest {
 
   private HumanPlayer player;
   private Board board;
-  private BoardSpy boardSpy;
 
   private void assertInvalidInput(String input) {
     player.receiveInput(input);
@@ -29,7 +28,6 @@ class HumanPlayerTest {
   void setUp() {
     player = new HumanPlayer("human");
     board = new Board();
-    boardSpy = new BoardSpy();
   }
 
   @Test
@@ -50,16 +48,18 @@ class HumanPlayerTest {
 
   @Test
   void validMovePlacesTokenOnBoard() {
+    BoardMock boardMock = BoardMock.configureBoard();
     player.receiveInput("4");
-    PlayerResponse result = player.playTurn(boardSpy);
+    PlayerResponse result = player.playTurn(boardMock);
 
-    assertTrue(boardSpy.placeTokenCalled);
+    assertTrue(boardMock.placeTokenWasCalled);
     assertEquals(TURN_COMPLETE, result);
   }
 
   @Test
   void informsWhenUSerInputIsRequire() {
-    PlayerResponse result = player.playTurn(boardSpy);
+    BoardMock boardMock = BoardMock.configureBoard();
+    PlayerResponse result = player.playTurn(boardMock);
 
     assertEquals(INPUT_REQUIRED, result);
   }

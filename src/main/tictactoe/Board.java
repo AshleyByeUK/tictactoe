@@ -5,9 +5,8 @@ import java.util.List;
 
 public class Board {
 
-  protected int[] positions = new int[9];
-//  protected int movesMade;
-  protected int currentPlayer;
+  int[] positions = new int[9];
+  private int currentPlayer;
   private int nextPlayer;
 
   public Board() {

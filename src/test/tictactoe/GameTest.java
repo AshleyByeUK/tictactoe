@@ -94,7 +94,7 @@ public class GameTest extends TurnPresenter {
   void gameEndsWhenPlayersAreTied() {
     presenterShouldEndGame = false;
     game.board.positions = new int[]{0, 1, 0, 0, 1, 1, 1, 0, -1};
-        player1.receiveInput("8");
+    player1.receiveInput("8");
     game.play(this);
 
     assertEquals(0, responseModel.currentPlayer);
@@ -108,7 +108,7 @@ public class GameTest extends TurnPresenter {
   @Test
   void gameEndsWhenPlayerWins() {
     game.board.positions = new int[]{0, 0, -1, 1, 1, -1, -1, -1, -1};
-        player1.receiveInput("2");
+    player1.receiveInput("2");
     game.play(this);
 
     assertEquals(0, responseModel.currentPlayer);

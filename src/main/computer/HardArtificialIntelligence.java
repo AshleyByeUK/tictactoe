@@ -7,9 +7,6 @@ public class HardArtificialIntelligence implements ArtificialIntelligence {
   private int thisPlayer;
   private int otherPlayer;
 
-  public HardArtificialIntelligence() {
-  }
-
   @Override
   public int computeBestMove(Board board) {
     thisPlayer = board.getCurrentPlayer();

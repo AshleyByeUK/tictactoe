@@ -10,7 +10,7 @@ import tictactoe.PlayerResponse;
 
 public class HumanPlayer implements Player {
 
-  protected final String name;
+  private final String name;
   private String positionToPlay;
 
   public HumanPlayer(String name) {
@@ -40,7 +40,7 @@ public class HumanPlayer implements Player {
     return TURN_COMPLETE;
   }
 
-  boolean validInput(String spot, Board board) {
+  private boolean validInput(String spot, Board board) {
     if (isValidInput(spot, board.getPositions().length - 1))
       if (board.positionIsAvailable(Integer.parseInt(spot)))
         return true;
