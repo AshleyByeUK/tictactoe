@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static tictactoe.Game.GameState.ENDED;
 
-import computer.ComputerPlayer;
+import computer.MediumComputerPlayer;
 import human.HumanPlayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -92,8 +92,7 @@ public class GameTest extends TurnPresenter {
   void gameEndsWhenPlayersAreTied() {
     presenterShouldEndGame = false;
     game.board.positions = new int[]{0, 1, 0, 0, 1, 1, 1, 0, -1};
-    game.board.movesMade = 8;
-    player1.receiveInput("8");
+        player1.receiveInput("8");
     game.play(this);
 
     assertEquals(0, responseModel.currentPlayer);
@@ -107,8 +106,7 @@ public class GameTest extends TurnPresenter {
   @Test
   void gameEndsWhenPlayerWins() {
     game.board.positions = new int[]{0, 0, -1, 1, 1, -1, -1, -1, -1};
-    game.board.movesMade = 4;
-    player1.receiveInput("2");
+        player1.receiveInput("2");
     game.play(this);
 
     assertEquals(0, responseModel.currentPlayer);
@@ -122,12 +120,12 @@ public class GameTest extends TurnPresenter {
   @Test
   void computerCanPlayAgainstComputer() {
     presenterShouldEndGame = false;
-    Player computer1 = new ComputerPlayer("computer1");
-    Player computer2 = new ComputerPlayer("computer2");
+    Player computer1 = new MediumComputerPlayer("computer1");
+    Player computer2 = new MediumComputerPlayer("computer2");
     game = new Game(computer1, computer2);
     game.play(this);
 
     assertEquals("game_over", responseModel.gameState);
-    assertTrue(game.board.movesMade > 0);
+    assertTrue(game.board.gameIsWon() || game.board.gameIsTied());
   }
 }

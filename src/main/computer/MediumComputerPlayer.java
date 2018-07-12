@@ -7,16 +7,16 @@ import tictactoe.Board;
 import tictactoe.Player;
 import tictactoe.PlayerResponse;
 
-public class ComputerPlayer implements Player {
+public class MediumComputerPlayer implements Player {
 
   private final String name;
   private final Random random;
 
-  public ComputerPlayer(String name) {
+  public MediumComputerPlayer(String name) {
     this(name, ThreadLocalRandom.current());
   }
 
-  public ComputerPlayer(String name, Random random) {
+  public MediumComputerPlayer(String name, Random random) {
     this.name = name;
     this.random = random;
   }
@@ -54,7 +54,7 @@ public class ComputerPlayer implements Player {
 
   private boolean isGameEndingPosition(int spot, Board board, int player) {
     board.getPositions()[spot] = player;
-    if (board.gameIsOver())
+    if (board.gameIsWon())
       return revertBoard(spot, board);
     return false;
   }

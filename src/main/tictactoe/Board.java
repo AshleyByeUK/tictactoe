@@ -6,7 +6,7 @@ import java.util.List;
 public class Board {
 
   protected int[] positions = new int[9];
-  int movesMade;
+//  protected int movesMade;
   protected int currentPlayer;
   private int nextPlayer;
 
@@ -40,7 +40,6 @@ public class Board {
   }
 
   public void placeToken(int position) {
-    movesMade++;
     positions[position] = currentPlayer;
   }
 
@@ -57,21 +56,25 @@ public class Board {
   }
 
   public boolean gameIsTied() {
-    return movesMade == 9;
+    int moves = 0;
+    for (int p : positions)
+      if (p != -1)
+        moves++;
+    return moves == 9;
   }
 
-  public boolean gameIsOver() {
-    return isGameOver(0, 1, 2) ||
-        isGameOver(3, 4, 5) ||
-        isGameOver(6, 7, 8) ||
-        isGameOver(0, 3, 6) ||
-        isGameOver(1, 4, 7) ||
-        isGameOver(2, 5, 8) ||
-        isGameOver(0, 4, 8) ||
-        isGameOver(2, 4, 6);
+  public boolean gameIsWon() {
+    return isWinningSequence(0, 1, 2) ||
+        isWinningSequence(3, 4, 5) ||
+        isWinningSequence(6, 7, 8) ||
+        isWinningSequence(0, 3, 6) ||
+        isWinningSequence(1, 4, 7) ||
+        isWinningSequence(2, 5, 8) ||
+        isWinningSequence(0, 4, 8) ||
+        isWinningSequence(2, 4, 6);
   }
 
-  private boolean isGameOver(int pos1, int pos2, int pos3) {
+  private boolean isWinningSequence(int pos1, int pos2, int pos3) {
     return positions[pos1] != -1 && positions[pos2] != -1 && positions[pos3] != -1
         && positions[pos1] == positions[pos2] && positions[pos2] == positions[pos3];
   }

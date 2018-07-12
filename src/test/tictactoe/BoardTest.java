@@ -13,12 +13,12 @@ public class BoardTest {
 
   private void assertGameIsNotOver(int[] positions) {
     board.positions = positions;
-    assertFalse(board.gameIsOver());
+    assertFalse(board.gameIsWon());
   }
 
   private void assertGameIsOver(int[] positions) {
     board.positions = positions;
-    assertTrue(board.gameIsOver());
+    assertTrue(board.gameIsWon());
   }
 
   @BeforeEach
@@ -54,7 +54,16 @@ public class BoardTest {
 
   @Test
   void afterNineMovesTheGameIsTied() {
-    board.movesMade = 9;
+    board.setCurrentPlayer(1);
+    board.placeToken(0);
+    board.placeToken(1);
+    board.placeToken(2);
+    board.placeToken(3);
+    board.placeToken(4);
+    board.placeToken(5);
+    board.placeToken(6);
+    board.placeToken(7);
+    board.placeToken(8);
 
     assertTrue(board.gameIsTied());
   }

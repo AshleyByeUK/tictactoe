@@ -61,7 +61,7 @@ public class Game {
   }
 
   private void updateResponseModelAndEndGameIfGameIsOver(TurnResponseModel responseModel) {
-    if (board.gameIsOver() || board.gameIsTied()) {
+    if (board.gameIsWon() || board.gameIsTied()) {
       responseModel.gameState = "game_over";
       responseModel.gameResult = board.gameIsTied() ? "tied_game" : "winner";
       gameState = ENDED;
