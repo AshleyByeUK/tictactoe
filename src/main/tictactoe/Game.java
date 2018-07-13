@@ -3,7 +3,7 @@ package tictactoe;
 import static tictactoe.Game.GameState.ENDED;
 import static tictactoe.Game.GameState.PLAYING;
 import static tictactoe.PlayerResponse.INPUT_REQUIRED;
-import static tictactoe.PlayerResponse.INVALID_INPUT;
+import static tictactoe.PlayerResponse.POSITION_TAKEN;
 
 public class Game {
 
@@ -31,8 +31,8 @@ public class Game {
 
       if (response == INPUT_REQUIRED)
         responseModel.turnResult = "user_input_required";
-      else if (response == INVALID_INPUT)
-        responseModel.turnResult = "user_input_invalid";
+      else if (response == POSITION_TAKEN)
+        responseModel.turnResult = "position_taken";
       else
         updateResponseModelAndEndTurn(responseModel);
 
@@ -83,7 +83,7 @@ public class Game {
     return currentPlayer;
   }
 
-  public void receiveUserInput(String input) {
+  public void receiveUserInput(int input) {
     ((ControllablePlayer) players[currentPlayer]).receiveInput(input);
   }
 

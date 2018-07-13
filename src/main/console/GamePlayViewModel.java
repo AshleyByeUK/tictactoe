@@ -14,5 +14,5 @@ public class GamePlayViewModel {
   public List<Integer> availablePositions = new ArrayList<>();
 
   public boolean userInputIsRequired = false;
-  public boolean userInputIsInvalid = false;
+  public boolean userPositionIsTaken = false;
 }

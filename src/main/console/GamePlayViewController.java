@@ -32,7 +32,7 @@ public class GamePlayViewController {
     view.show(viewModel);
 
     if (viewModel.userInputIsRequired) {
-      game.receiveUserInput(input.nextLine());
+      game.receiveUserInput(Utilities.getIntegerInput(input, 1, 9) - 1);
     }
   }
 }

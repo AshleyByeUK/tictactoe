@@ -24,11 +24,11 @@ public class GamePlayViewControllerTest {
   void canSendInputToGame() {
     GameSpy gameSpy = new GameSpy("human");
     GamePlayView viewSpy = new GamePlayViewSpy();
-    Scanner scanner = new Scanner("0");
+    Scanner scanner = new Scanner("1");
     GamePlayViewController controller = new GamePlayViewController(gameSpy, viewSpy, scanner);
     controller.playGame();
 
     assertTrue(gameSpy.receiveUserInputWasCalled);
-    assertEquals("0", gameSpy.userInput);
+    assertEquals(0, gameSpy.userInput);
   }
 }

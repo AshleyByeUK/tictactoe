@@ -3,7 +3,7 @@ package tictactoe;
 public class GameSpy extends Game {
 
   public boolean receiveUserInputWasCalled;
-  public String userInput;
+  public int userInput;
   private String stubType;
 
   public GameSpy(String stubType) {
@@ -20,7 +20,7 @@ public class GameSpy extends Game {
   }
 
   @Override
-  public void receiveUserInput(String input) {
+  public void receiveUserInput(int input) {
     receiveUserInputWasCalled = true;
     userInput = input;
   }

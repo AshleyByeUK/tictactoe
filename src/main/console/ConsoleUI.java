@@ -1,75 +1,130 @@
 package console;
 
+import static console.Utilities.getIntegerInput;
+import static console.Utilities.getStringInput;
+import static console.Utilities.getYesNoInput;
+
+import computer.ComputerPlayer;
+import computer.HardArtificialIntelligence;
+import computer.MediumArtificialIntelligence;
+import human.HumanPlayer;
 import java.util.Scanner;
-import tictactoe.Board;
+import tictactoe.Game;
+import tictactoe.Player;
 
 public class ConsoleUI {
 
-  public Scanner input = new Scanner(System.in);
-  private String[] playerTokens = new String[2];
+  private Scanner input = new Scanner(System.in);
 
-  public ConsoleUI() {
-    playerTokens[0] = "X";
-    playerTokens[1] = "O";
+  public void launch() {
+    displayMainMenuOptions();
+    int mainMenuChoice = getIntegerInput(input, 1, 2);
+
+    if (mainMenuChoice == 1) {
+      Player player1 = configurePlayer("Player 1", "first");
+      Player player2 = configurePlayer("Player 2", "second");
+
+      Game game = new Game(player1, player2);
+      configurePlayingOrder(game);
+
+      GamePlayView view = configureGamePlayView(player1, player2);
+
+      GamePlayViewController controller = new GamePlayViewController(game, view);
+      controller.playGame();
+    }
+
+    exit("\nGood bye.\n", 0);
   }
 
-
-  public void setPlayerOneToken(String token) {
-    playerTokens[0] = token;
+  private void displayMainMenuOptions() {
+    System.out.println("\n\nTicTacToe");
+    System.out.println("=========\n");
+    System.out.println("Select an option:\n");
+    System.out.println("1. Play a game.");
+    System.out.println("2. Exit.");
+    System.out.println();
   }
 
-  public void setPlayerTwoToken(String token) {
-    playerTokens[1] = token;
+  private Player configurePlayer(String name, String order) {
+    displayChoosePlayerTypeMenu(order);
+    int type = getIntegerInput(input, 1, 3);
+    return makePlayer(type, name);
   }
 
-  public void showBoardStateForLastTurn(Board board, String lastPlayersName) {
-    int[] pos = board.getPositions();
-    System.out.println("Board after " + lastPlayersName + "'s turn:\n");
-    System.out.println(
-        " " + formatToken(pos[0]) + " | " + formatToken(pos[1]) + " | " + formatToken(pos[2])
-            + "\n===+===+===\n"
-            + " " + formatToken(pos[3]) + " | " + formatToken(pos[4]) + " | " + formatToken(pos[5])
-            + "\n===+===+===\n"
-            + " " + formatToken(pos[6]) + " | " + formatToken(pos[7]) + " | " + formatToken(pos[8])
-            + "\n");
+  private void displayChoosePlayerTypeMenu(String order) {
+    System.out.println("\nSelect " + order + " player type:\n");
+    System.out.println("1. Human");
+    System.out.println("2. Computer (medium)");
+    System.out.println("3. Computer (hard)");
   }
 
-  String formatToken(int player) {
-    if (player != -1)
-      return playerTokens[player];
+  private Player makePlayer(int playerType, String name) {
+    Player player;
+    if (playerType == 1)
+      player = new HumanPlayer(name);
+    else if (playerType == 2)
+      player = new ComputerPlayer(name, new MediumArtificialIntelligence());
+    else if (playerType == 3)
+      player = new ComputerPlayer(name, new HardArtificialIntelligence());
     else
-      return " ";
+      player = null;
+
+    if (player == null)
+      exit("\nUnknown error, exiting.", 1);
+    return player;
   }
 
-  public void showAvailablePositions(Board board) {
-    int[] pos = board.getPositions();
-    System.out.println("Available positions:\n");
-    System.out.println(
-        " " + formatPosition(pos, 0) + " | " + formatPosition(pos, 1) + " | " + formatPosition(pos, 2)
-            + "\n===+===+===\n"
-            + " " + formatPosition(pos, 3) + " | " + formatPosition(pos, 4) + " | " + formatPosition(pos, 5)
-            + "\n===+===+===\n"
-            + " " + formatPosition(pos, 6) + " | " + formatPosition(pos, 7) + " | " + formatPosition(pos, 8)
-            + "\n");
+  private void configurePlayingOrder(Game game) {
+    displayChangePlayingOrderMenu();
+    boolean swapFirstPlayer = getYesNoInput(input);
+    swapPlayingOrder(swapFirstPlayer, game);
   }
 
-  private String formatPosition(int[] positions, int pos) {
-    if (positions[pos] == -1)
-      return Integer.toString(pos);
-    else
-      return " ";
+  private void displayChangePlayingOrderMenu() {
+    System.out.println("\nPlayer 1 plays first. Swap playing order? (Y/N)");
   }
 
-  public void showGameOver() {
-    System.out.print("Game over\n");
+  private void swapPlayingOrder(boolean swapPlayingOrder, Game game) {
+    if (swapPlayingOrder)
+      game.setFirstPlayer(1);
   }
 
-  public String getInputForPlayer(String name, int maxOption) {
-    System.out.print(String.format(name + ", enter [0-%d]:\n", maxOption));
-    return input.next();
+  private GamePlayView configureGamePlayView(Player player1, Player player2) {
+    displayChangePlayersTokensMenu(player1, player2);
+    boolean changePlayerTokens = getYesNoInput(input);
+    GamePlayView view = new ConsoleGamePlayView();
+    updatePlayerTokens(changePlayerTokens, view);
+    return view;
   }
 
-  public void showMessage(String message) {
+  private void displayChangePlayersTokensMenu(Player player1, Player player2) {
+    System.out.println(String.format("\n%s's symbol: %s", player1.getName(), ConsoleGamePlayView.PLAYER_ONE_TOKEN));
+    System.out.println(String.format("%s's symbol: %s", player2.getName(), ConsoleGamePlayView.PLAYER_TWO_TOKEN));
+    System.out.println("\nWould you like to change these symbols? (Y/N)");
+  }
+
+  private void updatePlayerTokens(boolean change, GamePlayView view) {
+    if (change) {
+      String playerOneToken = ConsoleGamePlayView.PLAYER_ONE_TOKEN;
+      String playerTwoToken = ConsoleGamePlayView.PLAYER_TWO_TOKEN;
+      boolean changed = false;
+      while (!changed) {
+        System.out.print("\nEnter a new one character symbol for player 1 (" + playerOneToken + "): ");
+        playerOneToken = getStringInput(input, 1).toUpperCase();
+        System.out.print("\nEnter a new one character symbol for player 2 (" + playerTwoToken + "): ");
+        playerTwoToken = getStringInput(input, 1).toUpperCase();
+        if (playerOneToken.equals(playerTwoToken))
+          System.out.println("\nPlayer's symbols cannot be the same.");
+        else
+          changed = true;
+      }
+      view.setPlayerOneToken(playerOneToken);
+      view.setPlayerTwoToken(playerTwoToken);
+    }
+  }
+
+  private void exit(String message, int status) {
     System.out.println(message);
+    System.exit(status);
   }
 }

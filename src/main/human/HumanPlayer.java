@@ -1,7 +1,7 @@
 package human;
 
 import static tictactoe.PlayerResponse.INPUT_REQUIRED;
-import static tictactoe.PlayerResponse.INVALID_INPUT;
+import static tictactoe.PlayerResponse.POSITION_TAKEN;
 import static tictactoe.PlayerResponse.TURN_COMPLETE;
 
 import tictactoe.Board;
@@ -12,11 +12,11 @@ import tictactoe.PlayerResponse;
 public class HumanPlayer implements Player, ControllablePlayer {
 
   private final String name;
-  private String positionToPlay;
+  private int positionToPlay;
 
   public HumanPlayer(String name) {
     this.name = name;
-    positionToPlay = null;
+    positionToPlay = -1;
   }
 
   @Override
@@ -26,41 +26,23 @@ public class HumanPlayer implements Player, ControllablePlayer {
 
   @Override
   public PlayerResponse playTurn(Board board) {
-    if (positionToPlay == null)
+    if (positionToPlay == -1)
       return INPUT_REQUIRED;
-    else if (!validInput(positionToPlay, board))
-      return INVALID_INPUT;
+    else if (!board.positionIsAvailable(positionToPlay))
+      return POSITION_TAKEN;
     else {
       return takeTurn(board);
     }
   }
 
   private PlayerResponse takeTurn(Board board) {
-    board.placeToken(Integer.parseInt(positionToPlay));
-    positionToPlay = null;
+    board.placeToken(positionToPlay);
+    positionToPlay = -1;
     return TURN_COMPLETE;
   }
 
-  private boolean validInput(String spot, Board board) {
-    if (isValidInput(spot, board.getPositions().length - 1))
-      if (board.positionIsAvailable(Integer.parseInt(spot)))
-        return true;
-    return false;
-  }
-
-  private boolean isValidInput(String input, int spotsAvailable) {
-    boolean valid = false;
-    try {
-      int spot = Integer.parseInt(input);
-      valid = (spot >= 0 && spot <= spotsAvailable);
-    } catch (NumberFormatException e) {
-      // Intentionally empty.
-    }
-    return valid;
-  }
-
   @Override
-  public void receiveInput(String value) {
+  public void receiveInput(int value) {
     positionToPlay = value;
   }
 }

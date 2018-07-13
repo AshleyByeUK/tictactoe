@@ -27,7 +27,7 @@ public class TurnPresenter {
     viewModel.lastPositionPlayed = responseModel.lastPositionPlayed;
     viewModel.availablePositions = responseModel.availablePositions;
     viewModel.userInputIsRequired = !responseModel.turnResult.equals("turn_complete");
-    viewModel.userInputIsInvalid = responseModel.turnResult.equals("user_input_invalid");
+    viewModel.userPositionIsTaken = responseModel.turnResult.equals("position_taken");
     return viewModel;
   }
 

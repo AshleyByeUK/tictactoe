@@ -65,21 +65,22 @@ public class GameTest extends TurnPresenter {
   }
 
   @Test
-  void gameWaitsForValidPlayerInput() {
-    game.receiveUserInput("invalid");
+  void gameWaitsForValidPlayerPosition() {
+    game.board.getPositions()[0] = 1;
+    game.receiveUserInput(0);
     game.play(this);
 
     assertEquals(0, responseModel.currentPlayer);
     assertEquals("player1", responseModel.currentPlayerName);
-    assertEquals("user_input_invalid", responseModel.turnResult);
+    assertEquals("position_taken", responseModel.turnResult);
     assertEquals("playing", responseModel.gameState);
-    assertArrayEquals(new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1}, responseModel.board);
+    assertArrayEquals(new int[]{1, -1, -1, -1, -1, -1, -1, -1, -1}, responseModel.board);
     assertEquals(0, game.getCurrentPlayer());
   }
 
   @Test
   void gamePlayMovesToNextPlayerAfterValidTurn() {
-    game.receiveUserInput("4");
+    game.receiveUserInput(4);
     game.play(this);
 
     assertEquals(0, responseModel.currentPlayer);
@@ -94,7 +95,7 @@ public class GameTest extends TurnPresenter {
   void gameEndsWhenPlayersAreTied() {
     presenterShouldEndGame = false;
     game.board.positions = new int[]{0, 1, 0, 0, 1, 1, 1, 0, -1};
-    game.receiveUserInput("8");
+    game.receiveUserInput(8);
     game.play(this);
 
     assertEquals(0, responseModel.currentPlayer);
@@ -108,7 +109,7 @@ public class GameTest extends TurnPresenter {
   @Test
   void gameEndsWhenPlayerWins() {
     game.board.positions = new int[]{0, 0, -1, 1, 1, -1, -1, -1, -1};
-    game.receiveUserInput("2");
+    game.receiveUserInput(2);
     game.play(this);
 
     assertEquals(0, responseModel.currentPlayer);
