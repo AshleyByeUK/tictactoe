@@ -16,8 +16,8 @@ public class GameTest extends TurnPresenter {
 
   private boolean presenterShouldEndGame;
   private TurnResponseModel responseModel;
-  private HumanPlayer player1;
-  private HumanPlayer player2;
+  private Player player1;
+  private Player player2;
   private Game game;
 
   @Override
@@ -66,7 +66,7 @@ public class GameTest extends TurnPresenter {
 
   @Test
   void gameWaitsForValidPlayerInput() {
-    player1.receiveInput("invalid");
+    game.receiveUserInput("invalid");
     game.play(this);
 
     assertEquals(0, responseModel.currentPlayer);
@@ -79,7 +79,7 @@ public class GameTest extends TurnPresenter {
 
   @Test
   void gamePlayMovesToNextPlayerAfterValidTurn() {
-    player1.receiveInput("4");
+    game.receiveUserInput("4");
     game.play(this);
 
     assertEquals(0, responseModel.currentPlayer);
@@ -94,7 +94,7 @@ public class GameTest extends TurnPresenter {
   void gameEndsWhenPlayersAreTied() {
     presenterShouldEndGame = false;
     game.board.positions = new int[]{0, 1, 0, 0, 1, 1, 1, 0, -1};
-    player1.receiveInput("8");
+    game.receiveUserInput("8");
     game.play(this);
 
     assertEquals(0, responseModel.currentPlayer);
@@ -108,7 +108,7 @@ public class GameTest extends TurnPresenter {
   @Test
   void gameEndsWhenPlayerWins() {
     game.board.positions = new int[]{0, 0, -1, 1, 1, -1, -1, -1, -1};
-    player1.receiveInput("2");
+    game.receiveUserInput("2");
     game.play(this);
 
     assertEquals(0, responseModel.currentPlayer);

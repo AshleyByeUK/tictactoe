@@ -1,21 +1,34 @@
 package tictactoe;
 
-import console.GamePlayController;
+import console.GamePlayViewController;
 import console.GamePlayViewModel;
 
 public class TurnPresenter {
 
-  private GamePlayController controller;
+  private GamePlayViewController controller;
   private GamePlayViewModel viewModel;
 
-  public void register(GamePlayController controller) {
+  public void register(GamePlayViewController controller) {
     this.controller = controller;
   }
 
   public void present(TurnResponseModel responseModel) {
-    viewModel = new GamePlayViewModel();
-    viewModel.gameState = responseModel.gameState;
+    viewModel = populateViewModel(responseModel);
     controller.viewModelUpdated(this);
+  }
+
+  private GamePlayViewModel populateViewModel(TurnResponseModel responseModel) {
+    GamePlayViewModel viewModel = new GamePlayViewModel();
+    viewModel.gameState = responseModel.gameState;
+    viewModel.turnResult = responseModel.turnResult;
+    viewModel.currentPlayer = responseModel.currentPlayer;
+    viewModel.currentPlayerName = responseModel.currentPlayerName;
+    viewModel.board = responseModel.board;
+    viewModel.gameResult = responseModel.gameResult;
+    viewModel.lastPositionPlayed = responseModel.lastPositionPlayed;
+    viewModel.availablePositions = responseModel.availablePositions;
+    viewModel.userInputIsRequired = !responseModel.turnResult.equals("turn_complete");
+    return viewModel;
   }
 
   public GamePlayViewModel getViewModel() {

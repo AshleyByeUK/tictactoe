@@ -3,13 +3,13 @@ package console;
 import tictactoe.Game;
 import tictactoe.TurnPresenter;
 
-public class GamePlayController {
+public class GamePlayViewController {
 
   private final Game game;
   private final GamePlayView view;
-  GamePlayViewModel viewModel;
+  private GamePlayViewModel viewModel;
 
-  public GamePlayController(Game game, GamePlayView view) {
+  public GamePlayViewController(Game game, GamePlayView view) {
     this.game = game;
     this.view = view;
   }
@@ -22,7 +22,10 @@ public class GamePlayController {
 
   public void viewModelUpdated(TurnPresenter presenter) {
     viewModel = presenter.getViewModel();
-    view.setGameState(viewModel.gameState);
-    view.show();
+    view.show(viewModel);
+
+    if (viewModel.userInputIsRequired) {
+      game.receiveUserInput(viewModel.userInput);
+    }
   }
 }

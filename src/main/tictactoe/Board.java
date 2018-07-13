@@ -8,6 +8,7 @@ public class Board {
   int[] positions = new int[9];
   private int currentPlayer;
   private int nextPlayer;
+  private int lastPositionPlayed;
 
   public Board() {
     initialiseBoard();
@@ -38,8 +39,13 @@ public class Board {
     return nextPlayer;
   }
 
+  public int getLastPositionPlayed() {
+    return lastPositionPlayed;
+  }
+
   public void placeToken(int position) {
     positions[position] = currentPlayer;
+    lastPositionPlayed = position;
   }
 
   public List<Integer> getAvailablePositions() {

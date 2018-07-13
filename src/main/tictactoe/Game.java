@@ -5,6 +5,9 @@ import static tictactoe.Game.GameState.PLAYING;
 import static tictactoe.PlayerResponse.INPUT_REQUIRED;
 import static tictactoe.PlayerResponse.INVALID_INPUT;
 
+import human.HumanPlayer;
+import java.util.stream.Collectors;
+
 public class Game {
 
   Board board;
@@ -48,6 +51,8 @@ public class Game {
     responseModel.currentPlayerName = players[currentPlayer].getName();
     responseModel.board = board.getPositions();
     responseModel.gameState = "playing";
+    responseModel.lastPositionPlayed = board.getLastPositionPlayed();
+    responseModel.availablePositions = board.getAvailablePositions();
     return responseModel;
   }
 
@@ -79,6 +84,10 @@ public class Game {
 
   int getCurrentPlayer() {
     return currentPlayer;
+  }
+
+  public void receiveUserInput(String input) {
+    ((ControllablePlayer) players[currentPlayer]).receiveInput(input);
   }
 
   enum GameState {ENDED, PLAYING}

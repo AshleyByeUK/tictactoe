@@ -5,10 +5,11 @@ import static tictactoe.PlayerResponse.INVALID_INPUT;
 import static tictactoe.PlayerResponse.TURN_COMPLETE;
 
 import tictactoe.Board;
+import tictactoe.ControllablePlayer;
 import tictactoe.Player;
 import tictactoe.PlayerResponse;
 
-public class HumanPlayer implements Player {
+public class HumanPlayer implements Player, ControllablePlayer {
 
   private final String name;
   private String positionToPlay;
@@ -58,6 +59,7 @@ public class HumanPlayer implements Player {
     return valid;
   }
 
+  @Override
   public void receiveInput(String value) {
     positionToPlay = value;
   }
