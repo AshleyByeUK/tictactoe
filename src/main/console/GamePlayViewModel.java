@@ -7,7 +7,6 @@ public class GamePlayViewModel {
 
   public String gameState = "";
   public String turnResult = "";
-  public int currentPlayer = -1;
   public String currentPlayerName = "";
   public int[] board = new int[0];
   public String gameResult = "";
@@ -15,4 +14,5 @@ public class GamePlayViewModel {
   public List<Integer> availablePositions = new ArrayList<>();
 
   public boolean userInputIsRequired = false;
+  public boolean userInputIsInvalid = false;
 }

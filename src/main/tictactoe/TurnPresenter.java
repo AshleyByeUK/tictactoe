@@ -21,13 +21,13 @@ public class TurnPresenter {
     GamePlayViewModel viewModel = new GamePlayViewModel();
     viewModel.gameState = responseModel.gameState;
     viewModel.turnResult = responseModel.turnResult;
-    viewModel.currentPlayer = responseModel.currentPlayer;
     viewModel.currentPlayerName = responseModel.currentPlayerName;
     viewModel.board = responseModel.board;
     viewModel.gameResult = responseModel.gameResult;
     viewModel.lastPositionPlayed = responseModel.lastPositionPlayed;
     viewModel.availablePositions = responseModel.availablePositions;
     viewModel.userInputIsRequired = !responseModel.turnResult.equals("turn_complete");
+    viewModel.userInputIsInvalid = responseModel.turnResult.equals("user_input_invalid");
     return viewModel;
   }
 
