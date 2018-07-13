@@ -15,5 +15,4 @@ public class GamePlayViewModel {
   public List<Integer> availablePositions = new ArrayList<>();
 
   public boolean userInputIsRequired = false;
-  public String userInput = "";
 }

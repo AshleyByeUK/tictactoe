@@ -1,5 +1,6 @@
 package console;
 
+import java.util.Scanner;
 import tictactoe.Game;
 import tictactoe.TurnPresenter;
 
@@ -7,11 +8,17 @@ public class GamePlayViewController {
 
   private final Game game;
   private final GamePlayView view;
+  private final Scanner input;
   private GamePlayViewModel viewModel;
 
   public GamePlayViewController(Game game, GamePlayView view) {
+    this(game, view, new Scanner(System.in));
+  }
+
+  GamePlayViewController(Game game, GamePlayView view, Scanner input) {
     this.game = game;
     this.view = view;
+    this.input = input;
   }
 
   public boolean playGame() {
@@ -25,7 +32,7 @@ public class GamePlayViewController {
     view.show(viewModel);
 
     if (viewModel.userInputIsRequired) {
-      game.receiveUserInput(viewModel.userInput);
+      game.receiveUserInput(input.nextLine());
     }
   }
 }
