@@ -11,11 +11,37 @@ import human.HumanPlayer;
 import java.util.Scanner;
 import tictactoe.Game;
 import tictactoe.Player;
+import tictactoe.TurnPresenter;
 
-public class ConsoleUI {
+public class ConsoleUserInterface implements UserInterface {
 
-  private Scanner input = new Scanner(System.in);
+  private Scanner input;
+  private GamePlayView gamePlayView;
+  Game game;
 
+  public ConsoleUserInterface(Scanner input) {
+    this.input = input;
+  }
+
+  @Override
+  public void setGamePlayView(GamePlayView gamePlayView) {
+    this.gamePlayView = gamePlayView;
+  }
+
+  @Override
+  public void notifyTurnPlayed(TurnPresenter presenter) {
+    GamePlayViewModel viewModel = presenter.getViewModel();
+    GamePlayViewController controller = new GamePlayViewController(viewModel, gamePlayView);
+    controller.updateView();
+    if (viewModel.userInputIsRequired)
+      sendUserInputToGame(controller.getUserInput(input) - 1);
+  }
+
+  private void sendUserInputToGame(int input) {
+    game.receiveUserInput(input);
+  }
+
+  @Override
   public void launch() {
     displayMainMenuOptions();
     int mainMenuChoice = getIntegerInput(input, 1, 2);
@@ -24,13 +50,12 @@ public class ConsoleUI {
       Player player1 = configurePlayer("Player 1", "first");
       Player player2 = configurePlayer("Player 2", "second");
 
-      Game game = new Game(player1, player2);
+      game = new Game(player1, player2);
       configurePlayingOrder(game);
+      configureGamePlayView(player1, player2);
 
-      GamePlayView view = configureGamePlayView(player1, player2);
-
-      GamePlayViewController controller = new GamePlayViewController(game, view);
-      controller.playGame();
+      TurnPresenter presenter = new TurnPresenter();
+      playGame(presenter);
     }
 
     exit("\nGood bye.\n", 0);
@@ -56,6 +81,7 @@ public class ConsoleUI {
     System.out.println("1. Human");
     System.out.println("2. Computer (medium)");
     System.out.println("3. Computer (hard)");
+    System.out.println();
   }
 
   private Player makePlayer(int playerType, String name) {
@@ -81,7 +107,7 @@ public class ConsoleUI {
   }
 
   private void displayChangePlayingOrderMenu() {
-    System.out.println("\nPlayer 1 plays first. Swap playing order? (Y/N)");
+    System.out.println("\nPlayer 1 plays first. Swap playing order? (Y/N)\n");
   }
 
   private void swapPlayingOrder(boolean swapPlayingOrder, Game game) {
@@ -89,21 +115,19 @@ public class ConsoleUI {
       game.setFirstPlayer(1);
   }
 
-  private GamePlayView configureGamePlayView(Player player1, Player player2) {
+  private void configureGamePlayView(Player player1, Player player2) {
     displayChangePlayersTokensMenu(player1, player2);
     boolean changePlayerTokens = getYesNoInput(input);
-    GamePlayView view = new ConsoleGamePlayView();
-    updatePlayerTokens(changePlayerTokens, view);
-    return view;
+    updatePlayerTokens(changePlayerTokens);
   }
 
   private void displayChangePlayersTokensMenu(Player player1, Player player2) {
     System.out.println(String.format("\n%s's symbol: %s", player1.getName(), ConsoleGamePlayView.PLAYER_ONE_TOKEN));
     System.out.println(String.format("%s's symbol: %s", player2.getName(), ConsoleGamePlayView.PLAYER_TWO_TOKEN));
-    System.out.println("\nWould you like to change these symbols? (Y/N)");
+    System.out.println("\nWould you like to change these symbols? (Y/N)\n");
   }
 
-  private void updatePlayerTokens(boolean change, GamePlayView view) {
+  private void updatePlayerTokens(boolean change) {
     if (change) {
       String playerOneToken = ConsoleGamePlayView.PLAYER_ONE_TOKEN;
       String playerTwoToken = ConsoleGamePlayView.PLAYER_TWO_TOKEN;
@@ -118,9 +142,17 @@ public class ConsoleUI {
         else
           changed = true;
       }
-      view.setPlayerOneToken(playerOneToken);
-      view.setPlayerTwoToken(playerTwoToken);
+      gamePlayView.setPlayerOneToken(playerOneToken);
+      gamePlayView.setPlayerTwoToken(playerTwoToken);
     }
+  }
+
+  boolean playGame(TurnPresenter presenter) {
+    presenter.register(this);
+    boolean gameOver = false;
+    while (!gameOver)
+      gameOver = game.play(presenter);
+    return true;
   }
 
   private void exit(String message, int status) {

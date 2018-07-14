@@ -14,7 +14,7 @@ class Utilities {
       value = input.nextLine();
       valid = Utilities.isValidIntegerInput(value, minValue, maxValue);
       if (!valid) {
-        System.out.println("\nPlease enter a whole number between " + minValue + " and " + maxValue + ".");
+        System.out.println("\nPlease enter a whole number between " + minValue + " and " + maxValue + ".\n");
         displayInputPrompt();
       }
     }
@@ -25,7 +25,7 @@ class Utilities {
     boolean isValid = false;
     try {
       int value = Integer.parseInt(input);
-      isValid = (value >= 0 && value <= maxValue);
+      isValid = (value >= minValue && value <= maxValue);
     } catch (NumberFormatException e) {
       // Do nothing.
     }
@@ -41,7 +41,7 @@ class Utilities {
       valid = Utilities.isValidStringInput(value, maxLength);
       if (!valid) {
         System.out.println("\nPlease enter no more than " + maxLength
-            + (maxLength == 1 ? " character." : " characters."));
+            + (maxLength == 1 ? " character.\n" : " characters.\n"));
         displayInputPrompt();
       }
     }
@@ -60,7 +60,7 @@ class Utilities {
       value = input.nextLine();
       valid = Utilities.isValidYesNoInput(value);
       if (!valid) {
-        System.out.println("\nPlease enter Y/N.");
+        System.out.println("\nPlease enter Y/N.\n");
         displayInputPrompt();
       }
     }
