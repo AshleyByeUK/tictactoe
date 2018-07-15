@@ -1,10 +1,10 @@
 package tictactoe;
 
-public interface TurnNotificationPublisher {
+public interface TurnNotificationPublisher<T> {
 
   void subscribe(TurnNotificationSubscriber subscriber);
 
-  void notify(TurnNotification notification);
+  void notify(T notification);
 
-  TurnNotification getTurnNotification();
+  T getTurnNotification();
 }

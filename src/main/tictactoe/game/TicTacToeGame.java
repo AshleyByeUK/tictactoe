@@ -8,10 +8,9 @@ import static tictactoe.player.TurnResult.POSITION_TAKEN;
 import tictactoe.ControllablePlayer;
 import tictactoe.Game;
 import tictactoe.Player;
-import tictactoe.TurnNotificationPublisher;
 import tictactoe.player.TurnResult;
 
-public class TicTacToeGame implements Game {
+public class TicTacToeGame implements Game<TicTacToeTurnNotificationPublisher> {
 
   TicTacToeBoard board;
   GameState gameState;
@@ -30,7 +29,7 @@ public class TicTacToeGame implements Game {
   }
 
   @Override
-  public boolean play(TurnNotificationPublisher publisher) {
+  public boolean play(TicTacToeTurnNotificationPublisher publisher) {
     while (gameState == PLAYING) {
       TicTacToeTurnNotification notification = initialiseNotificationForTurn();
       updateBoardWithCurrentAndNextPlayersForTurn();

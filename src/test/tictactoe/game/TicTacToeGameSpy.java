@@ -1,7 +1,5 @@
 package tictactoe.game;
 
-import tictactoe.TurnNotificationPublisher;
-
 public class TicTacToeGameSpy extends TicTacToeGame {
 
   public boolean receiveUserInputWasCalled;
@@ -14,7 +12,7 @@ public class TicTacToeGameSpy extends TicTacToeGame {
   }
 
   @Override
-  public boolean play(TurnNotificationPublisher publisher) {
+  public boolean play(TicTacToeTurnNotificationPublisher publisher) {
     TicTacToeTurnNotification notification = new TicTacToeTurnNotification();
     notification.turnResult = stubType.equals("computer") ? "turn_complete" : "user_input_required";
     publisher.notify(notification);

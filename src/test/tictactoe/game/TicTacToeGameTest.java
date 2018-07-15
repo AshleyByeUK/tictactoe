@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tictactoe.Game;
 import tictactoe.Player;
-import tictactoe.TurnNotification;
 import tictactoe.player.computer.ComputerPlayer;
 import tictactoe.player.computer.HardArtificialIntelligence;
 import tictactoe.player.computer.MediumArtificialIntelligence;
@@ -22,8 +21,8 @@ public class TicTacToeGameTest extends TicTacToeTurnNotificationPublisher {
   private TicTacToeGame game;
 
   @Override
-  public void notify(TurnNotification notification) {
-    this.notification = (TicTacToeTurnNotification) notification;
+  public void notify(TicTacToeTurnNotification notification) {
+    this.notification = notification;
     game.gameState = publisherShouldEndGame ? ENDED : game.gameState;
   }
 

@@ -1,13 +1,12 @@
 package tictactoe.game;
 
-import tictactoe.TurnNotification;
 import tictactoe.TurnNotificationPublisher;
 import tictactoe.TurnNotificationSubscriber;
 
-public class TicTacToeTurnNotificationPublisher implements TurnNotificationPublisher {
+public class TicTacToeTurnNotificationPublisher implements TurnNotificationPublisher<TicTacToeTurnNotification> {
 
   private TurnNotificationSubscriber subscriber;
-  private TurnNotification turnNotification;
+  private TicTacToeTurnNotification turnNotification;
 
   @Override
   public void subscribe(TurnNotificationSubscriber subscriber) {
@@ -15,13 +14,13 @@ public class TicTacToeTurnNotificationPublisher implements TurnNotificationPubli
   }
 
   @Override
-  public void notify(TurnNotification notification) {
+  public void notify(TicTacToeTurnNotification notification) {
     turnNotification = notification;
     subscriber.receiveTurnPlayedNotification(this);
   }
 
   @Override
-  public TurnNotification getTurnNotification() {
+  public TicTacToeTurnNotification getTurnNotification() {
     return turnNotification;
   }
 }
