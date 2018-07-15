@@ -1,24 +1,25 @@
 package tictactoe.game;
 
-import static tictactoe.game.TicTacToe.GameState.ENDED;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static tictactoe.game.TicTacToeGame.GameState.ENDED;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import tictactoe.Game;
 import tictactoe.Player;
 import tictactoe.TurnResponseModel;
 import tictactoe.player.computer.ComputerPlayer;
 import tictactoe.player.computer.HardArtificialIntelligence;
 import tictactoe.player.computer.MediumArtificialIntelligence;
 import tictactoe.player.human.HumanPlayer;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
-public class TicTacToeTest extends TicTacToeTurnPresenter {
+public class TicTacToeGameTest extends TicTacToeTurnPresenter {
 
   private boolean presenterShouldEndGame;
   private TicTacToeTurnResponseModel responseModel;
-  private TicTacToe game;
+  private TicTacToeGame game;
 
   @Override
   public void present(TurnResponseModel responseModel) {
@@ -31,7 +32,7 @@ public class TicTacToeTest extends TicTacToeTurnPresenter {
     presenterShouldEndGame = true;
     Player player1 = new HumanPlayer("player1");
     Player player2 = new HumanPlayer("player2");
-    game = new TicTacToe(player1, player2);
+    game = (TicTacToeGame) Game.playTicTacToe(player1, player2, 0);
   }
 
   @Test
@@ -125,7 +126,7 @@ public class TicTacToeTest extends TicTacToeTurnPresenter {
     presenterShouldEndGame = false;
     Player computer1 = new ComputerPlayer("computer1", new MediumArtificialIntelligence());
     Player computer2 = new ComputerPlayer("computer2", new HardArtificialIntelligence());
-    game = new TicTacToe(computer1, computer2);
+    game = new TicTacToeGame(computer1, computer2);
     game.play(this);
 
     assertEquals("game_over", responseModel.gameState);

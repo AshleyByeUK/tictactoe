@@ -1,8 +1,8 @@
 package tictactoe.game;
 
-import tictactoe.Board;
 import java.util.ArrayList;
 import java.util.List;
+import tictactoe.Board;
 
 public class TicTacToeBoard implements Board {
 

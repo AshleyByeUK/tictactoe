@@ -18,7 +18,7 @@ public class TicTacToeTurnPresenter implements TurnPresenter {
   @Override
   public void present(TurnResponseModel responseModel) {
     viewModel = populateViewModel((TicTacToeTurnResponseModel) responseModel);
-    ui.notifyTurnPlayed(this);
+    ui.receiveTurnPlayedNotification(this);
   }
 
   private GamePlayViewModel populateViewModel(TicTacToeTurnResponseModel responseModel) {

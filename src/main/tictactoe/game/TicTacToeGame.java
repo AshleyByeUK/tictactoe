@@ -1,9 +1,9 @@
 package tictactoe.game;
 
+import static tictactoe.game.TicTacToeGame.GameState.ENDED;
+import static tictactoe.game.TicTacToeGame.GameState.PLAYING;
 import static tictactoe.player.PlayerResponse.INPUT_REQUIRED;
 import static tictactoe.player.PlayerResponse.POSITION_TAKEN;
-import static tictactoe.game.TicTacToe.GameState.ENDED;
-import static tictactoe.game.TicTacToe.GameState.PLAYING;
 
 import tictactoe.ControllablePlayer;
 import tictactoe.Game;
@@ -11,21 +11,20 @@ import tictactoe.Player;
 import tictactoe.TurnPresenter;
 import tictactoe.player.PlayerResponse;
 
-public class TicTacToe implements Game {
+public class TicTacToeGame implements Game {
 
   TicTacToeBoard board;
   private Player[] players;
   private int currentPlayer;
   GameState gameState;
 
-  public TicTacToe(Player player1, Player player2) {
+  public TicTacToeGame(Player player1, Player player2) {
     board = new TicTacToeBoard();
     players = new Player[]{player1, player2};
     currentPlayer = 0;
     gameState = PLAYING;
   }
 
-  @Override
   public void setFirstPlayer(int player) {
     currentPlayer = player;
   }

@@ -6,7 +6,7 @@ import ui.ViewModel;
 
 public class MainMenuViewModel implements ViewModel {
 
-  String title = "TicTacToe";
+  String title = "TicTacToeGame";
   List<String> menuOptions = Arrays.asList("Play a game.", "Exit");
 
   @Override

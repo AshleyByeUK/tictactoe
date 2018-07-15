@@ -1,7 +1,7 @@
 package tictactoe.game;
 
-import tictactoe.TurnResponseModel;
 import java.util.List;
+import tictactoe.TurnResponseModel;
 
 public class TicTacToeTurnResponseModel implements TurnResponseModel {
 

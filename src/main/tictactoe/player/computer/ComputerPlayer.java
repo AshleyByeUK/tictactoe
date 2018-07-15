@@ -26,4 +26,8 @@ public class ComputerPlayer implements Player {
     board.placeToken(ai.computeBestMove(board));
     return TURN_COMPLETE;
   }
+
+  public ArtificialIntelligence getAI() {
+    return ai;
+  }
 }

@@ -2,5 +2,5 @@ package tictactoe;
 
 public interface TurnResponseObserver {
 
-  void notifyTurnPlayed(TurnPresenter presenter);
+  void receiveTurnPlayedNotification(TurnPresenter presenter);
 }

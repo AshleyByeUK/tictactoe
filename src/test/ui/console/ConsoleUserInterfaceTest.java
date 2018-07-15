@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tictactoe.game.TicTacToeSpy;
+import tictactoe.game.TicTacToeGameSpy;
 import tictactoe.game.TicTacToeTurnPresenterSpy;
 
 class ConsoleUserInterfaceTest  {
@@ -28,7 +28,7 @@ class ConsoleUserInterfaceTest  {
 
   @Test
   void canReceiveViewModelFromPresenter() {
-    console.game = new TicTacToeSpy("computer");
+    console.game = new TicTacToeGameSpy("computer");
     boolean gameOver = console.launchGame(presenterSpy);
 
     assertTrue(presenterSpy.getViewModelWasCalled);
@@ -37,9 +37,9 @@ class ConsoleUserInterfaceTest  {
 
   @Test
   void canSendUserInputToGame() {
-    TicTacToeSpy gameSpy = new TicTacToeSpy("human");
+    TicTacToeGameSpy gameSpy = new TicTacToeGameSpy("human");
     console.game = gameSpy;
-    console.notifyTurnPlayed(presenterSpy);
+    console.receiveTurnPlayedNotification(presenterSpy);
 
     assertTrue(gameSpy.receiveUserInputWasCalled);
     assertEquals(0, gameSpy.userInput);

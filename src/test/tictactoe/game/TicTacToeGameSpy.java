@@ -2,13 +2,13 @@ package tictactoe.game;
 
 import tictactoe.TurnPresenter;
 
-public class TicTacToeSpy extends TicTacToe {
+public class TicTacToeGameSpy extends TicTacToeGame {
 
   public boolean receiveUserInputWasCalled;
   public int userInput;
   private String stubType;
 
-  public TicTacToeSpy(String stubType) {
+  public TicTacToeGameSpy(String stubType) {
     super(null, null);
     this.stubType = stubType;
   }

@@ -1,17 +1,12 @@
 package ui.console;
 
 
-import tictactoe.game.TicTacToe;
-import tictactoe.game.TicTacToeTurnPresenter;
-import java.util.Arrays;
 import java.util.Scanner;
-import tictactoe.player.computer.ComputerPlayer;
-import tictactoe.player.computer.HardArtificialIntelligence;
-import tictactoe.player.computer.MediumArtificialIntelligence;
-import tictactoe.player.human.HumanPlayer;
 import tictactoe.Game;
 import tictactoe.Player;
 import tictactoe.TurnPresenter;
+import tictactoe.game.TicTacToeTurnPresenter;
+import tictactoe.PlayerFactory;
 import ui.UserInterface;
 import ui.console.firstPlayer.SelectFirstPlayerView;
 import ui.console.firstPlayer.SelectFirstPlayerViewModel;
@@ -29,6 +24,7 @@ import ui.console.playerType.SelectPlayerViewModel;
 public class ConsoleUserInterface implements UserInterface {
 
   private Scanner input;
+  private PlayerFactory playerFactory;
   private MainMenuView mainMenuView;
   private SelectPlayerView selectPlayerView;
   private SelectFirstPlayerView selectFirstPlayerView;
@@ -39,6 +35,11 @@ public class ConsoleUserInterface implements UserInterface {
 
   public ConsoleUserInterface(Scanner input) {
     this.input = input;
+  }
+
+  @Override
+  public void setPlayerFactory(PlayerFactory playerFactory) {
+    this.playerFactory = playerFactory;
   }
 
   @Override
@@ -73,34 +74,33 @@ public class ConsoleUserInterface implements UserInterface {
 
   @Override
   public void launch() {
-    int mainMenuChoice = launchMainMenu();
-
-    if (mainMenuChoice == 1) {
-      int playerOneType = launchSelectPlayerMenu("first");
-      int playerTwoType = launchSelectPlayerMenu("second");
-
-      int firstPlayer = launchSelectFirstPlayerMenu();
-      boolean changeSymbols = launchChangePlayersSymbolsMenu();
-      if (changeSymbols) {
-        String playerOneSymbol = launchSelectPlayerSymbolMenu("player 1");
-        String playerTwoSymbol = launchSelectPlayerSymbolMenu("player 2");
-        gamePlayView.setPlayerOneSymbol(playerOneSymbol);
-        gamePlayView.setPlayerTwoSymbol(playerTwoSymbol);
-      }
-
-      Player player1 = makePlayer(playerOneType, "Player 1");
-      Player player2 = makePlayer(playerTwoType, "Player 2");
-      game = new TicTacToe(player1, player2);
-      game.setFirstPlayer(firstPlayer);
-
-      launchGame(new TicTacToeTurnPresenter());
-    }
-
-    exit(0);
+    if (launchMainMenu() == 1)
+      playTicTacToe();
+    else
+      exit(0);
   }
 
-  private void sendUserInputToGame(int input) {
-    game.receiveUserInput(input);
+  private void playTicTacToe() {
+    configureGame();
+    launchGame(new TicTacToeTurnPresenter());
+  }
+
+  private void configureGame() {
+    String playerOneType = launchSelectPlayerMenu("first");
+    String playerTwoType = launchSelectPlayerMenu("second");
+
+    int firstPlayer = launchSelectFirstPlayerMenu();
+    boolean changeSymbols = launchChangePlayersSymbolsMenu();
+    if (changeSymbols) {
+      String playerOneSymbol = launchSelectPlayerSymbolMenu("player 1");
+      String playerTwoSymbol = launchSelectPlayerSymbolMenu("player 2");
+      gamePlayView.setPlayerOneSymbol(playerOneSymbol);
+      gamePlayView.setPlayerTwoSymbol(playerTwoSymbol);
+    }
+
+    Player player1 = playerFactory.make(playerOneType, "Player 1");
+    Player player2 = playerFactory.make(playerTwoType, "Player 2");
+    game = Game.playTicTacToe(player1, player2, firstPlayer);
   }
 
   private int launchMainMenu() {
@@ -110,13 +110,14 @@ public class ConsoleUserInterface implements UserInterface {
     return Integer.parseInt(controller.getUserInput(input));
   }
 
-  private int launchSelectPlayerMenu(String position) {
+  private String launchSelectPlayerMenu(String position) {
     SelectPlayerViewModel viewModel = new SelectPlayerViewModel();
-    viewModel.playerTypes = Arrays.asList("Human", "Computer (medium)", "Computer (hard)");
+    viewModel.playerTypes = playerFactory.listPlayerTypes();
     viewModel.position = position;
     ViewController controller = new ViewController(viewModel, selectPlayerView);
     controller.updateView();
-    return Integer.parseInt(controller.getUserInput(input));
+    int choice = Integer.parseInt(controller.getUserInput(input));
+    return playerFactory.listPlayerTypes().get(choice - 1);
   }
 
   private int launchSelectFirstPlayerMenu() {
@@ -143,22 +144,6 @@ public class ConsoleUserInterface implements UserInterface {
     return controller.getUserInput(input);
   }
 
-  private Player makePlayer(int playerType, String name) {
-    Player player;
-    if (playerType == 1)
-      player = new HumanPlayer(name);
-    else if (playerType == 2)
-      player = new ComputerPlayer(name, new MediumArtificialIntelligence());
-    else if (playerType == 3)
-      player = new ComputerPlayer(name, new HardArtificialIntelligence());
-    else
-      player = null;
-
-    if (player == null)
-      exit(1);
-    return player;
-  }
-
   boolean launchGame(TurnPresenter presenter) {
     presenter.register(this);
     boolean gameOver = false;
@@ -172,11 +157,15 @@ public class ConsoleUserInterface implements UserInterface {
   }
 
   @Override
-  public void notifyTurnPlayed(TurnPresenter presenter) {
+  public void receiveTurnPlayedNotification(TurnPresenter presenter) {
     GamePlayViewModel viewModel = presenter.getViewModel();
     ViewController controller = new ViewController(viewModel, gamePlayView);
     controller.updateView();
     if (viewModel.userInputIsRequired)
       sendUserInputToGame(Integer.valueOf(controller.getUserInput(input)) - 1);
+  }
+
+  private void sendUserInputToGame(int input) {
+    game.receiveUserInput(input);
   }
 }
