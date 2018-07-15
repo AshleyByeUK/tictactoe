@@ -6,6 +6,7 @@ import tictactoe.Game;
 import tictactoe.Player;
 import tictactoe.PlayerFactory;
 import tictactoe.TurnNotificationPublisher;
+import tictactoe.game.TicTacToeGame;
 import tictactoe.game.TicTacToeTurnNotification;
 import tictactoe.game.TicTacToeTurnNotificationPublisher;
 import ui.UserInterface;
@@ -24,7 +25,7 @@ import ui.console.playerType.SelectPlayerViewModel;
 
 public class ConsoleUserInterface implements UserInterface {
 
-  Game game;
+  TicTacToeGame game;
   private Scanner input;
   private PlayerFactory playerFactory;
   private MainMenuView mainMenuView;
@@ -145,11 +146,11 @@ public class ConsoleUserInterface implements UserInterface {
     return controller.getUserInput(input);
   }
 
-  boolean launchGame(TurnNotificationPublisher presenter) {
-    presenter.subscribe(this);
+  boolean launchGame(TicTacToeTurnNotificationPublisher publisher) {
+    publisher.subscribe(this);
     boolean gameOver = false;
     while (!gameOver)
-      gameOver = game.play(presenter);
+      gameOver = game.play(publisher);
     return true;
   }
 
