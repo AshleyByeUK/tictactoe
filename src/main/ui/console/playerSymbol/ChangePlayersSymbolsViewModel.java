@@ -6,9 +6,4 @@ public class ChangePlayersSymbolsViewModel implements ViewModel {
 
   public String playerOneSymbol;
   public String playerTwoSymbol;
-
-  @Override
-  public char[] getInputOptions() {
-    return "yn".toCharArray();
-  }
 }

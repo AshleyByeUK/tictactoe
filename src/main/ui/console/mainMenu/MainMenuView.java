@@ -28,4 +28,9 @@ public class MainMenuView implements View<MainMenuViewModel> {
       choices += String.format("%d. %s\n", i + 1, vm.menuOptions.get(i));
     return choices;
   }
+
+  @Override
+  public char[] getInputOptions() {
+    return "12".toCharArray();
+  }
 }

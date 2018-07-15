@@ -16,9 +16,4 @@ public class GamePlayViewModel implements ViewModel {
 
   public boolean userInputIsRequired = false;
   public boolean userPositionIsTaken = false;
-
-  @Override
-  public char[] getInputOptions() {
-    return "123456789".toCharArray();
-  }
 }

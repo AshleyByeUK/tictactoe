@@ -19,6 +19,6 @@ class ViewController<S extends View<T>, T extends ViewModel> {
   }
 
   String getUserInput(Scanner input) {
-    return InputUtilities.getUppercaseInput(input, viewModel.getInputOptions());
+    return InputUtilities.getUppercaseInput(input, view.getInputOptions());
   }
 }

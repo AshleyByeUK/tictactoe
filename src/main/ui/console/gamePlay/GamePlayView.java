@@ -96,4 +96,9 @@ public class GamePlayView implements View<GamePlayViewModel> {
     else
       return "";
   }
+
+  @Override
+  public char[] getInputOptions() {
+    return "123456789".toCharArray();
+  }
 }

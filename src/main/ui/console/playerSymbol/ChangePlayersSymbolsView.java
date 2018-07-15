@@ -20,4 +20,9 @@ public class ChangePlayersSymbolsView implements View<ChangePlayersSymbolsViewMo
   private String formatChangeSymbolsQuestion() {
     return "\n\nWould you like to change these symbols? (Y/N)\n";
   }
+
+  @Override
+  public char[] getInputOptions() {
+    return "yn".toCharArray();
+  }
 }

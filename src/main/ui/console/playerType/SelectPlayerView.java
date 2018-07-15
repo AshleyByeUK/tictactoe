@@ -20,4 +20,9 @@ public class SelectPlayerView implements View<SelectPlayerViewModel> {
       choices += String.format("%d. %s\n", i + 1, vm.playerTypes.get(i));
     return choices;
   }
+
+  @Override
+  public char[] getInputOptions() {
+    return "123".toCharArray();
+  }
 }
