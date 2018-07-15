@@ -25,6 +25,12 @@ import ui.console.playerType.SelectPlayerViewModel;
 
 public class ConsoleUserInterface implements UserInterface {
 
+  private final String YES = "Y";
+  private final String PLAYER_ONE_NAME = "Player 1";
+  private final String PLAYER_TWO_NAME = "Player 2";
+  private final String FIRST_PLAYER = "first";
+  private final String SECOND_PLAYER = "second";
+
   TicTacToeGame game;
   private Scanner input;
   private PlayerFactory playerFactory;
@@ -88,20 +94,20 @@ public class ConsoleUserInterface implements UserInterface {
   }
 
   private void configureGame() {
-    String playerOneType = launchSelectPlayerMenu("first");
-    String playerTwoType = launchSelectPlayerMenu("second");
+    String playerOneType = launchSelectPlayerMenu(FIRST_PLAYER);
+    String playerTwoType = launchSelectPlayerMenu(SECOND_PLAYER);
     int firstPlayer = launchSelectFirstPlayerMenu();
     boolean changeSymbols = launchChangePlayersSymbolsMenu();
 
     if (changeSymbols) {
-      String playerOneSymbol = launchSelectPlayerSymbolMenu("player 1");
-      String playerTwoSymbol = launchSelectPlayerSymbolMenu("player 2");
+      String playerOneSymbol = launchSelectPlayerSymbolMenu(PLAYER_ONE_NAME);
+      String playerTwoSymbol = launchSelectPlayerSymbolMenu(PLAYER_TWO_NAME);
       gamePlayView.setPlayerOneSymbol(playerOneSymbol);
       gamePlayView.setPlayerTwoSymbol(playerTwoSymbol);
     }
 
-    Player player1 = playerFactory.make(playerOneType, "Player 1");
-    Player player2 = playerFactory.make(playerTwoType, "Player 2");
+    Player player1 = playerFactory.make(playerOneType, PLAYER_ONE_NAME);
+    Player player2 = playerFactory.make(playerTwoType, PLAYER_TWO_NAME);
     game = Game.playTicTacToe(player1, player2, firstPlayer);
   }
 
@@ -126,7 +132,7 @@ public class ConsoleUserInterface implements UserInterface {
     SelectFirstPlayerViewModel viewModel = new SelectFirstPlayerViewModel();
     ViewController controller = new ViewController(viewModel, selectFirstPlayerView);
     controller.updateView();
-    return controller.getUserInput(input).equals("Y") ? 1 : 0;
+    return controller.getUserInput(input).equals(YES) ? 1 : 0;
   }
 
   private boolean launchChangePlayersSymbolsMenu() {
@@ -135,7 +141,7 @@ public class ConsoleUserInterface implements UserInterface {
     viewModel.playerTwoSymbol = GamePlayView.PLAYER_TWO_SYMBOL;
     ViewController controller = new ViewController(viewModel, changePlayersSymbolsView);
     controller.updateView();
-    return controller.getUserInput(input).equals("Y");
+    return controller.getUserInput(input).equals(YES);
   }
 
   private String launchSelectPlayerSymbolMenu(String name) {
@@ -172,8 +178,8 @@ public class ConsoleUserInterface implements UserInterface {
     viewModel.gameResult = notification.gameResult;
     viewModel.lastPositionPlayed = notification.lastPositionPlayed;
     viewModel.availablePositions = notification.availablePositions;
-    viewModel.userInputIsRequired = !notification.turnResult.equals("turn_complete");
-    viewModel.userPositionIsTaken = notification.turnResult.equals("position_taken");
+    viewModel.userInputIsRequired = !notification.turnResult.equals(TicTacToeGame.TURN_RESULT_TURN_COMPLETE);
+    viewModel.userPositionIsTaken = notification.turnResult.equals(TicTacToeGame.TURN_RESULT_POSITION_TAKEN);
     return viewModel;
   }
 

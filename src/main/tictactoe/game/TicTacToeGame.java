@@ -12,6 +12,14 @@ import tictactoe.player.TurnResult;
 
 public class TicTacToeGame implements Game<TicTacToeTurnNotificationPublisher> {
 
+  public static final String TURN_RESULT_USER_INPUT_REQUIRED = "user_input_required";
+  public static final String TURN_RESULT_POSITION_TAKEN = "position_taken";
+  public static final String TURN_RESULT_TURN_COMPLETE = "turn_complete";
+  public static final String GAME_STATE_PLAYING = "playing";
+  public static final String GAME_STATE_GAME_OVER = "game_over";
+  public static final String GAME_RESULT_TIED_GAME = "tied_game";
+  public static final String GAME_RESULT_WINNER = "winner";
+
   TicTacToeBoard board;
   GameState gameState;
   private Player[] players;
@@ -36,9 +44,9 @@ public class TicTacToeGame implements Game<TicTacToeTurnNotificationPublisher> {
       TurnResult result = players[currentPlayer].playTurn(board);
 
       if (result == INPUT_REQUIRED)
-        notification.turnResult = "user_input_required";
+        notification.turnResult = TURN_RESULT_USER_INPUT_REQUIRED;
       else if (result == POSITION_TAKEN)
-        notification.turnResult = "position_taken";
+        notification.turnResult = TURN_RESULT_POSITION_TAKEN;
       else
         updateNotificationAndEndTurn(notification);
 
@@ -52,7 +60,7 @@ public class TicTacToeGame implements Game<TicTacToeTurnNotificationPublisher> {
     TicTacToeTurnNotification notification = new TicTacToeTurnNotification();
     notification.currentPlayerName = players[currentPlayer].getName();
     notification.board = board.getPositions();
-    notification.gameState = "playing";
+    notification.gameState = GAME_STATE_PLAYING;
     notification.availablePositions = board.getAvailablePositions();
     return notification;
   }
@@ -63,7 +71,7 @@ public class TicTacToeGame implements Game<TicTacToeTurnNotificationPublisher> {
   }
 
   private void updateNotificationAndEndTurn(TicTacToeTurnNotification notification) {
-    notification.turnResult = "turn_complete";
+    notification.turnResult = TURN_RESULT_TURN_COMPLETE;
     notification.lastPositionPlayed = board.getLastPositionPlayed();
     updateNotificationAndEndGameIfGameIsOver(notification);
     currentPlayer = nextPlayer();
@@ -71,8 +79,8 @@ public class TicTacToeGame implements Game<TicTacToeTurnNotificationPublisher> {
 
   private void updateNotificationAndEndGameIfGameIsOver(TicTacToeTurnNotification notification) {
     if (board.gameIsWon() || board.gameIsTied()) {
-      notification.gameState = "game_over";
-      notification.gameResult = board.gameIsTied() ? "tied_game" : "winner";
+      notification.gameState = GAME_STATE_GAME_OVER;
+      notification.gameResult = board.gameIsTied() ? GAME_RESULT_TIED_GAME : GAME_RESULT_WINNER;
       gameState = ENDED;
     }
   }
