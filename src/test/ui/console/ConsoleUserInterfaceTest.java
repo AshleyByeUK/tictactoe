@@ -39,7 +39,7 @@ class ConsoleUserInterfaceTest {
     console.game = new TicTacToeGameSpy("computer");
     boolean gameOver = console.launchGame(presenterSpy);
 
-    assertTrue(presenterSpy.getViewModelWasCalled);
+    assertTrue(presenterSpy.getTurnNotificationWasCalled);
     assertTrue(gameOver);
   }
 

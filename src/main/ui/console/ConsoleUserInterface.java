@@ -6,6 +6,7 @@ import tictactoe.Game;
 import tictactoe.Player;
 import tictactoe.PlayerFactory;
 import tictactoe.TurnNotificationPublisher;
+import tictactoe.game.TicTacToeTurnNotification;
 import tictactoe.game.TicTacToeTurnNotificationPublisher;
 import ui.UserInterface;
 import ui.console.firstPlayer.SelectFirstPlayerView;
@@ -154,11 +155,25 @@ public class ConsoleUserInterface implements UserInterface {
 
   @Override
   public void receiveTurnPlayedNotification(TurnNotificationPublisher publisher) {
-    GamePlayViewModel viewModel = publisher.getViewModel();
+    GamePlayViewModel viewModel = populateViewModel((TicTacToeTurnNotification) publisher.getTurnNotification());
     ViewController controller = new ViewController(viewModel, gamePlayView);
     controller.updateView();
     if (viewModel.userInputIsRequired)
       sendUserInputToGame(Integer.valueOf(controller.getUserInput(input)) - 1);
+  }
+
+  private GamePlayViewModel populateViewModel(TicTacToeTurnNotification notification) {
+    GamePlayViewModel viewModel = new GamePlayViewModel();
+    viewModel.gameState = notification.gameState;
+    viewModel.turnResult = notification.turnResult;
+    viewModel.currentPlayerName = notification.currentPlayerName;
+    viewModel.board = notification.board;
+    viewModel.gameResult = notification.gameResult;
+    viewModel.lastPositionPlayed = notification.lastPositionPlayed;
+    viewModel.availablePositions = notification.availablePositions;
+    viewModel.userInputIsRequired = !notification.turnResult.equals("turn_complete");
+    viewModel.userPositionIsTaken = notification.turnResult.equals("position_taken");
+    return viewModel;
   }
 
   private void sendUserInputToGame(int input) {

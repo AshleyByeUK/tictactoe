@@ -1,16 +1,16 @@
 package tictactoe.game;
 
-import ui.console.gamePlay.GamePlayViewModel;
+import tictactoe.TurnNotification;
 
 public class TicTacToeTurnNotificationPublisherSpy extends TicTacToeTurnNotificationPublisher {
 
-  public boolean getViewModelWasCalled;
+  public boolean getTurnNotificationWasCalled;
 
   @Override
-  public GamePlayViewModel getViewModel() {
-    GamePlayViewModel viewModel = super.getViewModel();
-    viewModel.userInputIsRequired = true;
-    getViewModelWasCalled = true;
-    return viewModel;
+  public TurnNotification getTurnNotification() {
+    TicTacToeTurnNotification turnNotification = new TicTacToeTurnNotification();
+    turnNotification.turnResult = "user_input_required";
+    getTurnNotificationWasCalled = true;
+    return turnNotification;
   }
 }
