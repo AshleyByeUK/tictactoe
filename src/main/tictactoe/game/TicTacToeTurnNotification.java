@@ -2,8 +2,9 @@ package tictactoe.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import tictactoe.TurnNotification;
 
-public class TicTacToeTurnNotification {
+public class TicTacToeTurnNotification implements TurnNotification {
 
   public String currentPlayerName = "";
   public String turnResult = "";

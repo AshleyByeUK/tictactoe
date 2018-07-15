@@ -1,6 +1,6 @@
 package tictactoe;
 
-public interface TurnNotificationPublisher<T> {
+public interface TurnNotificationPublisher<T extends TurnNotification> {
 
   void subscribe(TurnNotificationSubscriber subscriber);
 
