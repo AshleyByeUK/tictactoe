@@ -29,7 +29,7 @@ class ConsoleUserInterfaceTest  {
   @Test
   void canReceiveViewModelFromPresenter() {
     console.game = new GameSpy("computer");
-    boolean gameOver = console.playGame(presenterSpy);
+    boolean gameOver = console.launchGame(presenterSpy);
 
     assertTrue(presenterSpy.getViewModelWasCalled);
     assertTrue(gameOver);

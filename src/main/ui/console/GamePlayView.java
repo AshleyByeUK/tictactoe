@@ -6,21 +6,22 @@ import ui.ViewModel;
 
 public class GamePlayView implements View {
 
-  public static final String PLAYER_ONE_TOKEN = "X";
-  public static final String PLAYER_TWO_TOKEN = "O";
+  static final String VALID_SYMBOLS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@£#$%^&*()?";
+  static final String PLAYER_ONE_SYMBOL = "X";
+  static final String PLAYER_TWO_SYMBOL = "O";
   private String[] playerTokens = new String[2];
   private boolean isFirstTurn = true;
 
   public GamePlayView() {
-    playerTokens[0] = PLAYER_ONE_TOKEN;
-    playerTokens[1] = PLAYER_TWO_TOKEN;
+    playerTokens[0] = PLAYER_ONE_SYMBOL;
+    playerTokens[1] = PLAYER_TWO_SYMBOL;
   }
 
-  public void setPlayerOneToken(String token) {
+  void setPlayerOneSymbol(String token) {
     playerTokens[0] = token;
   }
 
-  public void setPlayerTwoToken(String token) {
+  void setPlayerTwoSymbol(String token) {
     playerTokens[1] = token;
   }
 

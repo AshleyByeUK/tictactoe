@@ -1,24 +1,25 @@
 package ui.console;
 
-import static ui.console.InputUtilities.getIntegerInput;
-import static ui.console.InputUtilities.getStringInput;
-import static ui.console.InputUtilities.getYesNoInput;
-
 import computer.ComputerPlayer;
 import computer.HardArtificialIntelligence;
 import computer.MediumArtificialIntelligence;
 import human.HumanPlayer;
+import java.util.Arrays;
 import java.util.Scanner;
 import tictactoe.Game;
 import tictactoe.Player;
 import tictactoe.TurnPresenter;
 import ui.UserInterface;
-import ui.View;
 
 public class ConsoleUserInterface implements UserInterface {
 
   private Scanner input;
-  private View gamePlayView;
+  private MainMenuView mainMenuView;
+  private SelectPlayerView selectPlayerView;
+  private SelectFirstPlayerView selectFirstPlayerView;
+  private ChangePlayersSymbolsView changePlayersSymbolsView;
+  private SelectPlayerSymbolView selectPlayerSymbolView;
+  private GamePlayView gamePlayView;
   Game game;
 
   public ConsoleUserInterface(Scanner input) {
@@ -26,64 +27,105 @@ public class ConsoleUserInterface implements UserInterface {
   }
 
   @Override
-  public void setGamePlayView(View gamePlayView) {
-    this.gamePlayView = gamePlayView;
+  public void setMainMenuView(MainMenuView view) {
+    mainMenuView = view;
   }
 
   @Override
-  public void notifyTurnPlayed(TurnPresenter presenter) {
-    GamePlayViewModel viewModel = presenter.getViewModel();
-    ViewController controller = new ViewController(viewModel, gamePlayView);
-    controller.updateView();
-    if (viewModel.userInputIsRequired)
-      sendUserInputToGame(Integer.valueOf(controller.getUserInput(input)) - 1);
+  public void setGamePlayView(GamePlayView view) {
+    gamePlayView = view;
+  }
+
+  @Override
+  public void setSelectPlayerView(SelectPlayerView view) {
+    selectPlayerView = view;
+  }
+
+  @Override
+  public void setSelectFirstPlayerView(SelectFirstPlayerView view) {
+    selectFirstPlayerView = view;
+  }
+
+  @Override
+  public void setChangePlayersSymbolsView(ChangePlayersSymbolsView view) {
+    changePlayersSymbolsView = view;
+  }
+
+  @Override
+  public void setSelectPlayerSymbolView(SelectPlayerSymbolView view) {
+    selectPlayerSymbolView = view;
+  }
+
+  @Override
+  public void launch() {
+    int mainMenuChoice = launchMainMenu();
+
+    if (mainMenuChoice == 1) {
+      int playerOneType = launchSelectPlayerMenu("first");
+      int playerTwoType = launchSelectPlayerMenu("second");
+
+      int firstPlayer = launchSelectFirstPlayerMenu();
+      boolean changeSymbols = launchChangePlayersSymbolsMenu();
+      if (changeSymbols) {
+        String playerOneSymbol = launchSelectPlayerSymbolMenu("player 1");
+        String playerTwoSymbol = launchSelectPlayerSymbolMenu("player 2");
+        gamePlayView.setPlayerOneSymbol(playerOneSymbol);
+        gamePlayView.setPlayerTwoSymbol(playerTwoSymbol);
+      }
+
+      Player player1 = makePlayer(playerOneType, "Player 1");
+      Player player2 = makePlayer(playerTwoType, "Player 2");
+      game = new Game(player1, player2);
+      game.setFirstPlayer(firstPlayer);
+
+      launchGame(new TurnPresenter());
+    }
+
+    exit(0);
   }
 
   private void sendUserInputToGame(int input) {
     game.receiveUserInput(input);
   }
 
-  @Override
-  public void launch() {
-    displayMainMenuOptions();
-    int mainMenuChoice = getIntegerInput(input, 1, 2);
-
-    if (mainMenuChoice == 1) {
-      Player player1 = configurePlayer("Player 1", "first");
-      Player player2 = configurePlayer("Player 2", "second");
-
-      game = new Game(player1, player2);
-      configurePlayingOrder(game);
-      configureGamePlayView(player1, player2);
-
-      TurnPresenter presenter = new TurnPresenter();
-      playGame(presenter);
-    }
-
-    exit("\nGood bye.\n", 0);
+  private int launchMainMenu() {
+    MainMenuViewModel viewModel = new MainMenuViewModel();
+    ViewController controller = new ViewController(viewModel, mainMenuView);
+    controller.updateView();
+    return Integer.parseInt(controller.getUserInput(input));
   }
 
-  private void displayMainMenuOptions() {
-    System.out.println("\n\nTicTacToe");
-    System.out.println("=========\n");
-    System.out.println("Select an option:\n");
-    System.out.println("1. Play a game.");
-    System.out.println("2. Exit.");
-    System.out.println();
+  private int launchSelectPlayerMenu(String position) {
+    SelectPlayerViewModel viewModel = new SelectPlayerViewModel();
+    viewModel.playerTypes = Arrays.asList("Human", "Computer (medium)", "Computer (hard)");
+    viewModel.position = position;
+    ViewController controller = new ViewController(viewModel, selectPlayerView);
+    controller.updateView();
+    return Integer.parseInt(controller.getUserInput(input));
   }
 
-  private Player configurePlayer(String name, String order) {
-    displayChoosePlayerTypeMenu(order);
-    int type = getIntegerInput(input, 1, 3);
-    return makePlayer(type, name);
+  private int launchSelectFirstPlayerMenu() {
+    SelectFirstPlayerViewModel viewModel = new SelectFirstPlayerViewModel();
+    ViewController controller = new ViewController(viewModel, selectFirstPlayerView);
+    controller.updateView();
+    return controller.getUserInput(input).equals("Y") ? 1 : 0;
   }
 
-  private void displayChoosePlayerTypeMenu(String order) {
-    System.out.println("\nSelect " + order + " player type:\n");
-    System.out.println("1. Human");
-    System.out.println("2. Computer (medium)");
-    System.out.println("3. Computer (hard)");
-    System.out.println();
+  private boolean launchChangePlayersSymbolsMenu() {
+    ChangePlayersSymbolsViewModel viewModel = new ChangePlayersSymbolsViewModel();
+    viewModel.playerOneSymbol = GamePlayView.PLAYER_ONE_SYMBOL;
+    viewModel.playerTwoSymbol = GamePlayView.PLAYER_TWO_SYMBOL;
+    ViewController controller = new ViewController(viewModel, changePlayersSymbolsView);
+    controller.updateView();
+    return controller.getUserInput(input).equals("Y");
+  }
+
+  private String launchSelectPlayerSymbolMenu(String name) {
+    SelectPlayerSymbolViewModel viewModel = new SelectPlayerSymbolViewModel();
+    viewModel.playerName = name;
+    ViewController controller = new ViewController(viewModel, selectPlayerSymbolView);
+    controller.updateView();
+    return controller.getUserInput(input);
   }
 
   private Player makePlayer(int playerType, String name) {
@@ -98,58 +140,11 @@ public class ConsoleUserInterface implements UserInterface {
       player = null;
 
     if (player == null)
-      exit("\nUnknown error, exiting.", 1);
+      exit(1);
     return player;
   }
 
-  private void configurePlayingOrder(Game game) {
-    displayChangePlayingOrderMenu();
-    boolean swapFirstPlayer = getYesNoInput(input);
-    swapPlayingOrder(swapFirstPlayer, game);
-  }
-
-  private void displayChangePlayingOrderMenu() {
-    System.out.println("\nPlayer 1 plays first. Swap playing order? (Y/N)\n");
-  }
-
-  private void swapPlayingOrder(boolean swapPlayingOrder, Game game) {
-    if (swapPlayingOrder)
-      game.setFirstPlayer(1);
-  }
-
-  private void configureGamePlayView(Player player1, Player player2) {
-    displayChangePlayersTokensMenu(player1, player2);
-    boolean changePlayerTokens = getYesNoInput(input);
-    updatePlayerTokens(changePlayerTokens);
-  }
-
-  private void displayChangePlayersTokensMenu(Player player1, Player player2) {
-    System.out.println(String.format("\n%s's symbol: %s", player1.getName(), GamePlayView.PLAYER_ONE_TOKEN));
-    System.out.println(String.format("%s's symbol: %s", player2.getName(), GamePlayView.PLAYER_TWO_TOKEN));
-    System.out.println("\nWould you like to change these symbols? (Y/N)\n");
-  }
-
-  private void updatePlayerTokens(boolean change) {
-    if (change) {
-      String playerOneToken = GamePlayView.PLAYER_ONE_TOKEN;
-      String playerTwoToken = GamePlayView.PLAYER_TWO_TOKEN;
-      boolean changed = false;
-      while (!changed) {
-        System.out.print("\nEnter a new one character symbol for player 1 (" + playerOneToken + "): ");
-        playerOneToken = getStringInput(input, 1).toUpperCase();
-        System.out.print("\nEnter a new one character symbol for player 2 (" + playerTwoToken + "): ");
-        playerTwoToken = getStringInput(input, 1).toUpperCase();
-        if (playerOneToken.equals(playerTwoToken))
-          System.out.println("\nPlayer's symbols cannot be the same.");
-        else
-          changed = true;
-      }
-      ((GamePlayView) gamePlayView).setPlayerOneToken(playerOneToken);
-      ((GamePlayView) gamePlayView).setPlayerTwoToken(playerTwoToken);
-    }
-  }
-
-  boolean playGame(TurnPresenter presenter) {
+  boolean launchGame(TurnPresenter presenter) {
     presenter.register(this);
     boolean gameOver = false;
     while (!gameOver)
@@ -157,8 +152,16 @@ public class ConsoleUserInterface implements UserInterface {
     return true;
   }
 
-  private void exit(String message, int status) {
-    System.out.println(message);
+  private void exit(int status) {
     System.exit(status);
+  }
+
+  @Override
+  public void notifyTurnPlayed(TurnPresenter presenter) {
+    GamePlayViewModel viewModel = presenter.getViewModel();
+    ViewController controller = new ViewController(viewModel, gamePlayView);
+    controller.updateView();
+    if (viewModel.userInputIsRequired)
+      sendUserInputToGame(Integer.valueOf(controller.getUserInput(input)) - 1);
   }
 }
