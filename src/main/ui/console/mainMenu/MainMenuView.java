@@ -1,7 +1,6 @@
 package ui.console.mainMenu;
 
 import ui.View;
-import ui.ViewModel;
 
 public class MainMenuView implements View<MainMenuViewModel> {
 
