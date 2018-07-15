@@ -10,7 +10,7 @@ public interface Game {
     return game;
   }
 
-  boolean play(TurnPresenter presenter);
+  boolean play(TurnNotificationPublisher presenter);
 
   void receiveUserInput(int input);
 }

@@ -1,7 +1,7 @@
 package ui;
 
-import tictactoe.TurnResponseObserver;
 import tictactoe.PlayerFactory;
+import tictactoe.TurnNotificationSubscriber;
 import ui.console.firstPlayer.SelectFirstPlayerView;
 import ui.console.gamePlay.GamePlayView;
 import ui.console.mainMenu.MainMenuView;
@@ -9,7 +9,7 @@ import ui.console.playerSymbol.ChangePlayersSymbolsView;
 import ui.console.playerSymbol.SelectPlayerSymbolView;
 import ui.console.playerType.SelectPlayerView;
 
-public interface UserInterface extends TurnResponseObserver {
+public interface UserInterface extends TurnNotificationSubscriber {
 
   void setPlayerFactory(PlayerFactory playerFactory);
 

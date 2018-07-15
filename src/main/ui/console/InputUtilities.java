@@ -4,8 +4,6 @@ import java.util.Scanner;
 
 class InputUtilities {
 
-  static boolean showInputPrompt = true;
-
   static String getUppercaseInput(Scanner input, char[] validInputs) {
     displayInputPrompt();
     String value = "";
@@ -29,7 +27,6 @@ class InputUtilities {
   }
 
   private static void displayInputPrompt() {
-    if (showInputPrompt)
-      System.out.print("> ");
+    System.out.print("> ");
   }
 }

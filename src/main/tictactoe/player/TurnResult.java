@@ -1,5 +1,5 @@
 package tictactoe.player;
 
-public enum PlayerResponse {
+public enum TurnResult {
   INPUT_REQUIRED, POSITION_TAKEN, TURN_COMPLETE
 }

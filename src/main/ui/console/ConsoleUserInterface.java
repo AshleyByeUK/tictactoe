@@ -4,9 +4,9 @@ package ui.console;
 import java.util.Scanner;
 import tictactoe.Game;
 import tictactoe.Player;
-import tictactoe.TurnPresenter;
-import tictactoe.game.TicTacToeTurnPresenter;
 import tictactoe.PlayerFactory;
+import tictactoe.TurnNotificationPublisher;
+import tictactoe.game.TicTacToeTurnNotificationPublisher;
 import ui.UserInterface;
 import ui.console.firstPlayer.SelectFirstPlayerView;
 import ui.console.firstPlayer.SelectFirstPlayerViewModel;
@@ -23,6 +23,7 @@ import ui.console.playerType.SelectPlayerViewModel;
 
 public class ConsoleUserInterface implements UserInterface {
 
+  Game game;
   private Scanner input;
   private PlayerFactory playerFactory;
   private MainMenuView mainMenuView;
@@ -31,7 +32,6 @@ public class ConsoleUserInterface implements UserInterface {
   private ChangePlayersSymbolsView changePlayersSymbolsView;
   private SelectPlayerSymbolView selectPlayerSymbolView;
   private GamePlayView gamePlayView;
-  Game game;
 
   public ConsoleUserInterface(Scanner input) {
     this.input = input;
@@ -82,7 +82,7 @@ public class ConsoleUserInterface implements UserInterface {
 
   private boolean playTicTacToe() {
     configureGame();
-    return launchGame(new TicTacToeTurnPresenter());
+    return launchGame(new TicTacToeTurnNotificationPublisher());
   }
 
   private void configureGame() {
@@ -144,8 +144,8 @@ public class ConsoleUserInterface implements UserInterface {
     return controller.getUserInput(input);
   }
 
-  boolean launchGame(TurnPresenter presenter) {
-    presenter.register(this);
+  boolean launchGame(TurnNotificationPublisher presenter) {
+    presenter.subscribe(this);
     boolean gameOver = false;
     while (!gameOver)
       gameOver = game.play(presenter);
@@ -153,8 +153,8 @@ public class ConsoleUserInterface implements UserInterface {
   }
 
   @Override
-  public void receiveTurnPlayedNotification(TurnPresenter presenter) {
-    GamePlayViewModel viewModel = presenter.getViewModel();
+  public void receiveTurnPlayedNotification(TurnNotificationPublisher publisher) {
+    GamePlayViewModel viewModel = publisher.getViewModel();
     ViewController controller = new ViewController(viewModel, gamePlayView);
     controller.updateView();
     if (viewModel.userInputIsRequired)

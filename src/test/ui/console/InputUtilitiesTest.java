@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,7 +19,12 @@ public class InputUtilitiesTest {
 
   @BeforeAll
   static void before() {
-    InputUtilities.showInputPrompt = false;
+    System.setOut(new PrintStream(new OutputStream() {
+      @Override
+      public void write(int b) throws IOException {
+        // Do nothing.
+      }
+    }));
   }
 
   private void assertInvalidInteger(String input) {

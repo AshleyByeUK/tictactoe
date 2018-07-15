@@ -1,10 +1,10 @@
 package tictactoe;
 
-import tictactoe.player.PlayerResponse;
+import tictactoe.player.TurnResult;
 
 public interface Player {
 
   String getName();
 
-  PlayerResponse playTurn(Board board);
+  TurnResult playTurn(Board board);
 }

@@ -1,13 +1,13 @@
 package tictactoe.player.human;
 
-import static tictactoe.player.PlayerResponse.INPUT_REQUIRED;
-import static tictactoe.player.PlayerResponse.POSITION_TAKEN;
-import static tictactoe.player.PlayerResponse.TURN_COMPLETE;
+import static tictactoe.player.TurnResult.INPUT_REQUIRED;
+import static tictactoe.player.TurnResult.POSITION_TAKEN;
+import static tictactoe.player.TurnResult.TURN_COMPLETE;
 
 import tictactoe.Board;
 import tictactoe.ControllablePlayer;
 import tictactoe.Player;
-import tictactoe.player.PlayerResponse;
+import tictactoe.player.TurnResult;
 
 public class HumanPlayer implements Player, ControllablePlayer {
 
@@ -25,7 +25,7 @@ public class HumanPlayer implements Player, ControllablePlayer {
   }
 
   @Override
-  public PlayerResponse playTurn(Board board) {
+  public TurnResult playTurn(Board board) {
     if (positionToPlay == -1)
       return INPUT_REQUIRED;
     else if (!board.positionIsAvailable(positionToPlay))
@@ -35,8 +35,8 @@ public class HumanPlayer implements Player, ControllablePlayer {
     }
   }
 
-  private PlayerResponse takeTurn(Board board) {
-    board.placeToken(positionToPlay);
+  private TurnResult takeTurn(Board board) {
+    board.placeSymbolAtPosition(positionToPlay);
     positionToPlay = -1;
     return TURN_COMPLETE;
   }

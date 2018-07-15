@@ -1,6 +1,5 @@
 package tictactoe.player.computer;
 
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import tictactoe.Board;
@@ -19,9 +18,7 @@ public class MediumArtificialIntelligence implements ArtificialIntelligence {
 
   @Override
   public int computeBestMove(Board board) {
-    List<Integer> availablePositions = board.getAvailablePositions();
-
-    for (int ap : availablePositions)
+    for (int ap : board.getAvailablePositions())
       if (isBestPosition(ap))
         return ap;
       else if (isGameEndingPosition(ap, board, board.getCurrentPlayer()))
@@ -31,7 +28,7 @@ public class MediumArtificialIntelligence implements ArtificialIntelligence {
       else
         revertBoard(ap, board);
 
-    return availablePositions.get(random.nextInt(availablePositions.size()));
+    return board.getAvailablePositions().get(random.nextInt(board.getAvailablePositions().size()));
   }
 
   private boolean isBestPosition(int pos) {

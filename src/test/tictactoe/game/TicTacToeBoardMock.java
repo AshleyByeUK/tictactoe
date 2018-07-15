@@ -2,8 +2,11 @@ package tictactoe.game;
 
 public class TicTacToeBoardMock extends TicTacToeBoard {
 
-  public boolean placeTokenWasCalled;
-  public int tokenPlacedInPosition;
+  public boolean placeSymbolAtPositionWasCalled;
+  public int symbolPlacedInPosition;
+
+  private TicTacToeBoardMock() {
+  }
 
   public static TicTacToeBoardMock configureBoard() {
     return new TicTacToeBoardMock();
@@ -17,17 +20,14 @@ public class TicTacToeBoardMock extends TicTacToeBoard {
     return board;
   }
 
-  private TicTacToeBoardMock() {
-  }
-
   public void setPositions(int[] positions) {
     super.positions = positions;
   }
 
   @Override
-  public void placeToken(int position) {
-    super.placeToken(position);
-    placeTokenWasCalled = true;
-    tokenPlacedInPosition = position;
+  public void placeSymbolAtPosition(int position) {
+    super.placeSymbolAtPosition(position);
+    placeSymbolAtPositionWasCalled = true;
+    symbolPlacedInPosition = position;
   }
 }

@@ -39,31 +39,31 @@ public class TicTacToeBoardTest {
   }
 
   @Test
-  void tokenIsPlacedForPlayerOne() {
+  void symbolIsPlacedForPlayerOne() {
     board.setCurrentPlayer(0);
-    board.placeToken(0);
+    board.placeSymbolAtPosition(0);
     assertEquals(0, board.getPositions()[0]);
   }
 
   @Test
-  void tokenIsPlacedForPlayerTwo() {
+  void symbolIsPlacedForPlayerTwo() {
     board.setCurrentPlayer(1);
-    board.placeToken(0);
+    board.placeSymbolAtPosition(0);
     assertEquals(1, board.getPositions()[0]);
   }
 
   @Test
   void afterNineMovesTheGameIsTied() {
     board.setCurrentPlayer(1);
-    board.placeToken(0);
-    board.placeToken(1);
-    board.placeToken(2);
-    board.placeToken(3);
-    board.placeToken(4);
-    board.placeToken(5);
-    board.placeToken(6);
-    board.placeToken(7);
-    board.placeToken(8);
+    board.placeSymbolAtPosition(0);
+    board.placeSymbolAtPosition(1);
+    board.placeSymbolAtPosition(2);
+    board.placeSymbolAtPosition(3);
+    board.placeSymbolAtPosition(4);
+    board.placeSymbolAtPosition(5);
+    board.placeSymbolAtPosition(6);
+    board.placeSymbolAtPosition(7);
+    board.placeSymbolAtPosition(8);
 
     assertTrue(board.gameIsTied());
   }

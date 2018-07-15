@@ -24,7 +24,7 @@ public class HardArtificialIntelligenceTest {
     TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard(new int[]{-1, 1, 0, 0, 1, 1, 0, 0, 1}, 0);
     player.playTurn(board);
 
-    assertEquals(0, board.tokenPlacedInPosition);
+    assertEquals(0, board.symbolPlacedInPosition);
     assertEquals(0, board.getPositions()[0]);
     assertTrue(board.gameIsWon());
   }
@@ -34,7 +34,7 @@ public class HardArtificialIntelligenceTest {
     TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard(new int[]{0, -1, 1, 0, -1, -1, 1, 1, 0}, 0);
     player.playTurn(board);
 
-    assertEquals(4, board.tokenPlacedInPosition);
+    assertEquals(4, board.symbolPlacedInPosition);
     assertEquals(0, board.getPositions()[4]);
     assertTrue(board.gameIsWon());
   }
@@ -44,7 +44,7 @@ public class HardArtificialIntelligenceTest {
     TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard(new int[]{0, -1, 1, 0, -1, 1, -1, -1, -1}, 0);
     player.playTurn(board);
 
-    assertEquals(6, board.tokenPlacedInPosition);
+    assertEquals(6, board.symbolPlacedInPosition);
     assertEquals(0, board.getPositions()[6]);
     assertTrue(board.gameIsWon());
   }
@@ -54,7 +54,7 @@ public class HardArtificialIntelligenceTest {
     TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard(new int[]{1, 0, 0, -1, -1, -1, 1, -1, -1}, 0);
     player.playTurn(board);
 
-    assertEquals(3, board.tokenPlacedInPosition);
+    assertEquals(3, board.symbolPlacedInPosition);
     assertEquals(0, board.getPositions()[3]);
     assertFalse(board.gameIsTied());
   }

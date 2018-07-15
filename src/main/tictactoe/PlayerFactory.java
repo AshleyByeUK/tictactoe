@@ -1,7 +1,6 @@
 package tictactoe;
 
 import java.util.List;
-import tictactoe.Player;
 
 public interface PlayerFactory {
 

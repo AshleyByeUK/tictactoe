@@ -2,7 +2,7 @@ package tictactoe.game;
 
 import ui.console.gamePlay.GamePlayViewModel;
 
-public class TicTacToeTurnPresenterSpy extends TicTacToeTurnPresenter {
+public class TicTacToeTurnNotificationPublisherSpy extends TicTacToeTurnNotificationPublisher {
 
   public boolean getViewModelWasCalled;
 

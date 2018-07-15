@@ -26,18 +26,13 @@ public class TicTacToeBoard implements Board {
   }
 
   @Override
-  public void setCurrentPlayer(int currentPlayer) {
-    this.currentPlayer = currentPlayer;
-  }
-
-  @Override
   public int getCurrentPlayer() {
     return currentPlayer;
   }
 
   @Override
-  public void setNextPlayer(int nextPlayer) {
-    this.nextPlayer = nextPlayer;
+  public void setCurrentPlayer(int currentPlayer) {
+    this.currentPlayer = currentPlayer;
   }
 
   @Override
@@ -46,23 +41,28 @@ public class TicTacToeBoard implements Board {
   }
 
   @Override
+  public void setNextPlayer(int nextPlayer) {
+    this.nextPlayer = nextPlayer;
+  }
+
+  @Override
   public int getLastPositionPlayed() {
     return lastPositionPlayed;
   }
 
   @Override
-  public void placeToken(int position) {
+  public void placeSymbolAtPosition(int position) {
     positions[position] = currentPlayer;
     lastPositionPlayed = position;
   }
 
   @Override
   public List<Integer> getAvailablePositions() {
-    List<Integer> availableSpaces = new ArrayList<>();
+    List<Integer> ap = new ArrayList<>();
     for (int i = 0; i < positions.length; i++)
       if (positions[i] == -1)
-        availableSpaces.add(i);
-    return availableSpaces;
+        ap.add(i);
+    return ap;
   }
 
   @Override

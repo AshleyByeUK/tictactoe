@@ -1,10 +1,10 @@
 package tictactoe.player.computer;
 
-import static tictactoe.player.PlayerResponse.TURN_COMPLETE;
+import static tictactoe.player.TurnResult.TURN_COMPLETE;
 
 import tictactoe.Board;
 import tictactoe.Player;
-import tictactoe.player.PlayerResponse;
+import tictactoe.player.TurnResult;
 
 public class ComputerPlayer implements Player {
 
@@ -22,8 +22,8 @@ public class ComputerPlayer implements Player {
   }
 
   @Override
-  public PlayerResponse playTurn(Board board) {
-    board.placeToken(ai.computeBestMove(board));
+  public TurnResult playTurn(Board board) {
+    board.placeSymbolAtPosition(ai.computeBestMove(board));
     return TURN_COMPLETE;
   }
 

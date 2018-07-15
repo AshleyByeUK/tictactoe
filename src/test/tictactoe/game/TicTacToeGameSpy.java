@@ -1,6 +1,6 @@
 package tictactoe.game;
 
-import tictactoe.TurnPresenter;
+import tictactoe.TurnNotificationPublisher;
 
 public class TicTacToeGameSpy extends TicTacToeGame {
 
@@ -14,10 +14,10 @@ public class TicTacToeGameSpy extends TicTacToeGame {
   }
 
   @Override
-  public boolean play(TurnPresenter presenter) {
-    TicTacToeTurnResponseModel responseModel = new TicTacToeTurnResponseModel();
-    responseModel.turnResult = stubType.equals("computer") ? "turn_complete" : "user_input_required";
-    presenter.present(responseModel);
+  public boolean play(TurnNotificationPublisher publisher) {
+    TicTacToeTurnNotification notification = new TicTacToeTurnNotification();
+    notification.turnResult = stubType.equals("computer") ? "turn_complete" : "user_input_required";
+    publisher.notify(notification);
     return true;
   }
 

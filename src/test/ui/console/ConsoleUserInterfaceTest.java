@@ -3,25 +3,33 @@ package ui.console;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tictactoe.game.TicTacToeGameSpy;
-import tictactoe.game.TicTacToeTurnPresenterSpy;
+import tictactoe.game.TicTacToeTurnNotificationPublisherSpy;
 
-class ConsoleUserInterfaceTest  {
+class ConsoleUserInterfaceTest {
 
   private Scanner input;
   private GamePlayViewSpy viewSpy;
-  private TicTacToeTurnPresenterSpy presenterSpy;
+  private TicTacToeTurnNotificationPublisherSpy presenterSpy;
   private ConsoleUserInterface console;
 
   @BeforeEach
   void setUp() {
-    InputUtilities.showInputPrompt = false;
+    System.setOut(new PrintStream(new OutputStream() {
+      @Override
+      public void write(int b) throws IOException {
+        // Do nothing.
+      }
+    }));
     input = new Scanner("1");
     viewSpy = new GamePlayViewSpy();
-    presenterSpy = new TicTacToeTurnPresenterSpy();
+    presenterSpy = new TicTacToeTurnNotificationPublisherSpy();
     console = new ConsoleUserInterface(input);
     console.setGamePlayView(viewSpy);
   }

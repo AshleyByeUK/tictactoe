@@ -2,21 +2,21 @@ package tictactoe.game;
 
 import static tictactoe.game.TicTacToeGame.GameState.ENDED;
 import static tictactoe.game.TicTacToeGame.GameState.PLAYING;
-import static tictactoe.player.PlayerResponse.INPUT_REQUIRED;
-import static tictactoe.player.PlayerResponse.POSITION_TAKEN;
+import static tictactoe.player.TurnResult.INPUT_REQUIRED;
+import static tictactoe.player.TurnResult.POSITION_TAKEN;
 
 import tictactoe.ControllablePlayer;
 import tictactoe.Game;
 import tictactoe.Player;
-import tictactoe.TurnPresenter;
-import tictactoe.player.PlayerResponse;
+import tictactoe.TurnNotificationPublisher;
+import tictactoe.player.TurnResult;
 
 public class TicTacToeGame implements Game {
 
   TicTacToeBoard board;
+  GameState gameState;
   private Player[] players;
   private int currentPlayer;
-  GameState gameState;
 
   public TicTacToeGame(Player player1, Player player2) {
     board = new TicTacToeBoard();
@@ -30,33 +30,32 @@ public class TicTacToeGame implements Game {
   }
 
   @Override
-  public boolean play(TurnPresenter presenter) {
+  public boolean play(TurnNotificationPublisher publisher) {
     while (gameState == PLAYING) {
-      TicTacToeTurnResponseModel responseModel = initialiseResponseModelForTurn();
+      TicTacToeTurnNotification notification = initialiseNotificationForTurn();
       updateBoardWithCurrentAndNextPlayersForTurn();
-      PlayerResponse response = players[currentPlayer].playTurn(board);
+      TurnResult result = players[currentPlayer].playTurn(board);
 
-      if (response == INPUT_REQUIRED)
-        responseModel.turnResult = "user_input_required";
-      else if (response == POSITION_TAKEN)
-        responseModel.turnResult = "position_taken";
+      if (result == INPUT_REQUIRED)
+        notification.turnResult = "user_input_required";
+      else if (result == POSITION_TAKEN)
+        notification.turnResult = "position_taken";
       else
-        updateResponseModelAndEndTurn(responseModel);
+        updateNotificationAndEndTurn(notification);
 
-      presenter.present(responseModel);
+      publisher.notify(notification);
     }
 
     return true;
   }
 
-  private TicTacToeTurnResponseModel initialiseResponseModelForTurn() {
-    TicTacToeTurnResponseModel responseModel = new TicTacToeTurnResponseModel();
-    responseModel.currentPlayer = currentPlayer;
-    responseModel.currentPlayerName = players[currentPlayer].getName();
-    responseModel.board = board.getPositions();
-    responseModel.gameState = "playing";
-    responseModel.availablePositions = board.getAvailablePositions();
-    return responseModel;
+  private TicTacToeTurnNotification initialiseNotificationForTurn() {
+    TicTacToeTurnNotification notification = new TicTacToeTurnNotification();
+    notification.currentPlayerName = players[currentPlayer].getName();
+    notification.board = board.getPositions();
+    notification.gameState = "playing";
+    notification.availablePositions = board.getAvailablePositions();
+    return notification;
   }
 
   private void updateBoardWithCurrentAndNextPlayersForTurn() {
@@ -64,17 +63,17 @@ public class TicTacToeGame implements Game {
     board.setNextPlayer(nextPlayer());
   }
 
-  private void updateResponseModelAndEndTurn(TicTacToeTurnResponseModel responseModel) {
-    responseModel.turnResult = "turn_complete";
-    responseModel.lastPositionPlayed = board.getLastPositionPlayed();
-    updateResponseModelAndEndGameIfGameIsOver(responseModel);
+  private void updateNotificationAndEndTurn(TicTacToeTurnNotification notification) {
+    notification.turnResult = "turn_complete";
+    notification.lastPositionPlayed = board.getLastPositionPlayed();
+    updateNotificationAndEndGameIfGameIsOver(notification);
     currentPlayer = nextPlayer();
   }
 
-  private void updateResponseModelAndEndGameIfGameIsOver(TicTacToeTurnResponseModel responseModel) {
+  private void updateNotificationAndEndGameIfGameIsOver(TicTacToeTurnNotification notification) {
     if (board.gameIsWon() || board.gameIsTied()) {
-      responseModel.gameState = "game_over";
-      responseModel.gameResult = board.gameIsTied() ? "tied_game" : "winner";
+      notification.gameState = "game_over";
+      notification.gameResult = board.gameIsTied() ? "tied_game" : "winner";
       gameState = ENDED;
     }
   }

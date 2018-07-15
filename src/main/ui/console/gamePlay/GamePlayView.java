@@ -9,20 +9,20 @@ public class GamePlayView implements View {
   public static final String VALID_SYMBOLS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@£#$%^&*()?";
   public static final String PLAYER_ONE_SYMBOL = "X";
   public static final String PLAYER_TWO_SYMBOL = "O";
-  private String[] playerTokens = new String[2];
+  private String[] playerSymbols = new String[2];
   private boolean isFirstTurn = true;
 
   public GamePlayView() {
-    playerTokens[0] = PLAYER_ONE_SYMBOL;
-    playerTokens[1] = PLAYER_TWO_SYMBOL;
+    playerSymbols[0] = PLAYER_ONE_SYMBOL;
+    playerSymbols[1] = PLAYER_TWO_SYMBOL;
   }
 
-  public void setPlayerOneSymbol(String token) {
-    playerTokens[0] = token;
+  public void setPlayerOneSymbol(String symbol) {
+    playerSymbols[0] = symbol;
   }
 
-  public void setPlayerTwoSymbol(String token) {
-    playerTokens[1] = token;
+  public void setPlayerTwoSymbol(String symbol) {
+    playerSymbols[1] = symbol;
   }
 
   @Override
@@ -47,17 +47,17 @@ public class GamePlayView implements View {
 
   private String formatBoard(GamePlayViewModel viewModel) {
     int[] pos = viewModel.board;
-    return "\n " + formatToken(pos[0]) + " | " + formatToken(pos[1]) + " | " + formatToken(pos[2])
+    return "\n " + formatSymbol(pos[0]) + " | " + formatSymbol(pos[1]) + " | " + formatSymbol(pos[2])
         + "\n===+===+===\n"
-        + " " + formatToken(pos[3]) + " | " + formatToken(pos[4]) + " | " + formatToken(pos[5])
+        + " " + formatSymbol(pos[3]) + " | " + formatSymbol(pos[4]) + " | " + formatSymbol(pos[5])
         + "\n===+===+===\n"
-        + " " + formatToken(pos[6]) + " | " + formatToken(pos[7]) + " | " + formatToken(pos[8])
+        + " " + formatSymbol(pos[6]) + " | " + formatSymbol(pos[7]) + " | " + formatSymbol(pos[8])
         + "\n";
   }
 
-  private String formatToken(int player) {
+  private String formatSymbol(int player) {
     if (player != -1)
-      return playerTokens[player];
+      return playerSymbols[player];
     else
       return " ";
   }

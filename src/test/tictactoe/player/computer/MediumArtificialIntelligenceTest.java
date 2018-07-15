@@ -1,14 +1,14 @@
 package tictactoe.player.computer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static tictactoe.player.PlayerResponse.TURN_COMPLETE;
+import static tictactoe.player.TurnResult.TURN_COMPLETE;
 
 import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tictactoe.Player;
 import tictactoe.game.TicTacToeBoardMock;
-import tictactoe.player.PlayerResponse;
+import tictactoe.player.TurnResult;
 
 class MediumArtificialIntelligenceTest {
 
@@ -22,19 +22,19 @@ class MediumArtificialIntelligenceTest {
   }
 
   @Test
-  void choosesCentreSpotIfAvailable() {
+  void choosesCentrePositionIfAvailable() {
     TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard();
     player.playTurn(board);
 
-    assertEquals(4, board.tokenPlacedInPosition);
+    assertEquals(4, board.symbolPlacedInPosition);
   }
 
   @Test
-  void choosesWinningSpotIfAvailable() {
+  void choosesWinningPositionIfAvailable() {
     TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard(new int[]{1, 1, -1, 0, 0, -1, 0, -1, -1}, 1);
     player.playTurn(board);
 
-    assertEquals(2, board.tokenPlacedInPosition);
+    assertEquals(2, board.symbolPlacedInPosition);
   }
 
   @Test
@@ -42,7 +42,7 @@ class MediumArtificialIntelligenceTest {
     TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard(new int[]{0, 0, -1, 1, 1, -1, -1, -1, 0}, 1);
     player.playTurn(board);
 
-    assertEquals(2, board.tokenPlacedInPosition);
+    assertEquals(2, board.symbolPlacedInPosition);
   }
 
   @Test
@@ -50,13 +50,13 @@ class MediumArtificialIntelligenceTest {
     TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard(new int[]{-1, -1, -1, -1, 0, -1, -1, -1, -1}, 1);
     player.playTurn(board);
 
-    assertEquals(0, board.tokenPlacedInPosition);
+    assertEquals(0, board.symbolPlacedInPosition);
   }
 
   @Test
   void informsWhenTurnIsComplete() {
     TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard();
-    PlayerResponse result = player.playTurn(board);
+    TurnResult result = player.playTurn(board);
 
     assertEquals(TURN_COMPLETE, result);
   }

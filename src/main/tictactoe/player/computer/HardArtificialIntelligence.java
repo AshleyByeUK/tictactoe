@@ -39,7 +39,7 @@ public class HardArtificialIntelligence implements ArtificialIntelligence {
 
   private void computeBestNextTurn(Board board, MinimaxResult bestResult) {
     for (int ap : board.getAvailablePositions()) {
-      board.placeToken(ap);
+      board.placeSymbolAtPosition(ap);
       if (board.getCurrentPlayer() == thisPlayer)
         maximise(ap, board, bestResult);
       else
