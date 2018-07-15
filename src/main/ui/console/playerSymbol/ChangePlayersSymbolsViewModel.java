@@ -1,7 +1,6 @@
 package ui.console.playerSymbol;
 
 import ui.ViewModel;
-import ui.console.gamePlay.GamePlayView;
 
 public class ChangePlayersSymbolsViewModel implements ViewModel {
 
