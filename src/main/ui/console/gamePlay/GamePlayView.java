@@ -2,9 +2,8 @@ package ui.console.gamePlay;
 
 import java.util.stream.Collectors;
 import ui.View;
-import ui.ViewModel;
 
-public class GamePlayView implements View {
+public class GamePlayView implements View<GamePlayViewModel> {
 
   public static final String VALID_SYMBOLS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@£#$%^&*()?";
   public static final String PLAYER_ONE_SYMBOL = "X";
@@ -26,27 +25,26 @@ public class GamePlayView implements View {
   }
 
   @Override
-  public void show(ViewModel viewModel) {
-    GamePlayViewModel vm = (GamePlayViewModel) viewModel;
-    String output = formatCurrentBoardState(vm)
-        + formatTurnResult(vm)
-        + formatPositionNotAvailableMessage(vm)
-        + formatAvailablePositions(vm)
-        + formatGameOver(vm);
+  public void show(GamePlayViewModel viewModel) {
+    String output = formatCurrentBoardState(viewModel)
+        + formatTurnResult(viewModel)
+        + formatPositionNotAvailableMessage(viewModel)
+        + formatAvailablePositions(viewModel)
+        + formatGameOver(viewModel);
 
     isFirstTurn = false;
     System.out.print(output);
   }
 
-  private String formatCurrentBoardState(GamePlayViewModel viewModel) {
-    if (isFirstTurn || viewModel.turnResult.equals("turn_complete"))
-      return formatBoard(viewModel);
+  private String formatCurrentBoardState(GamePlayViewModel vm) {
+    if (isFirstTurn || vm.turnResult.equals("turn_complete"))
+      return formatBoard(vm);
     else
       return "";
   }
 
-  private String formatBoard(GamePlayViewModel viewModel) {
-    int[] pos = viewModel.board;
+  private String formatBoard(GamePlayViewModel vm) {
+    int[] pos = vm.board;
     return "\n " + formatSymbol(pos[0]) + " | " + formatSymbol(pos[1]) + " | " + formatSymbol(pos[2])
         + "\n===+===+===\n"
         + " " + formatSymbol(pos[3]) + " | " + formatSymbol(pos[4]) + " | " + formatSymbol(pos[5])
@@ -62,39 +60,39 @@ public class GamePlayView implements View {
       return " ";
   }
 
-  private String formatTurnResult(GamePlayViewModel viewModel) {
-    if (viewModel.turnResult.equals("turn_complete"))
+  private String formatTurnResult(GamePlayViewModel vm) {
+    if (vm.turnResult.equals("turn_complete"))
       return String.format("\n%s played in position %d.\n",
-          viewModel.currentPlayerName,
-          viewModel.lastPositionPlayed + 1);
+          vm.currentPlayerName,
+          vm.lastPositionPlayed + 1);
     else
       return "";
   }
 
-  private String formatPositionNotAvailableMessage(GamePlayViewModel viewModel) {
-    if (viewModel.userPositionIsTaken)
+  private String formatPositionNotAvailableMessage(GamePlayViewModel vm) {
+    if (vm.userPositionIsTaken)
       return "\nPlease enter an available position.\n";
     else
       return "";
   }
 
-  private String formatAvailablePositions(GamePlayViewModel viewModel) {
-    if (viewModel.userInputIsRequired)
+  private String formatAvailablePositions(GamePlayViewModel vm) {
+    if (vm.userInputIsRequired)
       return String.format("\nAvailable: [%s]\n%s ",
-          viewModel.availablePositions
+          vm.availablePositions
               .stream()
               .map(i -> i + 1)
               .map(Object::toString)
               .collect(Collectors.joining(", ")),
-          viewModel.currentPlayerName);
+          vm.currentPlayerName);
     else
       return "";
   }
 
-  private String formatGameOver(GamePlayViewModel viewModel) {
-    if (viewModel.gameState.equals("game_over"))
+  private String formatGameOver(GamePlayViewModel vm) {
+    if (vm.gameState.equals("game_over"))
       return String.format("\nGAME OVER. %s\n",
-          viewModel.gameResult.equals("winner") ? viewModel.currentPlayerName + " is the winner!" : "It's a tie!");
+          vm.gameResult.equals("winner") ? vm.currentPlayerName + " is the winner!" : "It's a tie!");
     else
       return "";
   }

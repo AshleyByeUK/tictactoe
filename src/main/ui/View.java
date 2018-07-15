@@ -1,6 +1,6 @@
 package ui;
 
-public interface View {
+public interface View<T extends ViewModel> {
 
-  void show(ViewModel viewModel);
+  void show(T viewModel);
 }

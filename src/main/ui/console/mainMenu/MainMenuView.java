@@ -3,13 +3,12 @@ package ui.console.mainMenu;
 import ui.View;
 import ui.ViewModel;
 
-public class MainMenuView implements View {
+public class MainMenuView implements View<MainMenuViewModel> {
 
   @Override
-  public void show(ViewModel viewModel) {
-    MainMenuViewModel vm = (MainMenuViewModel) viewModel;
-    String output = formatMainTitle(vm)
-        + formatMenu(vm);
+  public void show(MainMenuViewModel viewModel) {
+    String output = formatMainTitle(viewModel)
+        + formatMenu(viewModel);
     System.out.println(output);
   }
 

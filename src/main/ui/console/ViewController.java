@@ -4,12 +4,12 @@ import java.util.Scanner;
 import ui.View;
 import ui.ViewModel;
 
-class ViewController {
+class ViewController<S extends View<T>, T extends ViewModel> {
 
-  private final View view;
-  private final ViewModel viewModel;
+  private final S view;
+  private final T viewModel;
 
-  ViewController(ViewModel viewModel, View view) {
+  ViewController(T viewModel, S view) {
     this.viewModel = viewModel;
     this.view = view;
   }

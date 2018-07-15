@@ -1,14 +1,12 @@
 package ui.console.playerSymbol;
 
 import ui.View;
-import ui.ViewModel;
 
-public class ChangePlayersSymbolsView implements View {
+public class ChangePlayersSymbolsView implements View<ChangePlayersSymbolsViewModel> {
 
   @Override
-  public void show(ViewModel viewModel) {
-    ChangePlayersSymbolsViewModel vm = (ChangePlayersSymbolsViewModel) viewModel;
-    String output = formatPlayersCurrentSymbols(vm)
+  public void show(ChangePlayersSymbolsViewModel viewModel) {
+    String output = formatPlayersCurrentSymbols(viewModel)
         + formatChangeSymbolsQuestion();
 
     System.out.println(output);

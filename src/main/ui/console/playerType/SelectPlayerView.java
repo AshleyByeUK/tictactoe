@@ -1,14 +1,12 @@
 package ui.console.playerType;
 
 import ui.View;
-import ui.ViewModel;
 
-public class SelectPlayerView implements View {
+public class SelectPlayerView implements View<SelectPlayerViewModel> {
 
   @Override
-  public void show(ViewModel viewModel) {
-    SelectPlayerViewModel vm = (SelectPlayerViewModel) viewModel;
-    System.out.println(formatMenu(vm));
+  public void show(SelectPlayerViewModel viewModel) {
+    System.out.println(formatMenu(viewModel));
   }
 
   private String formatMenu(SelectPlayerViewModel vm) {

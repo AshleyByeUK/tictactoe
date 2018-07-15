@@ -1,13 +1,11 @@
 package ui.console.playerSymbol;
 
 import ui.View;
-import ui.ViewModel;
 
-public class SelectPlayerSymbolView implements View {
+public class SelectPlayerSymbolView implements View<SelectPlayerSymbolViewModel> {
 
   @Override
-  public void show(ViewModel viewModel) {
-    SelectPlayerSymbolViewModel vm = (SelectPlayerSymbolViewModel) viewModel;
-    System.out.print("\nEnter a new one character symbol for " + vm.playerName + ": ");
+  public void show(SelectPlayerSymbolViewModel viewModel) {
+    System.out.print("\nEnter a new one character symbol for " + viewModel.playerName + ": ");
   }
 }

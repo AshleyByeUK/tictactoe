@@ -113,7 +113,7 @@ public class ConsoleUserInterface implements UserInterface {
 
   private int launchMainMenu() {
     MainMenuViewModel viewModel = new MainMenuViewModel();
-    ViewController controller = new ViewController(viewModel, mainMenuView);
+    ViewController<MainMenuView, MainMenuViewModel> controller = new ViewController<>(viewModel, mainMenuView);
     controller.updateView();
     return Integer.parseInt(controller.getUserInput(input));
   }
@@ -122,7 +122,8 @@ public class ConsoleUserInterface implements UserInterface {
     SelectPlayerViewModel viewModel = new SelectPlayerViewModel();
     viewModel.playerTypes = playerFactory.listPlayerTypes();
     viewModel.position = position;
-    ViewController controller = new ViewController(viewModel, selectPlayerView);
+    ViewController<SelectPlayerView, SelectPlayerViewModel> controller =
+        new ViewController<>(viewModel, selectPlayerView);
     controller.updateView();
     int choice = Integer.parseInt(controller.getUserInput(input));
     return playerFactory.listPlayerTypes().get(choice - 1);
@@ -130,7 +131,8 @@ public class ConsoleUserInterface implements UserInterface {
 
   private int launchSelectFirstPlayerMenu() {
     SelectFirstPlayerViewModel viewModel = new SelectFirstPlayerViewModel();
-    ViewController controller = new ViewController(viewModel, selectFirstPlayerView);
+    ViewController<SelectFirstPlayerView, SelectFirstPlayerViewModel> controller =
+        new ViewController<>(viewModel, selectFirstPlayerView);
     controller.updateView();
     return controller.getUserInput(input).equals(YES) ? 1 : 0;
   }
@@ -139,7 +141,8 @@ public class ConsoleUserInterface implements UserInterface {
     ChangePlayersSymbolsViewModel viewModel = new ChangePlayersSymbolsViewModel();
     viewModel.playerOneSymbol = GamePlayView.PLAYER_ONE_SYMBOL;
     viewModel.playerTwoSymbol = GamePlayView.PLAYER_TWO_SYMBOL;
-    ViewController controller = new ViewController(viewModel, changePlayersSymbolsView);
+    ViewController<ChangePlayersSymbolsView, ChangePlayersSymbolsViewModel> controller =
+        new ViewController<>(viewModel, changePlayersSymbolsView);
     controller.updateView();
     return controller.getUserInput(input).equals(YES);
   }
@@ -147,7 +150,8 @@ public class ConsoleUserInterface implements UserInterface {
   private String launchSelectPlayerSymbolMenu(String name) {
     SelectPlayerSymbolViewModel viewModel = new SelectPlayerSymbolViewModel();
     viewModel.playerName = name;
-    ViewController controller = new ViewController(viewModel, selectPlayerSymbolView);
+    ViewController<SelectPlayerSymbolView, SelectPlayerSymbolViewModel> controller =
+        new ViewController<>(viewModel, selectPlayerSymbolView);
     controller.updateView();
     return controller.getUserInput(input);
   }
@@ -163,7 +167,7 @@ public class ConsoleUserInterface implements UserInterface {
   @Override
   public void receiveTurnPlayedNotification(TurnNotificationPublisher publisher) {
     GamePlayViewModel viewModel = populateViewModel((TicTacToeTurnNotification) publisher.getTurnNotification());
-    ViewController controller = new ViewController(viewModel, gamePlayView);
+    ViewController<GamePlayView, GamePlayViewModel> controller = new ViewController<>(viewModel, gamePlayView);
     controller.updateView();
     if (viewModel.userInputIsRequired)
       sendUserInputToGame(Integer.valueOf(controller.getUserInput(input)) - 1);
