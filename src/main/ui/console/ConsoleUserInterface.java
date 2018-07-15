@@ -88,9 +88,9 @@ public class ConsoleUserInterface implements UserInterface {
   private void configureGame() {
     String playerOneType = launchSelectPlayerMenu("first");
     String playerTwoType = launchSelectPlayerMenu("second");
-
     int firstPlayer = launchSelectFirstPlayerMenu();
     boolean changeSymbols = launchChangePlayersSymbolsMenu();
+
     if (changeSymbols) {
       String playerOneSymbol = launchSelectPlayerSymbolMenu("player 1");
       String playerTwoSymbol = launchSelectPlayerSymbolMenu("player 2");

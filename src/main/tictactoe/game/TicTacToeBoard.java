@@ -11,7 +11,7 @@ public class TicTacToeBoard implements Board {
   private int nextPlayer;
   private int lastPositionPlayed;
 
-  public TicTacToeBoard() {
+  TicTacToeBoard() {
     initialiseBoard();
   }
 

@@ -10,6 +10,6 @@ public class ChangePlayersSymbolsViewModel implements ViewModel {
 
   @Override
   public char[] getInputOptions() {
-    return GamePlayView.VALID_SYMBOLS.toCharArray();
+    return "yn".toCharArray();
   }
 }
