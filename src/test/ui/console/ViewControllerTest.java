@@ -28,7 +28,7 @@ public class ViewControllerTest {
   void updatesView() {
     GamePlayViewModel viewModel = new GamePlayViewModel();
     GamePlayViewSpy viewSpy = new GamePlayViewSpy();
-    ViewController controller = new ViewController(viewModel, viewSpy);
+    ViewController<GamePlayViewSpy, GamePlayViewModel> controller = new ViewController<>(viewModel, viewSpy);
     controller.updateView();
 
     assertTrue(viewSpy.showWasCalled);
@@ -39,7 +39,7 @@ public class ViewControllerTest {
     GamePlayViewModel viewModel = new GamePlayViewModel();
     GamePlayView viewSpy = new GamePlayViewSpy();
     Scanner input = new Scanner("1");
-    ViewController controller = new ViewController(viewModel, viewSpy);
+    ViewController<GamePlayView, GamePlayViewModel> controller = new ViewController<>(viewModel, viewSpy);
     String result = controller.getUserInput(input);
 
     assertEquals("1", result);
