@@ -30,7 +30,6 @@ public class TicTacToeTest {
 
   @Test
   void humanVsHumanEndToEndTest() {
-
     Scanner input = new Scanner("1\n1\n1\ny\ny\n1\n2\n1\n2\n3\n4\n5\n6\n8\n7\n9\n");
     UserInterface ui = new ConsoleUserInterface(input);
     ui.setPlayerFactory(new TicTacToePlayerFactory());

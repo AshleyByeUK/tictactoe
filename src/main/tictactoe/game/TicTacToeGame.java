@@ -90,6 +90,7 @@ public class TicTacToeGame implements Game<TicTacToeTurnNotificationPublisher> {
 
   @Override
   public void receiveUserInput(int input) {
+    // This method is only called for a HumanPlayer.
     ((ControllablePlayer) players[currentPlayer]).receiveInput(input);
   }
 
