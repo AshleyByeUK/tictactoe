@@ -25,5 +25,5 @@ public interface UserInterface extends TurnResponseObserver {
 
   void setSelectPlayerSymbolView(SelectPlayerSymbolView view);
 
-  void launch();
+  boolean launch();
 }

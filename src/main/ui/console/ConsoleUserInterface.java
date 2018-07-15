@@ -73,16 +73,16 @@ public class ConsoleUserInterface implements UserInterface {
   }
 
   @Override
-  public void launch() {
+  public boolean launch() {
     if (launchMainMenu() == 1)
-      playTicTacToe();
+      return playTicTacToe();
     else
-      exit(0);
+      return false;
   }
 
-  private void playTicTacToe() {
+  private boolean playTicTacToe() {
     configureGame();
-    launchGame(new TicTacToeTurnPresenter());
+    return launchGame(new TicTacToeTurnPresenter());
   }
 
   private void configureGame() {
@@ -150,10 +150,6 @@ public class ConsoleUserInterface implements UserInterface {
     while (!gameOver)
       gameOver = game.play(presenter);
     return true;
-  }
-
-  private void exit(int status) {
-    System.exit(status);
   }
 
   @Override
