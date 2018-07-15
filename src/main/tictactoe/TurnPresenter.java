@@ -1,7 +1,7 @@
 package tictactoe;
 
-import console.GamePlayViewModel;
-import console.UserInterface;
+import ui.UserInterface;
+import ui.console.GamePlayViewModel;
 
 public class TurnPresenter {
 

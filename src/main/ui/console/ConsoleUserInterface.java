@@ -1,8 +1,8 @@
-package console;
+package ui.console;
 
-import static console.Utilities.getIntegerInput;
-import static console.Utilities.getStringInput;
-import static console.Utilities.getYesNoInput;
+import static ui.console.InputUtilities.getIntegerInput;
+import static ui.console.InputUtilities.getStringInput;
+import static ui.console.InputUtilities.getYesNoInput;
 
 import computer.ComputerPlayer;
 import computer.HardArtificialIntelligence;
@@ -12,11 +12,13 @@ import java.util.Scanner;
 import tictactoe.Game;
 import tictactoe.Player;
 import tictactoe.TurnPresenter;
+import ui.UserInterface;
+import ui.View;
 
 public class ConsoleUserInterface implements UserInterface {
 
   private Scanner input;
-  private GamePlayView gamePlayView;
+  private View gamePlayView;
   Game game;
 
   public ConsoleUserInterface(Scanner input) {
@@ -24,17 +26,17 @@ public class ConsoleUserInterface implements UserInterface {
   }
 
   @Override
-  public void setGamePlayView(GamePlayView gamePlayView) {
+  public void setGamePlayView(View gamePlayView) {
     this.gamePlayView = gamePlayView;
   }
 
   @Override
   public void notifyTurnPlayed(TurnPresenter presenter) {
     GamePlayViewModel viewModel = presenter.getViewModel();
-    GamePlayViewController controller = new GamePlayViewController(viewModel, gamePlayView);
+    ViewController controller = new ViewController(viewModel, gamePlayView);
     controller.updateView();
     if (viewModel.userInputIsRequired)
-      sendUserInputToGame(controller.getUserInput(input) - 1);
+      sendUserInputToGame(Integer.valueOf(controller.getUserInput(input)) - 1);
   }
 
   private void sendUserInputToGame(int input) {
@@ -122,15 +124,15 @@ public class ConsoleUserInterface implements UserInterface {
   }
 
   private void displayChangePlayersTokensMenu(Player player1, Player player2) {
-    System.out.println(String.format("\n%s's symbol: %s", player1.getName(), ConsoleGamePlayView.PLAYER_ONE_TOKEN));
-    System.out.println(String.format("%s's symbol: %s", player2.getName(), ConsoleGamePlayView.PLAYER_TWO_TOKEN));
+    System.out.println(String.format("\n%s's symbol: %s", player1.getName(), GamePlayView.PLAYER_ONE_TOKEN));
+    System.out.println(String.format("%s's symbol: %s", player2.getName(), GamePlayView.PLAYER_TWO_TOKEN));
     System.out.println("\nWould you like to change these symbols? (Y/N)\n");
   }
 
   private void updatePlayerTokens(boolean change) {
     if (change) {
-      String playerOneToken = ConsoleGamePlayView.PLAYER_ONE_TOKEN;
-      String playerTwoToken = ConsoleGamePlayView.PLAYER_TWO_TOKEN;
+      String playerOneToken = GamePlayView.PLAYER_ONE_TOKEN;
+      String playerTwoToken = GamePlayView.PLAYER_TWO_TOKEN;
       boolean changed = false;
       while (!changed) {
         System.out.print("\nEnter a new one character symbol for player 1 (" + playerOneToken + "): ");
@@ -142,8 +144,8 @@ public class ConsoleUserInterface implements UserInterface {
         else
           changed = true;
       }
-      gamePlayView.setPlayerOneToken(playerOneToken);
-      gamePlayView.setPlayerTwoToken(playerTwoToken);
+      ((GamePlayView) gamePlayView).setPlayerOneToken(playerOneToken);
+      ((GamePlayView) gamePlayView).setPlayerTwoToken(playerTwoToken);
     }
   }
 

@@ -1,18 +1,18 @@
-package console;
+package ui.console;
 
 import java.util.Scanner;
 
-class Utilities {
+class InputUtilities {
 
   static boolean showInputPrompt = true;
 
-  static int getIntegerInput(Scanner input, int minValue, int maxValue) {
+  static Integer getIntegerInput(Scanner input, int minValue, int maxValue) {
     displayInputPrompt();
     String value = "";
     boolean valid = false;
     while (!valid) {
       value = input.nextLine();
-      valid = Utilities.isValidIntegerInput(value, minValue, maxValue);
+      valid = InputUtilities.isValidIntegerInput(value, minValue, maxValue);
       if (!valid) {
         System.out.println("\nPlease enter a whole number between " + minValue + " and " + maxValue + ".\n");
         displayInputPrompt();
@@ -38,7 +38,7 @@ class Utilities {
     boolean valid = false;
     while (!valid) {
       value = input.nextLine();
-      valid = Utilities.isValidStringInput(value, maxLength);
+      valid = InputUtilities.isValidStringInput(value, maxLength);
       if (!valid) {
         System.out.println("\nPlease enter no more than " + maxLength
             + (maxLength == 1 ? " character.\n" : " characters.\n"));
@@ -58,7 +58,7 @@ class Utilities {
     boolean valid = false;
     while (!valid) {
       value = input.nextLine();
-      valid = Utilities.isValidYesNoInput(value);
+      valid = InputUtilities.isValidYesNoInput(value);
       if (!valid) {
         System.out.println("\nPlease enter Y/N.\n");
         displayInputPrompt();
@@ -69,6 +69,28 @@ class Utilities {
 
   static boolean isValidYesNoInput(String input) {
     return input.equalsIgnoreCase("Y") || input.equalsIgnoreCase("N");
+  }
+
+  static String getUppercaseInput(Scanner input, char[] validInputs) {
+    displayInputPrompt();
+    String value = "";
+    boolean valid = false;
+    while (!valid) {
+      value = input.nextLine();
+      valid = isValidInput(value, validInputs);
+      if (!valid) {
+        System.out.println("\nResponse is not valid, please try again.\n");
+        displayInputPrompt();
+      }
+    }
+    return value.toUpperCase();
+  }
+
+  static boolean isValidInput(String value, char[] validInputs) {
+    for (char c : validInputs)
+      if (value.equalsIgnoreCase(String.valueOf(c)))
+        return true;
+    return false;
   }
 
   private static void displayInputPrompt() {

@@ -1,4 +1,4 @@
-package console;
+package ui.console;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,7 +18,7 @@ class ConsoleUserInterfaceTest  {
 
   @BeforeEach
   void setUp() {
-    Utilities.showInputPrompt = false;
+    InputUtilities.showInputPrompt = false;
     input = new Scanner("1");
     viewSpy = new GamePlayViewSpy();
     presenterSpy = new TurnPresenterSpy();

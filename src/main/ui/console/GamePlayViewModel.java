@@ -1,9 +1,10 @@
-package console;
+package ui.console;
 
 import java.util.ArrayList;
 import java.util.List;
+import ui.ViewModel;
 
-public class GamePlayViewModel {
+public class GamePlayViewModel implements ViewModel {
 
   public String gameState = "";
   public String turnResult = "";
@@ -15,4 +16,9 @@ public class GamePlayViewModel {
 
   public boolean userInputIsRequired = false;
   public boolean userPositionIsTaken = false;
+
+  @Override
+  public char[] getInputOptions() {
+    return "123456789".toCharArray();
+  }
 }

@@ -1,36 +1,37 @@
-package console;
+package ui.console;
 
 import java.util.stream.Collectors;
+import ui.View;
+import ui.ViewModel;
 
-public class ConsoleGamePlayView implements GamePlayView {
+public class GamePlayView implements View {
 
   public static final String PLAYER_ONE_TOKEN = "X";
   public static final String PLAYER_TWO_TOKEN = "O";
   private String[] playerTokens = new String[2];
   private boolean isFirstTurn = true;
 
-  public ConsoleGamePlayView() {
+  public GamePlayView() {
     playerTokens[0] = PLAYER_ONE_TOKEN;
     playerTokens[1] = PLAYER_TWO_TOKEN;
   }
 
-  @Override
   public void setPlayerOneToken(String token) {
     playerTokens[0] = token;
   }
 
-  @Override
   public void setPlayerTwoToken(String token) {
     playerTokens[1] = token;
   }
 
   @Override
-  public void show(GamePlayViewModel viewModel) {
-    String output = formatCurrentBoardState(viewModel)
-        + formatTurnResult(viewModel)
-        + formatPositionNotAvailableMessage(viewModel)
-        + formatAvailablePositions(viewModel)
-        + formatGameOver(viewModel);
+  public void show(ViewModel viewModel) {
+    GamePlayViewModel vm = (GamePlayViewModel) viewModel;
+    String output = formatCurrentBoardState(vm)
+        + formatTurnResult(vm)
+        + formatPositionNotAvailableMessage(vm)
+        + formatAvailablePositions(vm)
+        + formatGameOver(vm);
 
     isFirstTurn = false;
     System.out.print(output);

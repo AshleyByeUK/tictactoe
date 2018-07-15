@@ -1,6 +1,6 @@
 package tictactoe;
 
-import console.GamePlayViewModel;
+import ui.console.GamePlayViewModel;
 
 public class TurnPresenterSpy extends TurnPresenter {
 
