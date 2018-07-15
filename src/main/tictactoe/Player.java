@@ -1,5 +1,7 @@
 package tictactoe;
 
+import tictactoe.player.PlayerResponse;
+
 public interface Player {
 
   String getName();

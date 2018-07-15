@@ -1,14 +1,14 @@
 package ui;
 
-import tictactoe.TurnPresenter;
-import ui.console.ChangePlayersSymbolsView;
-import ui.console.GamePlayView;
-import ui.console.MainMenuView;
-import ui.console.SelectFirstPlayerView;
-import ui.console.SelectPlayerSymbolView;
-import ui.console.SelectPlayerView;
+import tictactoe.TurnResponseObserver;
+import ui.console.playerSymbol.ChangePlayersSymbolsView;
+import ui.console.gamePlay.GamePlayView;
+import ui.console.mainMenu.MainMenuView;
+import ui.console.firstPlayer.SelectFirstPlayerView;
+import ui.console.playerSymbol.SelectPlayerSymbolView;
+import ui.console.playerType.SelectPlayerView;
 
-public interface UserInterface {
+public interface UserInterface extends TurnResponseObserver {
 
   void setMainMenuView(MainMenuView view);
 
@@ -23,6 +23,4 @@ public interface UserInterface {
   void setSelectPlayerSymbolView(SelectPlayerSymbolView view);
 
   void launch();
-
-  void notifyTurnPlayed(TurnPresenter presenter);
 }

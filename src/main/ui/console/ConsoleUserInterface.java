@@ -1,15 +1,30 @@
 package ui.console;
 
-import computer.ComputerPlayer;
-import computer.HardArtificialIntelligence;
-import computer.MediumArtificialIntelligence;
-import human.HumanPlayer;
+
+import tictactoe.game.TicTacToe;
+import tictactoe.game.TicTacToeTurnPresenter;
 import java.util.Arrays;
 import java.util.Scanner;
+import tictactoe.player.computer.ComputerPlayer;
+import tictactoe.player.computer.HardArtificialIntelligence;
+import tictactoe.player.computer.MediumArtificialIntelligence;
+import tictactoe.player.human.HumanPlayer;
 import tictactoe.Game;
 import tictactoe.Player;
 import tictactoe.TurnPresenter;
 import ui.UserInterface;
+import ui.console.firstPlayer.SelectFirstPlayerView;
+import ui.console.firstPlayer.SelectFirstPlayerViewModel;
+import ui.console.gamePlay.GamePlayView;
+import ui.console.gamePlay.GamePlayViewModel;
+import ui.console.mainMenu.MainMenuView;
+import ui.console.mainMenu.MainMenuViewModel;
+import ui.console.playerSymbol.ChangePlayersSymbolsView;
+import ui.console.playerSymbol.ChangePlayersSymbolsViewModel;
+import ui.console.playerSymbol.SelectPlayerSymbolView;
+import ui.console.playerSymbol.SelectPlayerSymbolViewModel;
+import ui.console.playerType.SelectPlayerView;
+import ui.console.playerType.SelectPlayerViewModel;
 
 public class ConsoleUserInterface implements UserInterface {
 
@@ -75,10 +90,10 @@ public class ConsoleUserInterface implements UserInterface {
 
       Player player1 = makePlayer(playerOneType, "Player 1");
       Player player2 = makePlayer(playerTwoType, "Player 2");
-      game = new Game(player1, player2);
+      game = new TicTacToe(player1, player2);
       game.setFirstPlayer(firstPlayer);
 
-      launchGame(new TurnPresenter());
+      launchGame(new TicTacToeTurnPresenter());
     }
 
     exit(0);

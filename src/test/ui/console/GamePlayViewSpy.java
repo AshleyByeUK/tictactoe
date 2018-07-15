@@ -1,6 +1,7 @@
 package ui.console;
 
 import ui.ViewModel;
+import ui.console.gamePlay.GamePlayView;
 
 public class GamePlayViewSpy extends GamePlayView {
 

@@ -1,12 +1,12 @@
 import java.util.Scanner;
 import ui.UserInterface;
-import ui.console.ChangePlayersSymbolsView;
+import ui.console.playerSymbol.ChangePlayersSymbolsView;
 import ui.console.ConsoleUserInterface;
-import ui.console.GamePlayView;
-import ui.console.MainMenuView;
-import ui.console.SelectFirstPlayerView;
-import ui.console.SelectPlayerSymbolView;
-import ui.console.SelectPlayerView;
+import ui.console.gamePlay.GamePlayView;
+import ui.console.mainMenu.MainMenuView;
+import ui.console.firstPlayer.SelectFirstPlayerView;
+import ui.console.playerSymbol.SelectPlayerSymbolView;
+import ui.console.playerType.SelectPlayerView;
 
 public class TicTacToe {
 

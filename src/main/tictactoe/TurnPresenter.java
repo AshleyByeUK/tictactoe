@@ -1,36 +1,12 @@
 package tictactoe;
 
-import ui.UserInterface;
-import ui.console.GamePlayViewModel;
+import ui.console.gamePlay.GamePlayViewModel;
 
-public class TurnPresenter {
+public interface TurnPresenter {
 
-  private UserInterface ui;
-  private GamePlayViewModel viewModel = new GamePlayViewModel();
+  void register(TurnResponseObserver ui);
 
-  public void register(UserInterface ui) {
-    this.ui = ui;
-  }
+  void present(TurnResponseModel responseModel);
 
-  public void present(TurnResponseModel responseModel) {
-    viewModel = populateViewModel(responseModel);
-    ui.notifyTurnPlayed(this);
-  }
-
-  private GamePlayViewModel populateViewModel(TurnResponseModel responseModel) {
-    viewModel.gameState = responseModel.gameState;
-    viewModel.turnResult = responseModel.turnResult;
-    viewModel.currentPlayerName = responseModel.currentPlayerName;
-    viewModel.board = responseModel.board;
-    viewModel.gameResult = responseModel.gameResult;
-    viewModel.lastPositionPlayed = responseModel.lastPositionPlayed;
-    viewModel.availablePositions = responseModel.availablePositions;
-    viewModel.userInputIsRequired = !responseModel.turnResult.equals("turn_complete");
-    viewModel.userPositionIsTaken = responseModel.turnResult.equals("position_taken");
-    return viewModel;
-  }
-
-  public GamePlayViewModel getViewModel() {
-    return viewModel;
-  }
+  GamePlayViewModel getViewModel();
 }

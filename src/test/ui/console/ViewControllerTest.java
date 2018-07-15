@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Scanner;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import ui.console.gamePlay.GamePlayView;
+import ui.console.gamePlay.GamePlayViewModel;
 
 public class ViewControllerTest {
 
