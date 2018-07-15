@@ -31,7 +31,7 @@ public class ConsoleUserInterface implements UserInterface {
   private final String FIRST_PLAYER = "first";
   private final String SECOND_PLAYER = "second";
 
-  TicTacToeGame game;
+  Game game;
   private Scanner input;
   private PlayerFactory playerFactory;
   private MainMenuView mainMenuView;
@@ -156,7 +156,8 @@ public class ConsoleUserInterface implements UserInterface {
     return controller.getUserInput(input);
   }
 
-  boolean launchGame(TicTacToeTurnNotificationPublisher publisher) {
+  @SuppressWarnings("unchecked")
+  <T extends TurnNotificationPublisher> boolean launchGame(T publisher) {
     publisher.subscribe(this);
     boolean gameOver = false;
     while (!gameOver)
