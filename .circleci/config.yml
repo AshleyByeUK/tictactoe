@@ -6,12 +6,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Greeting
-          command: echo Hello, world.
+          name: Run tests
+          command: if [ -e ./gradlew ]; then ./gradlew test;else gradle test;fi
       - run:
-          name: Print the Current Time
-          command: date
-      - test:
-          post:
-              - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
-              - bash <(curl -s https://codecov.io/bash)
+          name: Generate codecoverage report
+          command: if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
+      - run:
+          name: Upload report
+          command: bash <(curl -s https://codecov.io/bash)
