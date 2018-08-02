@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'jacoco'
 }
 
 group 'uk.ashleybye'
@@ -14,3 +15,12 @@ repositories {
 dependencies {
     testCompile 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
 }
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
+}
+
+check.dependsOn jacocoTestReport
