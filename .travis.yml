@@ -8,4 +8,4 @@ script:
   - ./gradlew check
   - ./gradlew jacocoTestReport
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -t 9f72790c-4ca4-4da8-94f3-274ca477c031
+  - bash <(curl -s https://codecov.io/bash)
