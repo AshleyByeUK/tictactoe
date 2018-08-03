@@ -40,43 +40,23 @@ public class ConsoleUserInterface implements UserInterface {
   private SelectPlayerSymbolView selectPlayerSymbolView;
   private GamePlayView gamePlayView;
 
-  public ConsoleUserInterface(Scanner input) {
+  public ConsoleUserInterface(
+      Scanner input,
+      PlayerFactory playerFactory,
+      MainMenuView mainMenuView,
+      SelectPlayerView selectPlayerView,
+      SelectFirstPlayerView selectFirstPlayerView,
+      ChangePlayersSymbolsView changePlayersSymbolsView,
+      SelectPlayerSymbolView selectPlayerSymbolView,
+      GamePlayView gamePlayView) {
     this.input = input;
-  }
-
-  @Override
-  public void setPlayerFactory(PlayerFactory playerFactory) {
     this.playerFactory = playerFactory;
-  }
-
-  @Override
-  public void setMainMenuView(MainMenuView view) {
-    mainMenuView = view;
-  }
-
-  @Override
-  public void setGamePlayView(GamePlayView view) {
-    gamePlayView = view;
-  }
-
-  @Override
-  public void setSelectPlayerView(SelectPlayerView view) {
-    selectPlayerView = view;
-  }
-
-  @Override
-  public void setSelectFirstPlayerView(SelectFirstPlayerView view) {
-    selectFirstPlayerView = view;
-  }
-
-  @Override
-  public void setChangePlayersSymbolsView(ChangePlayersSymbolsView view) {
-    changePlayersSymbolsView = view;
-  }
-
-  @Override
-  public void setSelectPlayerSymbolView(SelectPlayerSymbolView view) {
-    selectPlayerSymbolView = view;
+    this.mainMenuView = mainMenuView;
+    this.selectPlayerView = selectPlayerView;
+    this.selectFirstPlayerView = selectFirstPlayerView;
+    this.changePlayersSymbolsView = changePlayersSymbolsView;
+    this.selectPlayerSymbolView = selectPlayerSymbolView;
+    this.gamePlayView = gamePlayView;
   }
 
   @Override
