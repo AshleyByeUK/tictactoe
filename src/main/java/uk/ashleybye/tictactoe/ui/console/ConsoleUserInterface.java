@@ -2,13 +2,13 @@ package uk.ashleybye.tictactoe.ui.console;
 
 
 import java.util.Scanner;
-import uk.ashleybye.tictactoe.tictactoe.Game;
-import uk.ashleybye.tictactoe.tictactoe.Player;
-import uk.ashleybye.tictactoe.tictactoe.PlayerFactory;
-import uk.ashleybye.tictactoe.tictactoe.TurnNotificationPublisher;
-import uk.ashleybye.tictactoe.tictactoe.game.TicTacToeTurnNotification;
-import uk.ashleybye.tictactoe.tictactoe.game.TicTacToeTurnNotificationPublisher;
-import uk.ashleybye.tictactoe.ui.UserInterface;
+import uk.ashleybye.tictactoe.Game;
+import uk.ashleybye.tictactoe.Player;
+import uk.ashleybye.tictactoe.PlayerFactory;
+import uk.ashleybye.tictactoe.TurnNotification;
+import uk.ashleybye.tictactoe.TurnNotificationPublisher;
+import uk.ashleybye.tictactoe.game.TicTacToeTurnNotificationPublisher;
+import uk.ashleybye.tictactoe.UserInterface;
 import uk.ashleybye.tictactoe.ui.console.firstPlayer.SelectFirstPlayerView;
 import uk.ashleybye.tictactoe.ui.console.firstPlayer.SelectFirstPlayerViewModel;
 import uk.ashleybye.tictactoe.ui.console.gamePlay.GamePlayView;
@@ -33,30 +33,10 @@ public class ConsoleUserInterface implements UserInterface {
   Game game;
   private Scanner input;
   private PlayerFactory playerFactory;
-  private MainMenuView mainMenuView;
-  private SelectPlayerView selectPlayerView;
-  private SelectFirstPlayerView selectFirstPlayerView;
-  private ChangePlayersSymbolsView changePlayersSymbolsView;
-  private SelectPlayerSymbolView selectPlayerSymbolView;
-  private GamePlayView gamePlayView;
 
-  public ConsoleUserInterface(
-      Scanner input,
-      PlayerFactory playerFactory,
-      MainMenuView mainMenuView,
-      SelectPlayerView selectPlayerView,
-      SelectFirstPlayerView selectFirstPlayerView,
-      ChangePlayersSymbolsView changePlayersSymbolsView,
-      SelectPlayerSymbolView selectPlayerSymbolView,
-      GamePlayView gamePlayView) {
+  public ConsoleUserInterface(Scanner input, PlayerFactory playerFactory) {
     this.input = input;
     this.playerFactory = playerFactory;
-    this.mainMenuView = mainMenuView;
-    this.selectPlayerView = selectPlayerView;
-    this.selectFirstPlayerView = selectFirstPlayerView;
-    this.changePlayersSymbolsView = changePlayersSymbolsView;
-    this.selectPlayerSymbolView = selectPlayerSymbolView;
-    this.gamePlayView = gamePlayView;
   }
 
   @Override
@@ -65,6 +45,14 @@ public class ConsoleUserInterface implements UserInterface {
       return playTicTacToe();
     else
       return false;
+  }
+
+  private int launchMainMenu() {
+    MainMenuViewModel viewModel = new MainMenuViewModel();
+    MainMenuView view = new MainMenuView();
+    ViewController<MainMenuView, MainMenuViewModel> controller = new ViewController<>(viewModel, view);
+    controller.updateView();
+    return Integer.parseInt(controller.getUserInput(input));
   }
 
   private boolean playTicTacToe() {
@@ -78,6 +66,7 @@ public class ConsoleUserInterface implements UserInterface {
     int firstPlayer = launchSelectFirstPlayerMenu();
     boolean changeSymbols = launchChangePlayersSymbolsMenu();
 
+    GamePlayView gamePlayView = new GamePlayView();
     if (changeSymbols) {
       String playerOneSymbol = launchSelectPlayerSymbolMenu(PLAYER_ONE_NAME);
       String playerTwoSymbol = launchSelectPlayerSymbolMenu(PLAYER_TWO_NAME);
@@ -90,19 +79,12 @@ public class ConsoleUserInterface implements UserInterface {
     game = Game.playTicTacToe(player1, player2, firstPlayer);
   }
 
-  private int launchMainMenu() {
-    MainMenuViewModel viewModel = new MainMenuViewModel();
-    ViewController<MainMenuView, MainMenuViewModel> controller = new ViewController<>(viewModel, mainMenuView);
-    controller.updateView();
-    return Integer.parseInt(controller.getUserInput(input));
-  }
-
   private String launchSelectPlayerMenu(String position) {
     SelectPlayerViewModel viewModel = new SelectPlayerViewModel();
+    SelectPlayerView view = new SelectPlayerView();
     viewModel.playerTypes = playerFactory.listPlayerTypes();
     viewModel.position = position;
-    ViewController<SelectPlayerView, SelectPlayerViewModel> controller =
-        new ViewController<>(viewModel, selectPlayerView);
+    ViewController<SelectPlayerView, SelectPlayerViewModel> controller = new ViewController<>(viewModel, view);
     controller.updateView();
     int choice = Integer.parseInt(controller.getUserInput(input));
     return playerFactory.listPlayerTypes().get(choice - 1);
@@ -110,33 +92,32 @@ public class ConsoleUserInterface implements UserInterface {
 
   private int launchSelectFirstPlayerMenu() {
     SelectFirstPlayerViewModel viewModel = new SelectFirstPlayerViewModel();
-    ViewController<SelectFirstPlayerView, SelectFirstPlayerViewModel> controller =
-        new ViewController<>(viewModel, selectFirstPlayerView);
+    SelectFirstPlayerView view = new SelectFirstPlayerView();
+    ViewController<SelectFirstPlayerView, SelectFirstPlayerViewModel> controller = new ViewController<>(viewModel, view);
     controller.updateView();
     return controller.getUserInput(input).equals(YES) ? 1 : 0;
   }
 
   private boolean launchChangePlayersSymbolsMenu() {
     ChangePlayersSymbolsViewModel viewModel = new ChangePlayersSymbolsViewModel();
+    ChangePlayersSymbolsView view = new ChangePlayersSymbolsView();
     viewModel.playerOneSymbol = GamePlayView.PLAYER_ONE_SYMBOL;
     viewModel.playerTwoSymbol = GamePlayView.PLAYER_TWO_SYMBOL;
-    ViewController<ChangePlayersSymbolsView, ChangePlayersSymbolsViewModel> controller =
-        new ViewController<>(viewModel, changePlayersSymbolsView);
+    ViewController<ChangePlayersSymbolsView, ChangePlayersSymbolsViewModel> controller = new ViewController<>(viewModel, view);
     controller.updateView();
     return controller.getUserInput(input).equals(YES);
   }
 
   private String launchSelectPlayerSymbolMenu(String name) {
     SelectPlayerSymbolViewModel viewModel = new SelectPlayerSymbolViewModel();
+    SelectPlayerSymbolView view = new SelectPlayerSymbolView();
     viewModel.playerName = name;
-    ViewController<SelectPlayerSymbolView, SelectPlayerSymbolViewModel> controller =
-        new ViewController<>(viewModel, selectPlayerSymbolView);
+    ViewController<SelectPlayerSymbolView, SelectPlayerSymbolViewModel> controller = new ViewController<>(viewModel, view);
     controller.updateView();
     return controller.getUserInput(input);
   }
 
-  @SuppressWarnings("unchecked")
-  <T extends TurnNotificationPublisher> boolean launchGame(T publisher) {
+  boolean launchGame(TicTacToeTurnNotificationPublisher publisher) {
     publisher.subscribe(this);
     boolean gameOver = false;
     while (!gameOver)
@@ -146,20 +127,22 @@ public class ConsoleUserInterface implements UserInterface {
 
   @Override
   public void receiveTurnPlayedNotification(TurnNotificationPublisher publisher) {
-    GamePlayViewModel viewModel = populateViewModel((TicTacToeTurnNotification) publisher.getTurnNotification());
-    ViewController<GamePlayView, GamePlayViewModel> controller = new ViewController<>(viewModel, gamePlayView);
+    GamePlayViewModel viewModel = populateViewModel(publisher.getTurnNotification());
+    GamePlayView view = new GamePlayView();
+    ViewController<GamePlayView, GamePlayViewModel> controller = new ViewController<>(viewModel, view);
     controller.updateView();
   }
 
   @Override
-  public int getPositionToPlay(TicTacToeTurnNotification turnNotification) {
+  public int getPositionToPlay(TurnNotification turnNotification) {
     GamePlayViewModel viewModel = populateViewModel(turnNotification);
-    ViewController<GamePlayView, GamePlayViewModel> controller = new ViewController<>(viewModel, gamePlayView);
+    GamePlayView view = new GamePlayView();
+    ViewController<GamePlayView, GamePlayViewModel> controller = new ViewController<>(viewModel, view);
     controller.updateView();
     return Integer.valueOf(controller.getUserInput(input)) - 1;
   }
 
-  private GamePlayViewModel populateViewModel(TicTacToeTurnNotification notification) {
+  private GamePlayViewModel populateViewModel(TurnNotification notification) {
     GamePlayViewModel viewModel = new GamePlayViewModel();
     viewModel.gameState = notification.gameState;
     viewModel.currentPlayerName = notification.currentPlayerName;

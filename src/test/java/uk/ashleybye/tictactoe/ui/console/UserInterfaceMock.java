@@ -2,9 +2,9 @@ package uk.ashleybye.tictactoe.ui.console;
 
 import java.util.Arrays;
 import java.util.List;
-import uk.ashleybye.tictactoe.tictactoe.TurnNotificationPublisher;
-import uk.ashleybye.tictactoe.tictactoe.game.TicTacToeTurnNotification;
-import uk.ashleybye.tictactoe.ui.UserInterface;
+import uk.ashleybye.tictactoe.TurnNotification;
+import uk.ashleybye.tictactoe.TurnNotificationPublisher;
+import uk.ashleybye.tictactoe.UserInterface;
 
 public class UserInterfaceMock implements UserInterface {
 
@@ -21,7 +21,7 @@ public class UserInterfaceMock implements UserInterface {
   }
 
   @Override
-  public int getPositionToPlay(TicTacToeTurnNotification turnNotification) {
+  public int getPositionToPlay(TurnNotification turnNotification) {
     return positionsToPlay.get(nextPositionToPlay++) - 1;
   }
 

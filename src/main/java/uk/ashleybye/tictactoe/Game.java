@@ -1,0 +1,15 @@
+package uk.ashleybye.tictactoe;
+
+
+import uk.ashleybye.tictactoe.game.TicTacToeGame;
+
+public interface Game {
+
+  static TicTacToeGame playTicTacToe(Player player1, Player player2, int firstPlayer) {
+    TicTacToeGame game = new TicTacToeGame(player1, player2);
+    game.setFirstPlayer(firstPlayer);
+    return game;
+  }
+
+  boolean play(TurnNotificationPublisher publisher);
+}
