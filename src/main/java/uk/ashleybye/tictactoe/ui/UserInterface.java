@@ -3,6 +3,7 @@ package uk.ashleybye.tictactoe.ui;
 
 import uk.ashleybye.tictactoe.tictactoe.PlayerFactory;
 import uk.ashleybye.tictactoe.tictactoe.TurnNotificationSubscriber;
+import uk.ashleybye.tictactoe.tictactoe.game.TicTacToeTurnNotification;
 import uk.ashleybye.tictactoe.ui.console.firstPlayer.SelectFirstPlayerView;
 import uk.ashleybye.tictactoe.ui.console.gamePlay.GamePlayView;
 import uk.ashleybye.tictactoe.ui.console.mainMenu.MainMenuView;
@@ -27,4 +28,6 @@ public interface UserInterface extends TurnNotificationSubscriber {
   void setSelectPlayerSymbolView(SelectPlayerSymbolView view);
 
   boolean launch();
+
+  int getPositionToPlay(TicTacToeTurnNotification turnNotification);
 }

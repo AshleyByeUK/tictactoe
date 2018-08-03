@@ -13,5 +13,5 @@ public interface Game<T extends TurnNotificationPublisher> {
 
   boolean play(T publisher);
 
-  void receiveUserInput(int input);
+//  void receiveUserInput(int input);
 }

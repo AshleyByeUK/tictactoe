@@ -8,6 +8,7 @@ import uk.ashleybye.tictactoe.tictactoe.player.computer.ComputerPlayer;
 import uk.ashleybye.tictactoe.tictactoe.player.computer.HardArtificialIntelligence;
 import uk.ashleybye.tictactoe.tictactoe.player.computer.MediumArtificialIntelligence;
 import uk.ashleybye.tictactoe.tictactoe.player.human.HumanPlayer;
+import uk.ashleybye.tictactoe.ui.UserInterface;
 
 public class TicTacToePlayerFactory implements PlayerFactory {
 
@@ -17,9 +18,9 @@ public class TicTacToePlayerFactory implements PlayerFactory {
   }
 
   @Override
-  public Player make(String type, String name) {
+  public Player make(String type, String name, UserInterface userInterface) {
     if (type.equalsIgnoreCase("Human"))
-      return new HumanPlayer(name);
+      return new HumanPlayer(name, userInterface);
     else if (type.equalsIgnoreCase("Computer (medium)"))
       return new ComputerPlayer(name, new MediumArtificialIntelligence());
     else if (type.equalsIgnoreCase("Computer (hard)"))

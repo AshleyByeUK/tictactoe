@@ -3,7 +3,6 @@ package uk.ashleybye.tictactoe.ui.console.gamePlay;
 import java.util.stream.Collectors;
 import uk.ashleybye.tictactoe.ui.View;
 
-
 public class GamePlayView implements View<GamePlayViewModel> {
 
   public static final String VALID_SYMBOLS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@£#$%^&*()?";
@@ -38,7 +37,7 @@ public class GamePlayView implements View<GamePlayViewModel> {
   }
 
   private String formatCurrentBoardState(GamePlayViewModel vm) {
-    if (isFirstTurn || vm.turnResult.equals("turn_complete"))
+    if (isFirstTurn || vm.userInputIsRequired)
       return formatBoard(vm);
     else
       return "";
@@ -62,7 +61,7 @@ public class GamePlayView implements View<GamePlayViewModel> {
   }
 
   private String formatTurnResult(GamePlayViewModel vm) {
-    if (vm.turnResult.equals("turn_complete"))
+    if (vm.userInputIsRequired)
       return String.format("\n%s played in position %d.\n",
           vm.currentPlayerName,
           vm.lastPositionPlayed + 1);
@@ -71,7 +70,7 @@ public class GamePlayView implements View<GamePlayViewModel> {
   }
 
   private String formatPositionNotAvailableMessage(GamePlayViewModel vm) {
-    if (vm.userPositionIsTaken)
+    if (vm.userInputIsRequired)
       return "\nPlease enter an available position.\n";
     else
       return "";

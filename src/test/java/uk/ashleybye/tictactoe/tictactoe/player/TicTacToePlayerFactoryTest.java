@@ -15,13 +15,16 @@ import uk.ashleybye.tictactoe.tictactoe.player.computer.ComputerPlayer;
 import uk.ashleybye.tictactoe.tictactoe.player.computer.HardArtificialIntelligence;
 import uk.ashleybye.tictactoe.tictactoe.player.computer.MediumArtificialIntelligence;
 import uk.ashleybye.tictactoe.tictactoe.player.human.HumanPlayer;
+import uk.ashleybye.tictactoe.ui.console.UserInterfaceMock;
 
 public class TicTacToePlayerFactoryTest {
 
   private PlayerFactory playerFactory;
+  private UserInterfaceMock userInterface;
 
   @BeforeEach
   void setUp() {
+    userInterface = new UserInterfaceMock();
     playerFactory = new TicTacToePlayerFactory();
   }
 
@@ -34,12 +37,12 @@ public class TicTacToePlayerFactoryTest {
 
   @Test
   void unknownTypeThrowIllegalArgumentException() {
-    assertThrows(IllegalArgumentException.class, () -> playerFactory.make("unknown", "no name"));
+    assertThrows(IllegalArgumentException.class, () -> playerFactory.make("unknown", "no name", userInterface));
   }
 
   @Test
   void makesHumanPlayer() {
-    Player player = playerFactory.make("Human", "Player 1");
+    Player player = playerFactory.make("Human", "Player 1", userInterface);
 
     assertTrue(player instanceof HumanPlayer);
     assertEquals("Player 1", player.getName());
@@ -47,7 +50,7 @@ public class TicTacToePlayerFactoryTest {
 
   @Test
   void makesMediumComputerPlayer() {
-    Player player = playerFactory.make("Computer (medium)", "Player 2");
+    Player player = playerFactory.make("Computer (medium)", "Player 2", userInterface);
 
     assertTrue(player instanceof ComputerPlayer);
     assertTrue(((ComputerPlayer) player).getAI() instanceof MediumArtificialIntelligence);
@@ -56,7 +59,7 @@ public class TicTacToePlayerFactoryTest {
 
   @Test
   void makesHardComputerPlayer() {
-    Player player = playerFactory.make("Computer (hard)", "Player 1");
+    Player player = playerFactory.make("Computer (hard)", "Player 1", userInterface);
 
     assertTrue(player instanceof ComputerPlayer);
     assertTrue(((ComputerPlayer) player).getAI() instanceof HardArtificialIntelligence);

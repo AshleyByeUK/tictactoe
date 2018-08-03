@@ -46,7 +46,7 @@ public class TicTacToeBoard implements Board {
 
   @Override
   public boolean positionIsAvailable(int pos) {
-    return positions[pos] == -1;
+    return getAvailablePositions().contains(pos);
   }
 
   @Override

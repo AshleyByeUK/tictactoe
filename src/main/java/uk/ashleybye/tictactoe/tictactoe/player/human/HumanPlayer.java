@@ -1,23 +1,19 @@
 package uk.ashleybye.tictactoe.tictactoe.player.human;
 
 
-import static uk.ashleybye.tictactoe.tictactoe.player.TurnResult.INPUT_REQUIRED;
-import static uk.ashleybye.tictactoe.tictactoe.player.TurnResult.POSITION_TAKEN;
-import static uk.ashleybye.tictactoe.tictactoe.player.TurnResult.TURN_COMPLETE;
-
-import uk.ashleybye.tictactoe.tictactoe.ControllablePlayer;
 import uk.ashleybye.tictactoe.tictactoe.GameState;
 import uk.ashleybye.tictactoe.tictactoe.Player;
-import uk.ashleybye.tictactoe.tictactoe.player.TurnResult;
+import uk.ashleybye.tictactoe.tictactoe.game.TicTacToeTurnNotification;
+import uk.ashleybye.tictactoe.ui.UserInterface;
 
-public class HumanPlayer implements Player, ControllablePlayer {
+public class HumanPlayer implements Player {
 
   private final String name;
-  private int positionToPlay;
+  private UserInterface userInterface;
 
-  public HumanPlayer(String name) {
+  public HumanPlayer(String name, UserInterface userInterface) {
     this.name = name;
-    positionToPlay = -1;
+    this.userInterface = userInterface;
   }
 
   @Override
@@ -26,24 +22,18 @@ public class HumanPlayer implements Player, ControllablePlayer {
   }
 
   @Override
-  public TurnResult playTurn(GameState gameState) {
-    if (positionToPlay == -1)
-      return INPUT_REQUIRED;
-    else if (!gameState.getBoard().positionIsAvailable(positionToPlay))
-      return POSITION_TAKEN;
-    else {
-      return takeTurn(gameState);
+  public void playTurn(GameState gameState) {
+    int positionToPlay = -1;
+    while (!gameState.getBoard().positionIsAvailable(positionToPlay)) {
+      TicTacToeTurnNotification notification = new TicTacToeTurnNotification();
+      notification.availablePositions = gameState.getBoard().getAvailablePositions();
+      notification.board = gameState.getBoard().getPositions();
+      notification.currentPlayerName = name;
+      notification.userInputIsRequired = true;
+
+      positionToPlay = userInterface.getPositionToPlay(notification);
     }
-  }
 
-  private TurnResult takeTurn(GameState gameState) {
     gameState.getBoard().placeSymbolAtPosition(positionToPlay, gameState.getCurrentPlayer());
-    positionToPlay = -1;
-    return TURN_COMPLETE;
-  }
-
-  @Override
-  public void receiveInput(int value) {
-    positionToPlay = value;
   }
 }

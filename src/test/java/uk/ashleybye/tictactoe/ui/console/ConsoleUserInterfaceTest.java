@@ -1,6 +1,5 @@
 package uk.ashleybye.tictactoe.ui.console;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.ashleybye.tictactoe.tictactoe.game.TicTacToeGameSpy;
 import uk.ashleybye.tictactoe.tictactoe.game.TicTacToeTurnNotificationPublisherSpy;
-
 
 class ConsoleUserInterfaceTest {
 
@@ -42,15 +40,5 @@ class ConsoleUserInterfaceTest {
 
     assertTrue(presenterSpy.getTurnNotificationWasCalled);
     assertTrue(gameOver);
-  }
-
-  @Test
-  void canSendUserInputToGame() {
-    TicTacToeGameSpy gameSpy = new TicTacToeGameSpy("human");
-    console.game = gameSpy;
-    console.receiveTurnPlayedNotification(presenterSpy);
-
-    assertTrue(gameSpy.receiveUserInputWasCalled);
-    assertEquals(0, gameSpy.userInput);
   }
 }

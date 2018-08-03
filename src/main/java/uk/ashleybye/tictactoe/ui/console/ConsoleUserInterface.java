@@ -6,7 +6,6 @@ import uk.ashleybye.tictactoe.tictactoe.Game;
 import uk.ashleybye.tictactoe.tictactoe.Player;
 import uk.ashleybye.tictactoe.tictactoe.PlayerFactory;
 import uk.ashleybye.tictactoe.tictactoe.TurnNotificationPublisher;
-import uk.ashleybye.tictactoe.tictactoe.game.TicTacToeGame;
 import uk.ashleybye.tictactoe.tictactoe.game.TicTacToeTurnNotification;
 import uk.ashleybye.tictactoe.tictactoe.game.TicTacToeTurnNotificationPublisher;
 import uk.ashleybye.tictactoe.ui.UserInterface;
@@ -106,8 +105,8 @@ public class ConsoleUserInterface implements UserInterface {
       gamePlayView.setPlayerTwoSymbol(playerTwoSymbol);
     }
 
-    Player player1 = playerFactory.make(playerOneType, PLAYER_ONE_NAME);
-    Player player2 = playerFactory.make(playerTwoType, PLAYER_TWO_NAME);
+    Player player1 = playerFactory.make(playerOneType, PLAYER_ONE_NAME, this);
+    Player player2 = playerFactory.make(playerTwoType, PLAYER_TWO_NAME, this);
     game = Game.playTicTacToe(player1, player2, firstPlayer);
   }
 
@@ -170,25 +169,25 @@ public class ConsoleUserInterface implements UserInterface {
     GamePlayViewModel viewModel = populateViewModel((TicTacToeTurnNotification) publisher.getTurnNotification());
     ViewController<GamePlayView, GamePlayViewModel> controller = new ViewController<>(viewModel, gamePlayView);
     controller.updateView();
-    if (viewModel.userInputIsRequired)
-      sendUserInputToGame(Integer.valueOf(controller.getUserInput(input)) - 1);
+  }
+
+  @Override
+  public int getPositionToPlay(TicTacToeTurnNotification turnNotification) {
+    GamePlayViewModel viewModel = populateViewModel(turnNotification);
+    ViewController<GamePlayView, GamePlayViewModel> controller = new ViewController<>(viewModel, gamePlayView);
+    controller.updateView();
+    return Integer.valueOf(controller.getUserInput(input)) - 1;
   }
 
   private GamePlayViewModel populateViewModel(TicTacToeTurnNotification notification) {
     GamePlayViewModel viewModel = new GamePlayViewModel();
     viewModel.gameState = notification.gameState;
-    viewModel.turnResult = notification.turnResult;
     viewModel.currentPlayerName = notification.currentPlayerName;
     viewModel.board = notification.board;
     viewModel.gameResult = notification.gameResult;
     viewModel.lastPositionPlayed = notification.lastPositionPlayed;
     viewModel.availablePositions = notification.availablePositions;
-    viewModel.userInputIsRequired = !notification.turnResult.equals(TicTacToeGame.TURN_RESULT_TURN_COMPLETE);
-    viewModel.userPositionIsTaken = notification.turnResult.equals(TicTacToeGame.TURN_RESULT_POSITION_TAKEN);
+    viewModel.userInputIsRequired = notification.userInputIsRequired;
     return viewModel;
-  }
-
-  private void sendUserInputToGame(int input) {
-    game.receiveUserInput(input);
   }
 }

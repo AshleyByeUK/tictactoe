@@ -1,7 +1,6 @@
 package uk.ashleybye.tictactoe.tictactoe.player.computer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static uk.ashleybye.tictactoe.tictactoe.player.TurnResult.TURN_COMPLETE;
 
 import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import uk.ashleybye.tictactoe.tictactoe.GameState;
 import uk.ashleybye.tictactoe.tictactoe.Player;
 import uk.ashleybye.tictactoe.tictactoe.game.TicTacToeBoardMock;
-import uk.ashleybye.tictactoe.tictactoe.player.TurnResult;
 
 class MediumArtificialIntelligenceTest {
 
@@ -56,14 +54,5 @@ class MediumArtificialIntelligenceTest {
     player.playTurn(gameState);
 
     assertEquals(0, board.symbolPlacedInPosition);
-  }
-
-  @Test
-  void informsWhenTurnIsComplete() {
-    TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard();
-    GameState gameState = new GameState(board, 0, 1);
-    TurnResult result = player.playTurn(gameState);
-
-    assertEquals(TURN_COMPLETE, result);
   }
 }

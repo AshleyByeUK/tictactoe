@@ -7,7 +7,7 @@ public class TicTacToeTurnNotificationPublisherSpy extends TicTacToeTurnNotifica
   @Override
   public TicTacToeTurnNotification getTurnNotification() {
     TicTacToeTurnNotification turnNotification = new TicTacToeTurnNotification();
-    turnNotification.turnResult = "user_input_required";
+    turnNotification.userInputIsRequired = true;
     getTurnNotificationWasCalled = true;
     return turnNotification;
   }
