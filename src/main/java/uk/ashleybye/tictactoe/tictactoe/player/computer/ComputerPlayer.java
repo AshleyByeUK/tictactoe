@@ -3,7 +3,7 @@ package uk.ashleybye.tictactoe.tictactoe.player.computer;
 
 import static uk.ashleybye.tictactoe.tictactoe.player.TurnResult.TURN_COMPLETE;
 
-import uk.ashleybye.tictactoe.tictactoe.Board;
+import uk.ashleybye.tictactoe.tictactoe.GameState;
 import uk.ashleybye.tictactoe.tictactoe.Player;
 import uk.ashleybye.tictactoe.tictactoe.player.TurnResult;
 
@@ -23,8 +23,9 @@ public class ComputerPlayer implements Player {
   }
 
   @Override
-  public TurnResult playTurn(Board board) {
-    board.placeSymbolAtPosition(ai.computeBestMove(board));
+  public TurnResult playTurn(GameState gameState) {
+    int positionToPlay = ai.computeNextMove(gameState);
+    gameState.getBoard().placeSymbolAtPosition(positionToPlay, gameState.getCurrentPlayer());
     return TURN_COMPLETE;
   }
 

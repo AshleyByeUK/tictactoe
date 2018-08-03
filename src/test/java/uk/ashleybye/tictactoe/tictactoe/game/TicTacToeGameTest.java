@@ -3,8 +3,7 @@ package uk.ashleybye.tictactoe.tictactoe.game;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.ashleybye.tictactoe.tictactoe.game.TicTacToeGame.GameState.ENDED;
-
+import static uk.ashleybye.tictactoe.tictactoe.game.TicTacToeGame.GameStatus.ENDED;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,7 @@ public class TicTacToeGameTest extends TicTacToeTurnNotificationPublisher {
   @Override
   public void notify(TicTacToeTurnNotification notification) {
     this.notification = notification;
-    game.gameState = publisherShouldEndGame ? ENDED : game.gameState;
+    game.gameStatus = publisherShouldEndGame ? ENDED : game.gameStatus;
   }
 
   @BeforeEach
@@ -32,15 +31,7 @@ public class TicTacToeGameTest extends TicTacToeTurnNotificationPublisher {
     publisherShouldEndGame = true;
     Player player1 = new HumanPlayer("player1");
     Player player2 = new HumanPlayer("player2");
-    game = (TicTacToeGame) Game.playTicTacToe(player1, player2, 0);
-  }
-
-  @Test
-  void setsCurrentAndNextPlayerOnBoard() {
-    game.play(this);
-
-    assertEquals(0, game.board.getCurrentPlayer());
-    assertEquals(1, game.board.getNextPlayer());
+    game = Game.playTicTacToe(player1, player2, 0);
   }
 
   @Test

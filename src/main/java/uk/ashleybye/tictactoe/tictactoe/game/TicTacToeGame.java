@@ -1,13 +1,14 @@
 package uk.ashleybye.tictactoe.tictactoe.game;
 
 
-import static uk.ashleybye.tictactoe.tictactoe.game.TicTacToeGame.GameState.ENDED;
-import static uk.ashleybye.tictactoe.tictactoe.game.TicTacToeGame.GameState.PLAYING;
+import static uk.ashleybye.tictactoe.tictactoe.game.TicTacToeGame.GameStatus.ENDED;
+import static uk.ashleybye.tictactoe.tictactoe.game.TicTacToeGame.GameStatus.PLAYING;
 import static uk.ashleybye.tictactoe.tictactoe.player.TurnResult.INPUT_REQUIRED;
 import static uk.ashleybye.tictactoe.tictactoe.player.TurnResult.POSITION_TAKEN;
 
 import uk.ashleybye.tictactoe.tictactoe.ControllablePlayer;
 import uk.ashleybye.tictactoe.tictactoe.Game;
+import uk.ashleybye.tictactoe.tictactoe.GameState;
 import uk.ashleybye.tictactoe.tictactoe.Player;
 import uk.ashleybye.tictactoe.tictactoe.player.TurnResult;
 
@@ -16,13 +17,13 @@ public class TicTacToeGame implements Game<TicTacToeTurnNotificationPublisher> {
   public static final String TURN_RESULT_USER_INPUT_REQUIRED = "user_input_required";
   public static final String TURN_RESULT_POSITION_TAKEN = "position_taken";
   public static final String TURN_RESULT_TURN_COMPLETE = "turn_complete";
-  public static final String GAME_STATE_PLAYING = "playing";
-  public static final String GAME_STATE_GAME_OVER = "game_over";
+  public static final String GAME_STATUS_PLAYING = "playing";
+  public static final String GAME_STATUS_GAME_OVER = "game_over";
   public static final String GAME_RESULT_TIED_GAME = "tied_game";
   public static final String GAME_RESULT_WINNER = "winner";
 
   TicTacToeBoard board;
-  GameState gameState;
+  GameStatus gameStatus;
   private Player[] players;
   private int currentPlayer;
 
@@ -30,7 +31,7 @@ public class TicTacToeGame implements Game<TicTacToeTurnNotificationPublisher> {
     board = new TicTacToeBoard();
     players = new Player[]{player1, player2};
     currentPlayer = 0;
-    gameState = PLAYING;
+    gameStatus = PLAYING;
   }
 
   public void setFirstPlayer(int player) {
@@ -39,10 +40,11 @@ public class TicTacToeGame implements Game<TicTacToeTurnNotificationPublisher> {
 
   @Override
   public boolean play(TicTacToeTurnNotificationPublisher publisher) {
-    while (gameState == PLAYING) {
+    while (gameStatus == PLAYING) {
       TicTacToeTurnNotification notification = initialiseNotificationForTurn();
-      updateBoardWithCurrentAndNextPlayersForTurn();
-      TurnResult result = players[currentPlayer].playTurn(board);
+
+      GameState gameState = new GameState(board, currentPlayer, nextPlayer());
+      TurnResult result = players[currentPlayer].playTurn(gameState);
 
       if (result == INPUT_REQUIRED)
         notification.turnResult = TURN_RESULT_USER_INPUT_REQUIRED;
@@ -61,14 +63,9 @@ public class TicTacToeGame implements Game<TicTacToeTurnNotificationPublisher> {
     TicTacToeTurnNotification notification = new TicTacToeTurnNotification();
     notification.currentPlayerName = players[currentPlayer].getName();
     notification.board = board.getPositions();
-    notification.gameState = GAME_STATE_PLAYING;
+    notification.gameState = GAME_STATUS_PLAYING;
     notification.availablePositions = board.getAvailablePositions();
     return notification;
-  }
-
-  private void updateBoardWithCurrentAndNextPlayersForTurn() {
-    board.setCurrentPlayer(currentPlayer);
-    board.setNextPlayer(nextPlayer());
   }
 
   private void updateNotificationAndEndTurn(TicTacToeTurnNotification notification) {
@@ -80,9 +77,9 @@ public class TicTacToeGame implements Game<TicTacToeTurnNotificationPublisher> {
 
   private void updateNotificationAndEndGameIfGameIsOver(TicTacToeTurnNotification notification) {
     if (board.gameIsWon() || board.gameIsTied()) {
-      notification.gameState = GAME_STATE_GAME_OVER;
+      notification.gameState = GAME_STATUS_GAME_OVER;
       notification.gameResult = board.gameIsTied() ? GAME_RESULT_TIED_GAME : GAME_RESULT_WINNER;
-      gameState = ENDED;
+      gameStatus = ENDED;
     }
   }
 
@@ -103,5 +100,5 @@ public class TicTacToeGame implements Game<TicTacToeTurnNotificationPublisher> {
     ((ControllablePlayer) players[currentPlayer]).receiveInput(input);
   }
 
-  enum GameState {ENDED, PLAYING}
+  enum GameStatus {ENDED, PLAYING}
 }

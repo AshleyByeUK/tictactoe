@@ -12,11 +12,9 @@ public class TicTacToeBoardMock extends TicTacToeBoard {
     return new TicTacToeBoardMock();
   }
 
-  public static TicTacToeBoardMock configureBoard(int[] positions, int currentPlayer) {
+  public static TicTacToeBoardMock configureBoard(int[] positions) {
     TicTacToeBoardMock board = new TicTacToeBoardMock();
     board.setPositions(positions);
-    board.setCurrentPlayer(currentPlayer);
-    board.setNextPlayer(currentPlayer == 0 ? 1 : 0);
     return board;
   }
 
@@ -25,8 +23,8 @@ public class TicTacToeBoardMock extends TicTacToeBoard {
   }
 
   @Override
-  public void placeSymbolAtPosition(int position) {
-    super.placeSymbolAtPosition(position);
+  public void placeSymbolAtPosition(int position, int player) {
+    super.placeSymbolAtPosition(position, player);
     placeSymbolAtPositionWasCalled = true;
     symbolPlacedInPosition = position;
   }

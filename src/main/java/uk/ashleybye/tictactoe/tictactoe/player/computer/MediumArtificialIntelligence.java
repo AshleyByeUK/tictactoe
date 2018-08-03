@@ -3,6 +3,7 @@ package uk.ashleybye.tictactoe.tictactoe.player.computer;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import uk.ashleybye.tictactoe.tictactoe.Board;
+import uk.ashleybye.tictactoe.tictactoe.GameState;
 
 
 public class MediumArtificialIntelligence implements ArtificialIntelligence {
@@ -18,18 +19,19 @@ public class MediumArtificialIntelligence implements ArtificialIntelligence {
   }
 
   @Override
-  public int computeBestMove(Board board) {
+  public int computeNextMove(GameState gameState) {
+    Board board = gameState.getBoard();
     for (int ap : board.getAvailablePositions())
       if (isBestPosition(ap))
         return ap;
-      else if (isGameEndingPosition(ap, board, board.getCurrentPlayer()))
+      else if (isGameEndingPosition(ap, board, gameState.getCurrentPlayer()))
         return ap;
-      else if (isGameEndingPosition(ap, board, board.getNextPlayer()))
+      else if (isGameEndingPosition(ap, board, gameState.getNextPlayer()))
         return ap;
       else
         revertBoard(ap, board);
 
-    return board.getAvailablePositions().get(random.nextInt(board.getAvailablePositions().size()));
+    return chooseRandomPosition(board);
   }
 
   private boolean isBestPosition(int pos) {
@@ -46,5 +48,9 @@ public class MediumArtificialIntelligence implements ArtificialIntelligence {
 
   private void revertBoard(int pos, Board board) {
     board.getPositions()[pos] = -1;
+  }
+
+  private Integer chooseRandomPosition(Board board) {
+    return board.getAvailablePositions().get(random.nextInt(board.getAvailablePositions().size()));
   }
 }

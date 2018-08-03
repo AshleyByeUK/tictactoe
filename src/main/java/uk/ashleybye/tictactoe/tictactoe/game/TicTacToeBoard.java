@@ -8,8 +8,6 @@ import uk.ashleybye.tictactoe.tictactoe.Board;
 public class TicTacToeBoard implements Board {
 
   int[] positions = new int[9];
-  private int currentPlayer;
-  private int nextPlayer;
   private int lastPositionPlayed;
 
   TicTacToeBoard() {
@@ -27,33 +25,13 @@ public class TicTacToeBoard implements Board {
   }
 
   @Override
-  public int getCurrentPlayer() {
-    return currentPlayer;
-  }
-
-  @Override
-  public void setCurrentPlayer(int currentPlayer) {
-    this.currentPlayer = currentPlayer;
-  }
-
-  @Override
-  public int getNextPlayer() {
-    return nextPlayer;
-  }
-
-  @Override
-  public void setNextPlayer(int nextPlayer) {
-    this.nextPlayer = nextPlayer;
-  }
-
-  @Override
   public int getLastPositionPlayed() {
     return lastPositionPlayed;
   }
 
   @Override
-  public void placeSymbolAtPosition(int position) {
-    positions[position] = currentPlayer;
+  public void placeSymbolAtPosition(int position, int player) {
+    positions[position] = player;
     lastPositionPlayed = position;
   }
 

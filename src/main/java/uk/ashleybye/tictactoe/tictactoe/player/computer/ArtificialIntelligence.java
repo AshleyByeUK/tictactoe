@@ -1,9 +1,9 @@
 package uk.ashleybye.tictactoe.tictactoe.player.computer;
 
 
-import uk.ashleybye.tictactoe.tictactoe.Board;
+import uk.ashleybye.tictactoe.tictactoe.GameState;
 
 public interface ArtificialIntelligence {
 
-  int computeBestMove(Board board);
+  int computeNextMove(GameState gameState);
 }

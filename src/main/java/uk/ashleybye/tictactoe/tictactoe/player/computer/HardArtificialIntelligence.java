@@ -2,21 +2,26 @@ package uk.ashleybye.tictactoe.tictactoe.player.computer;
 
 
 import uk.ashleybye.tictactoe.tictactoe.Board;
+import uk.ashleybye.tictactoe.tictactoe.GameState;
 
 public class HardArtificialIntelligence implements ArtificialIntelligence {
 
+  private int currentPlayer;
+  private int nextPlayer;
   private int thisPlayer;
   private int otherPlayer;
 
   @Override
-  public int computeBestMove(Board board) {
-    thisPlayer = board.getCurrentPlayer();
-    otherPlayer = board.getNextPlayer();
-    return minimax(board).bestPosition;
+  public int computeNextMove(GameState gameState) {
+    currentPlayer = gameState.getCurrentPlayer();
+    nextPlayer = gameState.getNextPlayer();
+    thisPlayer = currentPlayer;
+    otherPlayer = nextPlayer;
+    return minimax(gameState.getBoard()).bestPosition;
   }
 
   private MinimaxResult minimax(Board board) {
-    int bestScore = (board.getCurrentPlayer() == thisPlayer) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+    int bestScore = (currentPlayer == thisPlayer) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
     int bestPosition = -1;
     MinimaxResult bestResult = new MinimaxResult(bestScore, bestPosition);
 
@@ -29,7 +34,7 @@ public class HardArtificialIntelligence implements ArtificialIntelligence {
   }
 
   private int computeScore(Board board) {
-    int lastPlayer = board.getNextPlayer();
+    int lastPlayer = nextPlayer;
     if (board.gameIsWon() && lastPlayer == thisPlayer)
       return 100;
     else if (board.gameIsWon() && lastPlayer == otherPlayer)
@@ -40,8 +45,8 @@ public class HardArtificialIntelligence implements ArtificialIntelligence {
 
   private void computeBestNextTurn(Board board, MinimaxResult bestResult) {
     for (int ap : board.getAvailablePositions()) {
-      board.placeSymbolAtPosition(ap);
-      if (board.getCurrentPlayer() == thisPlayer)
+      board.placeSymbolAtPosition(ap, currentPlayer);
+      if (currentPlayer == thisPlayer)
         maximise(ap, board, bestResult);
       else
         minimise(ap, board, bestResult);
@@ -50,9 +55,9 @@ public class HardArtificialIntelligence implements ArtificialIntelligence {
   }
 
   private void maximise(int pos, Board board, MinimaxResult bestResult) {
-    swapPlayerOrder(board);
+    swapPlayerOrder();
     int currentScore = minimax(board).bestScore;
-    swapPlayerOrder(board);
+    swapPlayerOrder();
     if (currentScore > bestResult.bestScore) {
       bestResult.bestScore = currentScore;
       bestResult.bestPosition = pos;
@@ -60,19 +65,19 @@ public class HardArtificialIntelligence implements ArtificialIntelligence {
   }
 
   private void minimise(int pos, Board board, MinimaxResult bestResult) {
-    swapPlayerOrder(board);
+    swapPlayerOrder();
     int currentScore = minimax(board).bestScore;
-    swapPlayerOrder(board);
+    swapPlayerOrder();
     if (currentScore < bestResult.bestScore) {
       bestResult.bestScore = currentScore;
       bestResult.bestPosition = pos;
     }
   }
 
-  private void swapPlayerOrder(Board board) {
-    int temp = board.getCurrentPlayer();
-    board.setCurrentPlayer(board.getNextPlayer());
-    board.setNextPlayer(temp);
+  private void swapPlayerOrder() {
+    int temp = currentPlayer;
+    currentPlayer = nextPlayer;
+    nextPlayer = temp;
   }
 
   private class MinimaxResult {

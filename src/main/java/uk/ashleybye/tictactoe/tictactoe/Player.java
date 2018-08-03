@@ -7,5 +7,5 @@ public interface Player {
 
   String getName();
 
-  TurnResult playTurn(Board board);
+  TurnResult playTurn(GameState gameState);
 }

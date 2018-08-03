@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import uk.ashleybye.tictactoe.tictactoe.GameState;
 import uk.ashleybye.tictactoe.tictactoe.Player;
 import uk.ashleybye.tictactoe.tictactoe.game.TicTacToeBoardMock;
 
@@ -22,8 +23,9 @@ public class HardArtificialIntelligenceTest {
 
   @Test
   void choosesWinningPositionWhenOnlyOneSpaceAvailable() {
-    TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard(new int[]{-1, 1, 0, 0, 1, 1, 0, 0, 1}, 0);
-    player.playTurn(board);
+    TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard(new int[]{-1, 1, 0, 0, 1, 1, 0, 0, 1});
+    GameState gameState = new GameState(board, 0, 1);
+    player.playTurn(gameState);
 
     assertEquals(0, board.symbolPlacedInPosition);
     assertEquals(0, board.getPositions()[0]);
@@ -32,8 +34,9 @@ public class HardArtificialIntelligenceTest {
 
   @Test
   void choosesWinningPositionWhenThreeSpacesAvailable() {
-    TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard(new int[]{0, -1, 1, 0, -1, -1, 1, 1, 0}, 0);
-    player.playTurn(board);
+    TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard(new int[]{0, -1, 1, 0, -1, -1, 1, 1, 0});
+    GameState gameState = new GameState(board, 0, 1);
+    player.playTurn(gameState);
 
     assertEquals(4, board.symbolPlacedInPosition);
     assertEquals(0, board.getPositions()[4]);
@@ -42,8 +45,9 @@ public class HardArtificialIntelligenceTest {
 
   @Test
   void choosesWinningPositionWhenFiveSpacesAvailable() {
-    TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard(new int[]{0, -1, 1, 0, -1, 1, -1, -1, -1}, 0);
-    player.playTurn(board);
+    TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard(new int[]{0, -1, 1, 0, -1, 1, -1, -1, -1});
+    GameState gameState = new GameState(board, 0, 1);
+    player.playTurn(gameState);
 
     assertEquals(6, board.symbolPlacedInPosition);
     assertEquals(0, board.getPositions()[6]);
@@ -52,8 +56,9 @@ public class HardArtificialIntelligenceTest {
 
   @Test
   void blocksOtherPlayerFromWinning() {
-    TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard(new int[]{1, 0, 0, -1, -1, -1, 1, -1, -1}, 0);
-    player.playTurn(board);
+    TicTacToeBoardMock board = TicTacToeBoardMock.configureBoard(new int[]{1, 0, 0, -1, -1, -1, 1, -1, -1});
+    GameState gameState = new GameState(board, 0, 1);
+    player.playTurn(gameState);
 
     assertEquals(3, board.symbolPlacedInPosition);
     assertEquals(0, board.getPositions()[3]);

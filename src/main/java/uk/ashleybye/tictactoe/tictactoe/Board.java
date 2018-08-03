@@ -4,21 +4,13 @@ import java.util.List;
 
 public interface Board {
 
-  int getCurrentPlayer();
-
-  void setCurrentPlayer(int currentPlayer);
-
-  int getNextPlayer();
-
-  void setNextPlayer(int nextPlayer);
-
   int[] getPositions();
 
   List<Integer> getAvailablePositions();
 
   int getLastPositionPlayed();
 
-  void placeSymbolAtPosition(int position);
+  void placeSymbolAtPosition(int position, int player);
 
   boolean positionIsAvailable(int pos);
 
