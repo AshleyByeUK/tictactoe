@@ -3,4 +3,4 @@ TicTacToe.iml
 out/
 .gradle
 /build/
-.jar
+*.jar
