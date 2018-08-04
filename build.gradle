@@ -1,10 +1,10 @@
 plugins {
+    id 'application'
     id 'java'
     id 'jacoco'
 }
 
 group 'uk.ashleybye'
-version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -16,8 +16,28 @@ dependencies {
     testCompile 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
 }
 
+run {
+    mainClassName = 'uk.ashleybye.tictactoe.TicTacToe'
+    standardInput = System.in
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'uk.ashleybye.tictactoe.TicTacToe'
+        )
+    }
+    destinationDir = file("$rootDir")
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '4.8'
+}
+
+clean {
+    delete "${rootDir}/out"
+    delete "${rootDir}/${rootProject.name}.jar"
 }
 
 test { useJUnitPlatform() }
