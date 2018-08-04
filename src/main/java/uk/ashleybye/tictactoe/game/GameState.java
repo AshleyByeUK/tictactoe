@@ -2,35 +2,44 @@ package uk.ashleybye.tictactoe.game;
 
 public class GameState {
 
-  private final Board board;
-  private final int currentPlayer;
-  private final int nextPlayer;
-  private final Player[] players;
+  private Board board;
+  private int currentPlayer;
+  private int nextPlayer;
+  private Player[] players;
   private String gameStatus;
   private String gameResult;
   private boolean userInputRequired = false;
 
-  public GameState(Board board, int currentPlayer, int nextPlayer, Player[] players) {
-    this.board = board;
-    this.currentPlayer = currentPlayer;
-    this.nextPlayer = nextPlayer;
-    this.players = players;
-  }
-
   public Board getBoard() {
     return board;
+  }
+
+  public void setBoard(Board board) {
+    this.board = board;
   }
 
   public int getCurrentPlayer() {
     return currentPlayer;
   }
 
+  public void setCurrentPlayer(int currentPlayer) {
+    this.currentPlayer = currentPlayer;
+  }
+
   public int getNextPlayer() {
     return nextPlayer;
   }
 
+  public void setNextPlayer(int nextPlayer) {
+    this.nextPlayer = nextPlayer;
+  }
+
   public Player[] getPlayers() {
     return players;
+  }
+
+  public void setPlayers(Player[] players) {
+    this.players = players;
   }
 
   public String getGameStatus() {

@@ -24,8 +24,9 @@ public class ConsoleGamePlayBoundary implements GamePlayBoundary {
 
   @Override
   public void updateDisplay(GameState gameState) {
-    String display = formatCurrentBoardState(gameState)
+    String display = clearConsole()
         + formatTurnResult(gameState)
+        + formatCurrentBoardState(gameState)
         + formatPositionNotAvailableMessage(gameState)
         + formatAvailablePositions(gameState)
         + formatGameOver(gameState);
@@ -34,8 +35,24 @@ public class ConsoleGamePlayBoundary implements GamePlayBoundary {
     System.out.print(display);
   }
 
+  private String clearConsole() {
+    String newLines = "";
+    for (int i = 0; i < 32; i++)
+      newLines += "\n";
+    return newLines;
+  }
+
+  private String formatTurnResult(GameState s) {
+    if (s.isUserInputRequired() && s.getBoard().getLastPositionPlayed() > -1)
+      return String.format("\n%s played in position %d.\n",
+          s.getPlayers()[s.getNextPlayer()].getName(),
+          s.getBoard().getLastPositionPlayed() + 1);
+    else
+      return "";
+  }
+
   private String formatCurrentBoardState(GameState s) {
-    if (isFirstTurn || s.isUserInputRequired())
+    if (isFirstTurn || s.isUserInputRequired() || s.getGameStatus().equals("game_over"))
       return formatBoard(s);
     else
       return "";
@@ -57,15 +74,6 @@ public class ConsoleGamePlayBoundary implements GamePlayBoundary {
       return playerSymbols[player];
     else
       return " ";
-  }
-
-  private String formatTurnResult(GameState s) {
-    if (s.isUserInputRequired())
-      return String.format("\n%s played in position %d.\n",
-          s.getPlayers()[s.getCurrentPlayer()].getName(),
-          s.getBoard().getLastPositionPlayed() + 1);
-    else
-      return "";
   }
 
   private String formatPositionNotAvailableMessage(GameState s) {

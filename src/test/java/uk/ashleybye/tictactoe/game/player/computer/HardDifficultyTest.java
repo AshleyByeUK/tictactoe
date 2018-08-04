@@ -14,17 +14,22 @@ class HardDifficultyTest {
 
   private Player player;
   private Player[] players;
+  private GameState gameState;
 
   @BeforeEach
   void setUp() {
     player = new ComputerPlayer("computer", "X", new HardDifficulty());
     players = new Player[]{player, player};
+    gameState = new GameState();
+    gameState.setCurrentPlayer(0);
+    gameState.setNextPlayer(1);
+    gameState.setPlayers(players);
   }
 
   @Test
   void choosesWinningPositionWhenOnlyOneSpaceAvailable() {
     BoardImplMock board = BoardImplMock.configureBoard(new int[]{-1, 1, 0, 0, 1, 1, 0, 0, 1});
-    GameState gameState = new GameState(board, 0, 1, players);
+    gameState.setBoard(board);
     player.playTurn(gameState);
 
     assertEquals(0, board.symbolPlacedInPosition);
@@ -35,7 +40,7 @@ class HardDifficultyTest {
   @Test
   void choosesWinningPositionWhenThreeSpacesAvailable() {
     BoardImplMock board = BoardImplMock.configureBoard(new int[]{0, -1, 1, 0, -1, -1, 1, 1, 0});
-    GameState gameState = new GameState(board, 0, 1, players);
+    gameState.setBoard(board);
     player.playTurn(gameState);
 
     assertEquals(4, board.symbolPlacedInPosition);
@@ -46,7 +51,7 @@ class HardDifficultyTest {
   @Test
   void choosesWinningPositionWhenFiveSpacesAvailable() {
     BoardImplMock board = BoardImplMock.configureBoard(new int[]{0, -1, 1, 0, -1, 1, -1, -1, -1});
-    GameState gameState = new GameState(board, 0, 1, players);
+    gameState.setBoard(board);
     player.playTurn(gameState);
 
     assertEquals(6, board.symbolPlacedInPosition);
@@ -57,7 +62,7 @@ class HardDifficultyTest {
   @Test
   void blocksOtherPlayerFromWinning() {
     BoardImplMock board = BoardImplMock.configureBoard(new int[]{1, 0, 0, -1, -1, -1, 1, -1, -1});
-    GameState gameState = new GameState(board, 0, 1, players);
+    gameState.setBoard(board);
     player.playTurn(gameState);
 
     assertEquals(3, board.symbolPlacedInPosition);

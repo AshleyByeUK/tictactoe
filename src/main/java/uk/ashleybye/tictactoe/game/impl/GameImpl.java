@@ -13,9 +13,9 @@ public class GameImpl implements Game {
   public static final String GAME_RESULT_WINNER = "winner";
 
   BoardImpl board;
-  String gameStatus;
   Player[] players;
   private GamePlayBoundary gamePlayBoundary;
+  private String gameStatus;
   private int currentPlayer;
 
   public GameImpl(Player player1, Player player2, GamePlayBoundary gamePlayBoundary) {
@@ -32,35 +32,28 @@ public class GameImpl implements Game {
 
   @Override
   public boolean play() {
-    while (gameStatus.equals(GAME_STATUS_PLAYING)) {
-      GameState gameState = initialiseGameStateForTurn();
+    GameState gameState = new GameState();
+    while (!(board.gameIsWon() || board.gameIsTied())) {
+      initialiseGameStateForTurn(gameState);
       players[currentPlayer].playTurn(gameState);
-      updateNotificationAndEndTurn(gameState);
-
-      gamePlayBoundary.updateDisplay(gameState);
+      currentPlayer = nextPlayer();
     }
-
+    endGame(gameState);
     return true;
   }
 
-  private GameState initialiseGameStateForTurn() {
-    GameState gameState = new GameState(board, currentPlayer, nextPlayer(), players);
+  private void initialiseGameStateForTurn(GameState gameState) {
+    gameState.setBoard(board);
+    gameState.setCurrentPlayer(currentPlayer);
+    gameState.setNextPlayer(nextPlayer());
+    gameState.setPlayers(players);
     gameState.setGameStatus(GAME_STATUS_PLAYING);
-    return gameState;
   }
 
-  private void updateNotificationAndEndTurn(GameState gameState) {
-    updateNotificationAndEndGameIfGameIsOver(gameState);
-    currentPlayer = nextPlayer();
-  }
-
-  private void updateNotificationAndEndGameIfGameIsOver(GameState gameState) {
-    if (board.gameIsWon() || board.gameIsTied()) {
-      gameStatus = GAME_STATUS_GAME_OVER;
-      gameState.setGameStatus(gameStatus);
-      String gameResult = board.gameIsTied() ? GAME_RESULT_TIED_GAME : GAME_RESULT_WINNER;
-      gameState.setGameResult(gameResult);
-    }
+  private void endGame(GameState gameState) {
+    gameState.setGameStatus(GAME_STATUS_GAME_OVER);
+    gameState.setGameResult(board.gameIsTied() ? GAME_RESULT_TIED_GAME : GAME_RESULT_WINNER);
+    gamePlayBoundary.updateDisplay(gameState);
   }
 
   private int nextPlayer() {

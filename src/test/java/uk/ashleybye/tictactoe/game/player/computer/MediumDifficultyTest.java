@@ -13,18 +13,23 @@ class MediumDifficultyTest {
 
   private Player player;
   private Player[] players;
+  private GameState gameState;
 
   @BeforeEach
   void setUp() {
     Random randomStub = new RandomStub();
     player = new ComputerPlayer("computer", "X", new MediumDifficulty(randomStub));
     players = new Player[]{player, player};
+    gameState = new GameState();
+    gameState.setCurrentPlayer(0);
+    gameState.setNextPlayer(1);
+    gameState.setPlayers(players);
   }
 
   @Test
   void choosesCentrePositionIfAvailable() {
     BoardImplMock board = BoardImplMock.configureBoard();
-    GameState gameState = new GameState(board, 0, 1, players);
+    gameState.setBoard(board);
     player.playTurn(gameState);
 
     assertEquals(4, board.symbolPlacedInPosition);
@@ -33,7 +38,7 @@ class MediumDifficultyTest {
   @Test
   void choosesWinningPositionIfAvailable() {
     BoardImplMock board = BoardImplMock.configureBoard(new int[]{1, 1, -1, 0, 0, -1, 0, -1, -1});
-    GameState gameState = new GameState(board, 1, 0, players);
+    gameState.setBoard(board);
     player.playTurn(gameState);
 
     assertEquals(2, board.symbolPlacedInPosition);
@@ -42,7 +47,7 @@ class MediumDifficultyTest {
   @Test
   void stopsOppositionWinning() {
     BoardImplMock board = BoardImplMock.configureBoard(new int[]{0, 0, -1, 1, 1, -1, -1, -1, 0});
-    GameState gameState = new GameState(board, 1, 0, players);
+    gameState.setBoard(board);
     player.playTurn(gameState);
 
     assertEquals(2, board.symbolPlacedInPosition);
@@ -51,7 +56,7 @@ class MediumDifficultyTest {
   @Test
   void choosesRandomPositionIfNoWinningOrBlockingMoves() {
     BoardImplMock board = BoardImplMock.configureBoard(new int[]{-1, -1, -1, -1, 0, -1, -1, -1, -1});
-    GameState gameState = new GameState(board, 1, 0, players);
+    gameState.setBoard(board);
     player.playTurn(gameState);
 
     assertEquals(0, board.symbolPlacedInPosition);

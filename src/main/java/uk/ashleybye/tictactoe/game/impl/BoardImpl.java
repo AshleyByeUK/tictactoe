@@ -8,7 +8,7 @@ import uk.ashleybye.tictactoe.game.Board;
 public class BoardImpl implements Board {
 
   int[] positions = new int[9];
-  private int lastPositionPlayed;
+  private int lastPositionPlayed = -1;
 
   BoardImpl() {
     initialiseBoard();

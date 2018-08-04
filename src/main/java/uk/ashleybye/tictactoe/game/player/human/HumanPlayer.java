@@ -29,8 +29,8 @@ public class HumanPlayer implements Player {
   @Override
   public void playTurn(GameState gameState) {
     int positionToPlay = -1;
+    gameState.setUserInputRequired(true);
     while (!gameState.getBoard().positionIsAvailable(positionToPlay)) {
-      gameState.setUserInputRequired(true);
       gamePlayBoundary.updateDisplay(gameState);
       positionToPlay = gamePlayBoundary.getPositionToPlay();
     }

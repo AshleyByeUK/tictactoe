@@ -15,19 +15,24 @@ class HumanPlayerTest {
   private HumanPlayer player;
   private ConsoleGamePlayBoundaryMock userInterfaceMock;
   private Player[] players;
+  private GameState gameState;
 
   @BeforeEach
   void setUp() {
     userInterfaceMock = new ConsoleGamePlayBoundaryMock();
     player = new HumanPlayer("human", "X", userInterfaceMock);
     players = new Player[]{player, player};
+    gameState = new GameState();
+    gameState.setCurrentPlayer(1);
+    gameState.setNextPlayer(0);
+    gameState.setPlayers(players);
   }
 
   @Test
   void validMovePlacesSymbolOnBoard() {
     userInterfaceMock.setPlayerPositionsToPlay(4);
     BoardImplMock boardMock = BoardImplMock.configureBoard();
-    GameState gameState = new GameState(boardMock, 1, 0, players);
+    gameState.setBoard(boardMock);
     player.playTurn(gameState);
 
     assertTrue(boardMock.placeSymbolAtPositionWasCalled);
@@ -37,7 +42,7 @@ class HumanPlayerTest {
   void turnEndsAfterValidPositionPlayed() {
     userInterfaceMock.setPlayerPositionsToPlay(1, 2);
     BoardImplMock boardMock = BoardImplMock.configureBoard(new int[]{0, -1, -1, -1, -1, -1, -1, -1, -1});
-    GameState gameState = new GameState(boardMock, 1, 0, players);
+    gameState.setBoard(boardMock);
     player.playTurn(gameState);
 
     assertArrayEquals(new int[]{0, 1, -1, -1, -1, -1, -1, -1, -1}, boardMock.getPositions());
