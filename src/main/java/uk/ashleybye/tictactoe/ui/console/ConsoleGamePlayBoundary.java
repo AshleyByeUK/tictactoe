@@ -18,21 +18,24 @@ public class ConsoleGamePlayBoundary implements GamePlayBoundary {
   }
 
   @Override
-  public int getPositionToPlay() {
-    return Integer.valueOf(InputUtilities.getUppercaseInput(input, POSITION_OPTIONS.toCharArray())) - 1;
+  public int getPositionToPlay(GameState gameState) {
+    return Integer.valueOf(InputUtilities.getUppercaseInput(
+        input, POSITION_OPTIONS.toCharArray(), buildDisplay(gameState))) - 1;
   }
 
   @Override
   public void updateDisplay(GameState gameState) {
-    String display = clearConsole()
+    System.out.print(buildDisplay(gameState));
+    isFirstTurn = false;
+  }
+
+  private String buildDisplay(GameState gameState) {
+    return clearConsole()
         + formatTurnResult(gameState)
         + formatCurrentBoardState(gameState)
         + formatPositionNotAvailableMessage(gameState)
         + formatAvailablePositions(gameState)
         + formatGameOver(gameState);
-
-    isFirstTurn = false;
-    System.out.print(display);
   }
 
   private String clearConsole() {

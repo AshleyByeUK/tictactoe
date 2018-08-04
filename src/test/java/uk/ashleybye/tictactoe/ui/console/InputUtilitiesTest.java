@@ -71,7 +71,7 @@ class InputUtilitiesTest {
 
   @Test
   void getValidIntegerInput() {
-    assertEquals("Y", InputUtilities.getUppercaseInput(new Scanner("Y"), YES_NO));
+    assertEquals("Y", InputUtilities.getUppercaseInput(new Scanner("Y"), YES_NO, ""));
   }
 
   @Test
@@ -94,9 +94,9 @@ class InputUtilitiesTest {
 
   @Test
   void getValidSymbolInput() {
-    assertEquals("X", InputUtilities.getUppercaseInput(new Scanner("x"), SYMBOLS));
-    assertEquals("1", InputUtilities.getUppercaseInput(new Scanner("1"), SYMBOLS));
-    assertEquals("?", InputUtilities.getUppercaseInput(new Scanner("?"), SYMBOLS));
+    assertEquals("X", InputUtilities.getUppercaseInput(new Scanner("x"), SYMBOLS, ""));
+    assertEquals("1", InputUtilities.getUppercaseInput(new Scanner("1"), SYMBOLS, ""));
+    assertEquals("?", InputUtilities.getUppercaseInput(new Scanner("?"), SYMBOLS, ""));
   }
 
   @Test
@@ -119,6 +119,6 @@ class InputUtilitiesTest {
 
   @Test
   void getValidYesNoInput() {
-    assertEquals("Y", InputUtilities.getUppercaseInput(new Scanner("y"), YES_NO));
+    assertEquals("Y", InputUtilities.getUppercaseInput(new Scanner("y"), YES_NO, ""));
   }
 }

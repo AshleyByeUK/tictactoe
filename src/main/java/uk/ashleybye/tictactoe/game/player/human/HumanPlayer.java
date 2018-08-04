@@ -32,7 +32,7 @@ public class HumanPlayer implements Player {
     gameState.setUserInputRequired(true);
     while (!gameState.getBoard().positionIsAvailable(positionToPlay)) {
       gamePlayBoundary.updateDisplay(gameState);
-      positionToPlay = gamePlayBoundary.getPositionToPlay();
+      positionToPlay = gamePlayBoundary.getPositionToPlay(gameState);
     }
     gameState.setUserInputRequired(false);
     gameState.getBoard().placeSymbolAtPosition(positionToPlay, gameState.getCurrentPlayer());

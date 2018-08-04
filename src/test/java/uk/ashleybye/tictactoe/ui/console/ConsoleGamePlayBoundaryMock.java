@@ -16,7 +16,7 @@ public class ConsoleGamePlayBoundaryMock implements GamePlayBoundary {
   }
 
   @Override
-  public int getPositionToPlay() {
+  public int getPositionToPlay(GameState gameState) {
     return positionsToPlay.get(nextPositionToPlay++) - 1;
   }
 

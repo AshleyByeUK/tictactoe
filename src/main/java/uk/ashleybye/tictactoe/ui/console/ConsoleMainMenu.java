@@ -15,17 +15,18 @@ public class ConsoleMainMenu {
   }
 
   public int selectOption() {
-    System.out.println("\n\n" + TITLE + "\n" + "=========\n\n");
+    System.out.print("\n\n" + TITLE + "\n" + "=========\n\n");
 
-    String display = "Select an option:\n\n";
+    String display = "\nSelect an option:\n\n";
     char[] inputOptions = new char[MENU_OPTIONS.size()];
     for (int i = 0; i < MENU_OPTIONS.size(); i++) {
       inputOptions[i] = Character.forDigit(i + 1, 10);
       display += String.format("%d. %s\n", i + 1, MENU_OPTIONS.get(i));
     }
+    display += "\n";
 
-    System.out.println(display);
-    int choice = Integer.parseInt(InputUtilities.getUppercaseInput(input, inputOptions));
+    System.out.print(display);
+    int choice = Integer.parseInt(InputUtilities.getUppercaseInput(input, inputOptions, display));
     return choice - 1;
   }
 }

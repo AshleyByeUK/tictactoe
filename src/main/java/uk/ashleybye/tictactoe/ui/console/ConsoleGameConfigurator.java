@@ -54,35 +54,36 @@ public class ConsoleGameConfigurator {
       inputOptions[i] = Character.forDigit(i + 1, 10);
       display += String.format("%d. %s\n", i + 1, playerFactory.listPlayerTypes().get(i));
     }
+    display += "\n";
 
-    System.out.println(display);
-    int choice = Integer.parseInt(InputUtilities.getUppercaseInput(input, inputOptions));
+    System.out.print(display);
+    int choice = Integer.parseInt(InputUtilities.getUppercaseInput(input, inputOptions, display));
     return playerFactory.listPlayerTypes().get(choice - 1);
   }
 
   private int selectFirstPlayer() {
-    String display = "\nPlayer 1 plays first. Swap playing order? (Y/N)\n";
+    String display = "\nPlayer 1 plays first. Swap playing order? (Y/N)\n\n";
 
-    System.out.println(display);
-    String choice = InputUtilities.getUppercaseInput(input, "yn".toCharArray());
+    System.out.print(display);
+    String choice = InputUtilities.getUppercaseInput(input, "yn".toCharArray(), display);
     return choice.equals(YES) ? 1 : 0;
   }
 
   private boolean selectChangeSymbols() {
     String display = String.format("\n%s's symbol: %s", PLAYER_ONE_NAME, PLAYER_ONE_SYMBOL)
         + String.format("\n%s's symbol: %s", PLAYER_TWO_NAME, PLAYER_TWO_SYMBOL)
-        + "\n\nWould you like to change these symbols? (Y/N)\n";
+        + "\n\nWould you like to change these symbols? (Y/N)\n\n";
 
-    System.out.println(display);
-    String choice = InputUtilities.getUppercaseInput(input, "yn".toCharArray());
+    System.out.print(display);
+    String choice = InputUtilities.getUppercaseInput(input, "yn".toCharArray(), display);
     return choice.equals(YES);
   }
 
   private String selectPlayerSymbol(String name) {
-    String display = "\nEnter a new one character symbol for " + name + ": ";
+    String display = "\nEnter a new one character symbol for " + name + ":\n\n";
 
-    System.out.println(display);
-    return InputUtilities.getUppercaseInput(input, ConsoleGamePlayBoundary.VALID_SYMBOLS.toCharArray());
+    System.out.print(display);
+    return InputUtilities.getUppercaseInput(input, ConsoleGamePlayBoundary.VALID_SYMBOLS.toCharArray(), display);
   }
 
   boolean symbolsDiffer(GameOptions options) {
@@ -90,6 +91,6 @@ public class ConsoleGameConfigurator {
   }
 
   private void showPlayerSymbolsMustDifferMessage() {
-    System.out.println("Player symbols cannot be the same for both players.");
+    System.out.print("\nPlayer symbols cannot be the same for both players.\n\n");
   }
 }

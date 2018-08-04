@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 class InputUtilities {
 
-  static String getUppercaseInput(Scanner input, char[] validInputs) {
+  static String getUppercaseInput(Scanner input, char[] validInputs, String display) {
     displayInputPrompt();
     String value = "";
     boolean valid = false;
@@ -13,6 +13,7 @@ class InputUtilities {
       valid = isValidInput(value, validInputs);
       if (!valid) {
         System.out.println("\nResponse is not valid, please try again.\n");
+        System.out.print(display);
         displayInputPrompt();
       }
     }
