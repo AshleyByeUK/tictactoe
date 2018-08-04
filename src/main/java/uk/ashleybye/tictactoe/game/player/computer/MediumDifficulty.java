@@ -5,16 +5,15 @@ import java.util.concurrent.ThreadLocalRandom;
 import uk.ashleybye.tictactoe.game.Board;
 import uk.ashleybye.tictactoe.game.GameState;
 
-
-public class MediumArtificialIntelligence implements ArtificialIntelligence {
+public class MediumDifficulty implements Difficulty {
 
   private final Random random;
 
-  public MediumArtificialIntelligence() {
+  public MediumDifficulty() {
     this(ThreadLocalRandom.current());
   }
 
-  MediumArtificialIntelligence(Random random) {
+  MediumDifficulty(Random random) {
     this.random = random;
   }
 

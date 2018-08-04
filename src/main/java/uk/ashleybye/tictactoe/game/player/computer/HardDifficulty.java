@@ -1,10 +1,9 @@
 package uk.ashleybye.tictactoe.game.player.computer;
 
-
 import uk.ashleybye.tictactoe.game.Board;
 import uk.ashleybye.tictactoe.game.GameState;
 
-public class HardArtificialIntelligence implements ArtificialIntelligence {
+public class HardDifficulty implements Difficulty {
 
   private int currentPlayer;
   private int nextPlayer;

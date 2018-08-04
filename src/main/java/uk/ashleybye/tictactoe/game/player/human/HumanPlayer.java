@@ -1,6 +1,5 @@
 package uk.ashleybye.tictactoe.game.player.human;
 
-
 import uk.ashleybye.tictactoe.game.GamePlayBoundary;
 import uk.ashleybye.tictactoe.game.GameState;
 import uk.ashleybye.tictactoe.game.Player;

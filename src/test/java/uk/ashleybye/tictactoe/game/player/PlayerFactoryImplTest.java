@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 import uk.ashleybye.tictactoe.game.Player;
 import uk.ashleybye.tictactoe.game.PlayerFactory;
 import uk.ashleybye.tictactoe.game.player.computer.ComputerPlayer;
-import uk.ashleybye.tictactoe.game.player.computer.HardArtificialIntelligence;
-import uk.ashleybye.tictactoe.game.player.computer.MediumArtificialIntelligence;
+import uk.ashleybye.tictactoe.game.player.computer.HardDifficulty;
+import uk.ashleybye.tictactoe.game.player.computer.MediumDifficulty;
 import uk.ashleybye.tictactoe.game.player.human.HumanPlayer;
 import uk.ashleybye.tictactoe.ui.console.GamePlayBoundaryMock;
 
@@ -49,20 +49,20 @@ class PlayerFactoryImplTest {
   }
 
   @Test
-  void makesMediumComputerPlayer() {
+  void makesMediumDifficultyComputerPlayer() {
     Player player = playerFactory.make("Computer (medium)", "Player 2", "X", userInterface);
 
     assertTrue(player instanceof ComputerPlayer);
-    assertTrue(((ComputerPlayer) player).getAI() instanceof MediumArtificialIntelligence);
+    assertTrue(((ComputerPlayer) player).getDifficulty() instanceof MediumDifficulty);
     assertEquals("Player 2", player.getName());
   }
 
   @Test
-  void makesHardComputerPlayer() {
+  void makesHardDifficultyComputerPlayer() {
     Player player = playerFactory.make("Computer (hard)", "Player 1", "X", userInterface);
 
     assertTrue(player instanceof ComputerPlayer);
-    assertTrue(((ComputerPlayer) player).getAI() instanceof HardArtificialIntelligence);
+    assertTrue(((ComputerPlayer) player).getDifficulty() instanceof HardDifficulty);
     assertEquals("Player 1", player.getName());
   }
 }

@@ -9,7 +9,7 @@ import uk.ashleybye.tictactoe.game.GameState;
 import uk.ashleybye.tictactoe.game.Player;
 import uk.ashleybye.tictactoe.game.impl.BoardImplMock;
 
-class MediumArtificialIntelligenceTest {
+class MediumDifficultyTest {
 
   private Player player;
   private Player[] players;
@@ -17,8 +17,7 @@ class MediumArtificialIntelligenceTest {
   @BeforeEach
   void setUp() {
     Random randomStub = new RandomStub();
-    ArtificialIntelligence ai = new MediumArtificialIntelligence(randomStub);
-    player = new ComputerPlayer("computer", "X", ai);
+    player = new ComputerPlayer("computer", "X", new MediumDifficulty(randomStub));
     players = new Player[]{player, player};
   }
 

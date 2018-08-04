@@ -10,16 +10,14 @@ import uk.ashleybye.tictactoe.game.GameState;
 import uk.ashleybye.tictactoe.game.Player;
 import uk.ashleybye.tictactoe.game.impl.BoardImplMock;
 
-
-class HardArtificialIntelligenceTest {
+class HardDifficultyTest {
 
   private Player player;
   private Player[] players;
 
   @BeforeEach
   void setUp() {
-    ArtificialIntelligence ai = new HardArtificialIntelligence();
-    player = new ComputerPlayer("computer", "X", ai);
+    player = new ComputerPlayer("computer", "X", new HardDifficulty());
     players = new Player[]{player, player};
   }
 

@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import uk.ashleybye.tictactoe.game.GameState;
 import uk.ashleybye.tictactoe.game.Player;
 import uk.ashleybye.tictactoe.game.player.computer.ComputerPlayer;
-import uk.ashleybye.tictactoe.game.player.computer.HardArtificialIntelligence;
-import uk.ashleybye.tictactoe.game.player.computer.MediumArtificialIntelligence;
+import uk.ashleybye.tictactoe.game.player.computer.HardDifficulty;
+import uk.ashleybye.tictactoe.game.player.computer.MediumDifficulty;
 import uk.ashleybye.tictactoe.game.player.human.HumanPlayer;
 import uk.ashleybye.tictactoe.ui.console.GamePlayBoundaryMock;
 
@@ -68,8 +68,8 @@ class GameImplTest {
 
   @Test
   void computerCanPlayAgainstComputer() {
-    Player computer1 = new ComputerPlayer("computer1", "X", new MediumArtificialIntelligence());
-    Player computer2 = new ComputerPlayer("computer2", "O", new HardArtificialIntelligence());
+    Player computer1 = new ComputerPlayer("computer1", "X", new MediumDifficulty());
+    Player computer2 = new ComputerPlayer("computer2", "O", new HardDifficulty());
     game = new GameImpl(computer1, computer2, boundaryMock);
     game.play();
 

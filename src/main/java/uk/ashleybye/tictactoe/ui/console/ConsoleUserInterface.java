@@ -1,6 +1,5 @@
 package uk.ashleybye.tictactoe.ui.console;
 
-
 import java.util.Scanner;
 import uk.ashleybye.tictactoe.game.Game;
 import uk.ashleybye.tictactoe.game.GameOptions;

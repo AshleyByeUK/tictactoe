@@ -7,12 +7,12 @@ public class ComputerPlayer implements Player {
 
   private final String name;
   private final String symbol;
-  private final ArtificialIntelligence ai;
+  private final Difficulty difficulty;
 
-  public ComputerPlayer(String name, String symbol, ArtificialIntelligence ai) {
+  public ComputerPlayer(String name, String symbol, Difficulty difficulty) {
     this.name = name;
     this.symbol = symbol;
-    this.ai = ai;
+    this.difficulty = difficulty;
   }
 
   @Override
@@ -27,11 +27,11 @@ public class ComputerPlayer implements Player {
 
   @Override
   public void playTurn(GameState gameState) {
-    int positionToPlay = ai.computeNextMove(gameState);
+    int positionToPlay = difficulty.computeNextMove(gameState);
     gameState.getBoard().placeSymbolAtPosition(positionToPlay, gameState.getCurrentPlayer());
   }
 
-  public ArtificialIntelligence getAI() {
-    return ai;
+  public Difficulty getDifficulty() {
+    return difficulty;
   }
 }
