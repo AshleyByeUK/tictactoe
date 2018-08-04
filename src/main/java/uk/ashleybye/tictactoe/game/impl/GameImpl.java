@@ -38,7 +38,7 @@ public class GameImpl implements Game {
     while (gameStatus == PLAYING) {
       TurnNotification notification = initialiseNotificationForTurn();
 
-      GameState gameState = new GameState(board, currentPlayer, nextPlayer());
+      GameState gameState = new GameState(board, currentPlayer, nextPlayer(), players);
       players[currentPlayer].playTurn(gameState);
       updateNotificationAndEndTurn(notification);
 
@@ -50,6 +50,7 @@ public class GameImpl implements Game {
 
   private TurnNotification initialiseNotificationForTurn() {
     TurnNotification notification = new TurnNotification();
+    notification.players = players;
     notification.currentPlayerName = players[currentPlayer].getName();
     notification.board = board.getPositions();
     notification.gameState = GAME_STATUS_PLAYING;

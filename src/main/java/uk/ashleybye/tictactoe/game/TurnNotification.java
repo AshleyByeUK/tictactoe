@@ -12,4 +12,5 @@ public class TurnNotification {
   public int lastPositionPlayed = -1;
   public List<Integer> availablePositions = new ArrayList<>();
   public boolean userInputIsRequired = false;
+  public Player[] players;
 }

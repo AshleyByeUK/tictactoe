@@ -10,7 +10,7 @@ import uk.ashleybye.tictactoe.game.player.computer.HardArtificialIntelligence;
 import uk.ashleybye.tictactoe.game.player.computer.MediumArtificialIntelligence;
 import uk.ashleybye.tictactoe.game.player.human.HumanPlayer;
 
-public class TicTacToePlayerFactory implements PlayerFactory {
+public class PlayerFactoryImpl implements PlayerFactory {
 
   @Override
   public List<String> listPlayerTypes() {
@@ -18,13 +18,13 @@ public class TicTacToePlayerFactory implements PlayerFactory {
   }
 
   @Override
-  public Player make(String type, String name, UserInterface userInterface) {
+  public Player make(String type, String name, String symbol, UserInterface userInterface) {
     if (type.equalsIgnoreCase("Human"))
-      return new HumanPlayer(name, userInterface);
+      return new HumanPlayer(name, symbol, userInterface);
     else if (type.equalsIgnoreCase("Computer (medium)"))
-      return new ComputerPlayer(name, new MediumArtificialIntelligence());
+      return new ComputerPlayer(name, symbol, new MediumArtificialIntelligence());
     else if (type.equalsIgnoreCase("Computer (hard)"))
-      return new ComputerPlayer(name, new HardArtificialIntelligence());
+      return new ComputerPlayer(name, symbol, new HardArtificialIntelligence());
     else
       throw new IllegalArgumentException("Player type not supported.");
   }

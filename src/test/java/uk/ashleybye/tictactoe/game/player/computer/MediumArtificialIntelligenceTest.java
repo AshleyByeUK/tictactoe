@@ -12,18 +12,20 @@ import uk.ashleybye.tictactoe.game.impl.BoardImplMock;
 class MediumArtificialIntelligenceTest {
 
   private Player player;
+  private Player[] players;
 
   @BeforeEach
   void setUp() {
     Random randomStub = new RandomStub();
     ArtificialIntelligence ai = new MediumArtificialIntelligence(randomStub);
-    player = new ComputerPlayer("computer", ai);
+    player = new ComputerPlayer("computer", "X", ai);
+    players = new Player[]{player, player};
   }
 
   @Test
   void choosesCentrePositionIfAvailable() {
     BoardImplMock board = BoardImplMock.configureBoard();
-    GameState gameState = new GameState(board, 0, 1);
+    GameState gameState = new GameState(board, 0, 1, players);
     player.playTurn(gameState);
 
     assertEquals(4, board.symbolPlacedInPosition);
@@ -32,7 +34,7 @@ class MediumArtificialIntelligenceTest {
   @Test
   void choosesWinningPositionIfAvailable() {
     BoardImplMock board = BoardImplMock.configureBoard(new int[]{1, 1, -1, 0, 0, -1, 0, -1, -1});
-    GameState gameState = new GameState(board, 1, 0);
+    GameState gameState = new GameState(board, 1, 0, players);
     player.playTurn(gameState);
 
     assertEquals(2, board.symbolPlacedInPosition);
@@ -41,7 +43,7 @@ class MediumArtificialIntelligenceTest {
   @Test
   void stopsOppositionWinning() {
     BoardImplMock board = BoardImplMock.configureBoard(new int[]{0, 0, -1, 1, 1, -1, -1, -1, 0});
-    GameState gameState = new GameState(board, 1, 0);
+    GameState gameState = new GameState(board, 1, 0, players);
     player.playTurn(gameState);
 
     assertEquals(2, board.symbolPlacedInPosition);
@@ -50,7 +52,7 @@ class MediumArtificialIntelligenceTest {
   @Test
   void choosesRandomPositionIfNoWinningOrBlockingMoves() {
     BoardImplMock board = BoardImplMock.configureBoard(new int[]{-1, -1, -1, -1, 0, -1, -1, -1, -1});
-    GameState gameState = new GameState(board, 1, 0);
+    GameState gameState = new GameState(board, 1, 0, players);
     player.playTurn(gameState);
 
     assertEquals(0, board.symbolPlacedInPosition);

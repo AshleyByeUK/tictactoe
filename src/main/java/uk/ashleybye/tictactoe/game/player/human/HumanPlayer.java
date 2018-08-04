@@ -9,10 +9,12 @@ import uk.ashleybye.tictactoe.game.UserInterface;
 public class HumanPlayer implements Player {
 
   private final String name;
+  private final String symbol;
   private UserInterface userInterface;
 
-  public HumanPlayer(String name, UserInterface userInterface) {
+  public HumanPlayer(String name, String symbol, UserInterface userInterface) {
     this.name = name;
+    this.symbol = symbol;
     this.userInterface = userInterface;
   }
 
@@ -22,10 +24,16 @@ public class HumanPlayer implements Player {
   }
 
   @Override
+  public String getSymbol() {
+    return symbol;
+  }
+
+  @Override
   public void playTurn(GameState gameState) {
     int positionToPlay = -1;
     while (!gameState.getBoard().positionIsAvailable(positionToPlay)) {
       TurnNotification notification = new TurnNotification();
+      notification.players = gameState.getPlayers();
       notification.availablePositions = gameState.getBoard().getAvailablePositions();
       notification.board = gameState.getBoard().getPositions();
       notification.currentPlayerName = name;

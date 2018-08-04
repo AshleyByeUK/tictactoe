@@ -9,7 +9,7 @@ import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.ashleybye.tictactoe.game.UserInterface;
-import uk.ashleybye.tictactoe.game.player.TicTacToePlayerFactory;
+import uk.ashleybye.tictactoe.game.player.PlayerFactoryImpl;
 import uk.ashleybye.tictactoe.ui.console.ConsoleUserInterface;
 
 public class TicTacToeTest {
@@ -27,7 +27,7 @@ public class TicTacToeTest {
   @Test
   void humanVsHumanEndToEndTest() {
     Scanner input = new Scanner("1\n1\n1\ny\ny\n1\n2\n1\n2\n3\n4\n5\n6\n8\n7\n9\n");
-    UserInterface ui = new ConsoleUserInterface(input, new TicTacToePlayerFactory());
+    UserInterface ui = new ConsoleUserInterface(input, new PlayerFactoryImpl());
     boolean gameOver = ui.launch();
 
     assertTrue(gameOver);
@@ -36,7 +36,7 @@ public class TicTacToeTest {
   @Test
   void mediumVsHardComputerEndToEndTest() {
     Scanner input = new Scanner("1\n2\n3\nn\nn\n");
-    UserInterface ui = new ConsoleUserInterface(input, new TicTacToePlayerFactory());
+    UserInterface ui = new ConsoleUserInterface(input, new PlayerFactoryImpl());
     boolean gameOver = ui.launch();
 
     assertTrue(gameOver);

@@ -34,9 +34,9 @@ public class GameImplTest extends TurnNotificationPublisherImpl {
   void setUp() {
     publisherShouldEndGame = true;
     userInterfaceMock = new UserInterfaceMock();
-    Player player1 = new HumanPlayer("player1", userInterfaceMock);
-    Player player2 = new HumanPlayer("player2", userInterfaceMock);
-    game = Game.playTicTacToe(player1, player2, 0);
+    Player player1 = new HumanPlayer("player1", "X", userInterfaceMock);
+    Player player2 = new HumanPlayer("player2", "O", userInterfaceMock);
+    game = new GameImpl(player1, player2);
   }
 
   @Test
@@ -79,8 +79,8 @@ public class GameImplTest extends TurnNotificationPublisherImpl {
   @Test
   void computerCanPlayAgainstComputer() {
     publisherShouldEndGame = false;
-    Player computer1 = new ComputerPlayer("computer1", new MediumArtificialIntelligence());
-    Player computer2 = new ComputerPlayer("computer2", new HardArtificialIntelligence());
+    Player computer1 = new ComputerPlayer("computer1", "X", new MediumArtificialIntelligence());
+    Player computer2 = new ComputerPlayer("computer2", "O", new HardArtificialIntelligence());
     game = new GameImpl(computer1, computer2);
     game.play(this);
 

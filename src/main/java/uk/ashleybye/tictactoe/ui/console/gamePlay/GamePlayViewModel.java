@@ -13,4 +13,6 @@ public class GamePlayViewModel implements ViewModel {
   public int lastPositionPlayed = -1;
   public List<Integer> availablePositions = new ArrayList<>();
   public boolean userInputIsRequired = false;
+  public String playerOneSymbol;
+  public String playerTwoSymbol;
 }

@@ -6,23 +6,9 @@ import uk.ashleybye.tictactoe.ui.View;
 public class GamePlayView implements View<GamePlayViewModel> {
 
   public static final String VALID_SYMBOLS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@£#$%^&*()?";
-  public static final String PLAYER_ONE_SYMBOL = "X";
-  public static final String PLAYER_TWO_SYMBOL = "O";
   private String[] playerSymbols = new String[2];
   private boolean isFirstTurn = true;
 
-  public GamePlayView() {
-    playerSymbols[0] = PLAYER_ONE_SYMBOL;
-    playerSymbols[1] = PLAYER_TWO_SYMBOL;
-  }
-
-  public void setPlayerOneSymbol(String symbol) {
-    playerSymbols[0] = symbol;
-  }
-
-  public void setPlayerTwoSymbol(String symbol) {
-    playerSymbols[1] = symbol;
-  }
 
   @Override
   public void show(GamePlayViewModel viewModel) {
@@ -44,6 +30,7 @@ public class GamePlayView implements View<GamePlayViewModel> {
   }
 
   private String formatBoard(GamePlayViewModel vm) {
+    playerSymbols = new String[]{vm.playerOneSymbol, vm.playerTwoSymbol};
     int[] pos = vm.board;
     return "\n " + formatSymbol(pos[0]) + " | " + formatSymbol(pos[1]) + " | " + formatSymbol(pos[2])
         + "\n===+===+===\n"

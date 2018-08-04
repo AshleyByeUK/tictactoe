@@ -14,17 +14,19 @@ import uk.ashleybye.tictactoe.game.impl.BoardImplMock;
 public class HardArtificialIntelligenceTest {
 
   private Player player;
+  private Player[] players;
 
   @BeforeEach
   void setUp() {
     ArtificialIntelligence ai = new HardArtificialIntelligence();
-    player = new ComputerPlayer("computer", ai);
+    player = new ComputerPlayer("computer", "X", ai);
+    players = new Player[]{player, player};
   }
 
   @Test
   void choosesWinningPositionWhenOnlyOneSpaceAvailable() {
     BoardImplMock board = BoardImplMock.configureBoard(new int[]{-1, 1, 0, 0, 1, 1, 0, 0, 1});
-    GameState gameState = new GameState(board, 0, 1);
+    GameState gameState = new GameState(board, 0, 1, players);
     player.playTurn(gameState);
 
     assertEquals(0, board.symbolPlacedInPosition);
@@ -35,7 +37,7 @@ public class HardArtificialIntelligenceTest {
   @Test
   void choosesWinningPositionWhenThreeSpacesAvailable() {
     BoardImplMock board = BoardImplMock.configureBoard(new int[]{0, -1, 1, 0, -1, -1, 1, 1, 0});
-    GameState gameState = new GameState(board, 0, 1);
+    GameState gameState = new GameState(board, 0, 1, players);
     player.playTurn(gameState);
 
     assertEquals(4, board.symbolPlacedInPosition);
@@ -46,7 +48,7 @@ public class HardArtificialIntelligenceTest {
   @Test
   void choosesWinningPositionWhenFiveSpacesAvailable() {
     BoardImplMock board = BoardImplMock.configureBoard(new int[]{0, -1, 1, 0, -1, 1, -1, -1, -1});
-    GameState gameState = new GameState(board, 0, 1);
+    GameState gameState = new GameState(board, 0, 1, players);
     player.playTurn(gameState);
 
     assertEquals(6, board.symbolPlacedInPosition);
@@ -57,7 +59,7 @@ public class HardArtificialIntelligenceTest {
   @Test
   void blocksOtherPlayerFromWinning() {
     BoardImplMock board = BoardImplMock.configureBoard(new int[]{1, 0, 0, -1, -1, -1, 1, -1, -1});
-    GameState gameState = new GameState(board, 0, 1);
+    GameState gameState = new GameState(board, 0, 1, players);
     player.playTurn(gameState);
 
     assertEquals(3, board.symbolPlacedInPosition);
