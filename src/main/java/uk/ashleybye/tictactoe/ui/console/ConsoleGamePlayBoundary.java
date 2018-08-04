@@ -7,7 +7,7 @@ import uk.ashleybye.tictactoe.game.GameState;
 
 public class ConsoleGamePlayBoundary implements GamePlayBoundary {
 
-  public static final String VALID_SYMBOLS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@£#$%^&*()?";
+  public static final String VALID_SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@£#$%^&*()?";
   public static final String POSITION_OPTIONS = "123456789";
 
   private final Scanner input;
@@ -37,7 +37,7 @@ public class ConsoleGamePlayBoundary implements GamePlayBoundary {
 
   private String clearConsole() {
     String newLines = "";
-    for (int i = 0; i < 32; i++)
+    for (int i = 0; i < 80; i++)
       newLines += "\n";
     return newLines;
   }
@@ -53,27 +53,39 @@ public class ConsoleGamePlayBoundary implements GamePlayBoundary {
 
   private String formatCurrentBoardState(GameState s) {
     if (isFirstTurn || s.isUserInputRequired() || s.getGameStatus().equals("game_over"))
-      return formatBoard(s);
+      return formatBoard(s, s.getGameStatus().equals("game_over"));
     else
       return "";
   }
 
-  private String formatBoard(GameState s) {
+  private String formatBoard(GameState s, boolean gameOver) {
     String[] sym = new String[]{s.getPlayers()[0].getSymbol(), s.getPlayers()[1].getSymbol()};
     int[] pos = s.getBoard().getPositions();
-    return "\n " + formatSymbol(pos[0], sym) + " | " + formatSymbol(pos[1], sym) + " | " + formatSymbol(pos[2], sym)
-        + "\n===+===+===\n"
-        + " " + formatSymbol(pos[3], sym) + " | " + formatSymbol(pos[4], sym) + " | " + formatSymbol(pos[5], sym)
-        + "\n===+===+===\n"
-        + " " + formatSymbol(pos[6], sym) + " | " + formatSymbol(pos[7], sym) + " | " + formatSymbol(pos[8], sym)
-        + "\n";
+    if (gameOver)
+      return "\n " + symbol(pos[0], sym) + " | " + symbol(pos[1], sym) + " | " + symbol(pos[2], sym)
+          + "\n===+===+===\n"
+          + " " + symbol(pos[3], sym) + " | " + symbol(pos[4], sym) + " | " + symbol(pos[5], sym)
+          + "\n===+===+===\n"
+          + " " + symbol(pos[6], sym) + " | " + symbol(pos[7], sym) + " | " + symbol(pos[8], sym)
+          + "\n";
+    else
+      return "\n " + symbol(pos[0], sym, "1") + " | " + symbol(pos[1], sym, "2") + " | " + symbol(pos[2], sym, "3")
+          + "\n===+===+===\n"
+          + " " + symbol(pos[3], sym, "4") + " | " + symbol(pos[4], sym, "5") + " | " + symbol(pos[5], sym,"6")
+          + "\n===+===+===\n"
+          + " " + symbol(pos[6], sym, "7") + " | " + symbol(pos[7], sym, "8") + " | " + symbol(pos[8], sym, "9")
+          + "\n";
   }
 
-  private String formatSymbol(int player, String[] playerSymbols) {
+  private String symbol(int player, String[] playerSymbols) {
+    return symbol(player, playerSymbols, " ");
+  }
+
+  private String symbol(int player, String[] playerSymbols, String position) {
     if (player != -1)
       return playerSymbols[player];
     else
-      return " ";
+      return position;
   }
 
   private String formatPositionNotAvailableMessage(GameState s) {
