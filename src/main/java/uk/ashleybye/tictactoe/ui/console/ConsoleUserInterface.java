@@ -11,38 +11,32 @@ import uk.ashleybye.tictactoe.game.UserInterface;
 import uk.ashleybye.tictactoe.game.impl.TurnNotificationPublisherImpl;
 import uk.ashleybye.tictactoe.ui.console.gamePlay.GamePlayView;
 import uk.ashleybye.tictactoe.ui.console.gamePlay.GamePlayViewModel;
-import uk.ashleybye.tictactoe.ui.console.mainMenu.MainMenuView;
-import uk.ashleybye.tictactoe.ui.console.mainMenu.MainMenuViewModel;
 
 public class ConsoleUserInterface implements UserInterface {
 
   private Scanner input;
   private PlayerFactory playerFactory;
-  private ConsoleGameConfigurator gameConfigurator;
 
   public ConsoleUserInterface(Scanner input, PlayerFactory playerFactory) {
-    gameConfigurator = new ConsoleGameConfigurator(input, playerFactory);
     this.playerFactory = playerFactory;
     this.input = input;
   }
 
   @Override
   public boolean launch() {
-    if (launchMainMenu() == 1)
+    if (selectMainMenuOption() == 0)
       return playTicTacToe();
     else
       return false;
   }
 
-  private int launchMainMenu() {
-    MainMenuViewModel viewModel = new MainMenuViewModel();
-    MainMenuView view = new MainMenuView();
-    ViewController<MainMenuView, MainMenuViewModel> controller = new ViewController<>(viewModel, view);
-    controller.updateView();
-    return Integer.parseInt(controller.getUserInput(input));
+  private int selectMainMenuOption() {
+    ConsoleMainMenu mainMenu = new ConsoleMainMenu(input);
+    return mainMenu.selectOption();
   }
 
   private boolean playTicTacToe() {
+    ConsoleGameConfigurator gameConfigurator = new ConsoleGameConfigurator(input, playerFactory);
     GameOptions options = gameConfigurator.configureGame();
     Game game = Game.playTicTacToe(options, playerFactory, this);
     return launchGame(game);

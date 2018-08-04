@@ -1,31 +1,21 @@
 package uk.ashleybye.tictactoe.ui.console;
 
 import java.util.Scanner;
-import uk.ashleybye.tictactoe.game.Game;
 import uk.ashleybye.tictactoe.game.GameOptions;
-import uk.ashleybye.tictactoe.game.Player;
 import uk.ashleybye.tictactoe.game.PlayerFactory;
-import uk.ashleybye.tictactoe.ui.console.firstPlayer.SelectFirstPlayerView;
-import uk.ashleybye.tictactoe.ui.console.firstPlayer.SelectFirstPlayerViewModel;
 import uk.ashleybye.tictactoe.ui.console.gamePlay.GamePlayView;
-import uk.ashleybye.tictactoe.ui.console.playerSymbol.ChangePlayersSymbolsView;
-import uk.ashleybye.tictactoe.ui.console.playerSymbol.ChangePlayersSymbolsViewModel;
-import uk.ashleybye.tictactoe.ui.console.playerSymbol.SelectPlayerSymbolView;
-import uk.ashleybye.tictactoe.ui.console.playerSymbol.SelectPlayerSymbolViewModel;
-import uk.ashleybye.tictactoe.ui.console.playerType.SelectPlayerView;
-import uk.ashleybye.tictactoe.ui.console.playerType.SelectPlayerViewModel;
 
 public class ConsoleGameConfigurator {
 
   private final Scanner input;
   private final PlayerFactory playerFactory;
-  final String YES = "Y";
-  final String PLAYER_ONE_NAME = "Player 1";
-  final String PLAYER_TWO_NAME = "Player 2";
-  final String PLAYER_ONE_SYMBOL = "X";
-  final String PLAYER_TWO_SYMBOL = "O";
-  final String FIRST_PLAYER = "first";
-  final String SECOND_PLAYER = "second";
+  private final String YES = "Y";
+  private final String PLAYER_ONE_NAME = "Player 1";
+  private final String PLAYER_TWO_NAME = "Player 2";
+  private final String PLAYER_ONE_SYMBOL = "X";
+  private final String PLAYER_TWO_SYMBOL = "O";
+  private final String FIRST_PLAYER = "first";
+  private final String SECOND_PLAYER = "second";
 
   public ConsoleGameConfigurator(Scanner input, PlayerFactory playerFactory) {
     this.input = input;
@@ -38,16 +28,15 @@ public class ConsoleGameConfigurator {
     options.setPlayerTwoName(PLAYER_TWO_NAME);
     options.setPlayerOneSymbol(PLAYER_ONE_SYMBOL);
     options.setPlayerTwoSymbol(PLAYER_TWO_SYMBOL);
-    options.setPlayerOneType(launchSelectPlayerMenu(FIRST_PLAYER));
-    options.setPlayerTwoType(launchSelectPlayerMenu(SECOND_PLAYER));
-    options.setFirstPlayer(launchSelectFirstPlayerMenu());
-    boolean changeSymbols = launchChangePlayersSymbolsMenu();
+    options.setPlayerOneType(selectPlayerType(FIRST_PLAYER));
+    options.setPlayerTwoType(selectPlayerType(SECOND_PLAYER));
+    options.setFirstPlayer(selectFirstPlayer());
 
-    if (changeSymbols) {
+    if (selectChangeSymbols()) {
       boolean changed = false;
       while (!changed) {
-        options.setPlayerOneSymbol(launchSelectPlayerSymbolMenu(PLAYER_ONE_NAME));
-        options.setPlayerTwoSymbol(launchSelectPlayerSymbolMenu(PLAYER_TWO_NAME));
+        options.setPlayerOneSymbol(selectPlayerSymbol(PLAYER_ONE_NAME));
+        options.setPlayerTwoSymbol(selectPlayerSymbol(PLAYER_TWO_NAME));
 
         if (!symbolsDiffer(options))
           showPlayerSymbolsMustDifferMessage();
@@ -59,50 +48,46 @@ public class ConsoleGameConfigurator {
     return options;
   }
 
-  boolean symbolsDiffer(GameOptions options) {
-    return !options.getPlayerOneSymbol().equalsIgnoreCase(options.getPlayerTwoSymbol());
-  }
+  private String selectPlayerType(String position) {
+    String display = "\nSelect " + position + " player type:\n\n";
+    char[] inputOptions = new char[playerFactory.listPlayerTypes().size()];
+    for (int i = 0; i < playerFactory.listPlayerTypes().size(); i++) {
+      inputOptions[i] = Character.forDigit(i + 1, 10);
+      display += String.format("%d. %s\n", i + 1, playerFactory.listPlayerTypes().get(i));
+    }
 
-  private String launchSelectPlayerMenu(String position) {
-    SelectPlayerViewModel viewModel = new SelectPlayerViewModel();
-    SelectPlayerView view = new SelectPlayerView();
-    viewModel.playerTypes = playerFactory.listPlayerTypes();
-    viewModel.position = position;
-    ViewController<SelectPlayerView, SelectPlayerViewModel> controller = new ViewController<SelectPlayerView, SelectPlayerViewModel>(
-        viewModel, view);
-    controller.updateView();
-    int choice = Integer.parseInt(controller.getUserInput(input));
+    System.out.println(display);
+    int choice = Integer.parseInt(InputUtilities.getUppercaseInput(input, inputOptions));
     return playerFactory.listPlayerTypes().get(choice - 1);
   }
 
-  private int launchSelectFirstPlayerMenu() {
-    SelectFirstPlayerViewModel viewModel = new SelectFirstPlayerViewModel();
-    SelectFirstPlayerView view = new SelectFirstPlayerView();
-    ViewController<SelectFirstPlayerView, SelectFirstPlayerViewModel> controller = new ViewController<SelectFirstPlayerView, SelectFirstPlayerViewModel>(
-        viewModel, view);
-    controller.updateView();
-    return controller.getUserInput(input).equals(YES) ? 1 : 0;
+  private int selectFirstPlayer() {
+    String display = "\nPlayer 1 plays first. Swap playing order? (Y/N)\n";
+
+    System.out.println(display);
+    String choice = InputUtilities.getUppercaseInput(input, "yn".toCharArray());
+    return choice.equals(YES) ? 1 : 0;
   }
 
-  private boolean launchChangePlayersSymbolsMenu() {
-    ChangePlayersSymbolsViewModel viewModel = new ChangePlayersSymbolsViewModel();
-    ChangePlayersSymbolsView view = new ChangePlayersSymbolsView();
-    viewModel.playerOneSymbol = PLAYER_ONE_SYMBOL;
-    viewModel.playerTwoSymbol = PLAYER_TWO_SYMBOL;
-    ViewController<ChangePlayersSymbolsView, ChangePlayersSymbolsViewModel> controller = new ViewController<ChangePlayersSymbolsView, ChangePlayersSymbolsViewModel>(
-        viewModel, view);
-    controller.updateView();
-    return controller.getUserInput(input).equals(YES);
+  private boolean selectChangeSymbols() {
+    String display = String.format("\n%s's symbol: %s", PLAYER_ONE_NAME, PLAYER_ONE_SYMBOL)
+        + String.format("\n%s's symbol: %s", PLAYER_TWO_NAME, PLAYER_TWO_SYMBOL)
+        + "\n\nWould you like to change these symbols? (Y/N)\n";
+
+    System.out.println(display);
+    String choice = InputUtilities.getUppercaseInput(input, "yn".toCharArray());
+    return choice.equals(YES);
   }
 
-  private String launchSelectPlayerSymbolMenu(String name) {
-    SelectPlayerSymbolViewModel viewModel = new SelectPlayerSymbolViewModel();
-    SelectPlayerSymbolView view = new SelectPlayerSymbolView();
-    viewModel.playerName = name;
-    ViewController<SelectPlayerSymbolView, SelectPlayerSymbolViewModel> controller = new ViewController<SelectPlayerSymbolView, SelectPlayerSymbolViewModel>(
-        viewModel, view);
-    controller.updateView();
-    return controller.getUserInput(input);
+  private String selectPlayerSymbol(String name) {
+    String display = "\nEnter a new one character symbol for " + name + ": ";
+
+    System.out.println(display);
+    return InputUtilities.getUppercaseInput(input, GamePlayView.VALID_SYMBOLS.toCharArray());
+  }
+
+  boolean symbolsDiffer(GameOptions options) {
+    return !options.getPlayerOneSymbol().equalsIgnoreCase(options.getPlayerTwoSymbol());
   }
 
   private void showPlayerSymbolsMustDifferMessage() {
