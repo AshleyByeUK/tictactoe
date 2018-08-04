@@ -8,6 +8,8 @@
 A game of TicTacToe that can be played in the console. Features include Human vs Human, Human vs Computer and
 Computer vs Computer game play. The computer player can be configured for medium or hard difficulty.
 
+![Game Play Screenshot](images/screenshot.png)
+
 ## Requirements
 
 This project was written using Oracle Java 10. To run this project, you will need to have a compatible version of the
