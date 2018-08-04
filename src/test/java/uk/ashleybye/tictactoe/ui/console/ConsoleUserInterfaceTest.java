@@ -8,14 +8,14 @@ import java.io.PrintStream;
 import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.ashleybye.tictactoe.game.TicTacToeGameSpy;
-import uk.ashleybye.tictactoe.game.TicTacToeTurnNotificationPublisherSpy;
-import uk.ashleybye.tictactoe.player.TicTacToePlayerFactory;
+import uk.ashleybye.tictactoe.game.impl.GameImplSpy;
+import uk.ashleybye.tictactoe.game.impl.TurnNotificationPublisherImplSpy;
+import uk.ashleybye.tictactoe.game.player.TicTacToePlayerFactory;
 
 class ConsoleUserInterfaceTest {
 
   private Scanner input;
-  private TicTacToeTurnNotificationPublisherSpy presenterSpy;
+  private TurnNotificationPublisherImplSpy presenterSpy;
   private ConsoleUserInterface console;
 
   @BeforeEach
@@ -27,13 +27,13 @@ class ConsoleUserInterfaceTest {
       }
     }));
     input = new Scanner("1");
-    presenterSpy = new TicTacToeTurnNotificationPublisherSpy();
+    presenterSpy = new TurnNotificationPublisherImplSpy();
     console = new ConsoleUserInterface(input, new TicTacToePlayerFactory());
   }
 
   @Test
   void canReceiveViewModelFromPresenter() {
-    console.game = new TicTacToeGameSpy("computer");
+    console.game = new GameImplSpy("computer");
     boolean gameOver = console.launchGame(presenterSpy);
 
     assertTrue(presenterSpy.getTurnNotificationWasCalled);

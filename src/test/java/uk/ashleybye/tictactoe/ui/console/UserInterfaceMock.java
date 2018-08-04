@@ -2,9 +2,9 @@ package uk.ashleybye.tictactoe.ui.console;
 
 import java.util.Arrays;
 import java.util.List;
-import uk.ashleybye.tictactoe.TurnNotification;
-import uk.ashleybye.tictactoe.TurnNotificationPublisher;
-import uk.ashleybye.tictactoe.UserInterface;
+import uk.ashleybye.tictactoe.game.TurnNotification;
+import uk.ashleybye.tictactoe.game.TurnNotificationPublisher;
+import uk.ashleybye.tictactoe.game.UserInterface;
 
 public class UserInterfaceMock implements UserInterface {
 

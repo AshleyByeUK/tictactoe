@@ -2,13 +2,13 @@ package uk.ashleybye.tictactoe.ui.console;
 
 
 import java.util.Scanner;
-import uk.ashleybye.tictactoe.Game;
-import uk.ashleybye.tictactoe.Player;
-import uk.ashleybye.tictactoe.PlayerFactory;
-import uk.ashleybye.tictactoe.TurnNotification;
-import uk.ashleybye.tictactoe.TurnNotificationPublisher;
-import uk.ashleybye.tictactoe.game.TicTacToeTurnNotificationPublisher;
-import uk.ashleybye.tictactoe.UserInterface;
+import uk.ashleybye.tictactoe.game.Game;
+import uk.ashleybye.tictactoe.game.Player;
+import uk.ashleybye.tictactoe.game.PlayerFactory;
+import uk.ashleybye.tictactoe.game.TurnNotification;
+import uk.ashleybye.tictactoe.game.TurnNotificationPublisher;
+import uk.ashleybye.tictactoe.game.UserInterface;
+import uk.ashleybye.tictactoe.game.impl.TurnNotificationPublisherImpl;
 import uk.ashleybye.tictactoe.ui.console.firstPlayer.SelectFirstPlayerView;
 import uk.ashleybye.tictactoe.ui.console.firstPlayer.SelectFirstPlayerViewModel;
 import uk.ashleybye.tictactoe.ui.console.gamePlay.GamePlayView;
@@ -57,7 +57,7 @@ public class ConsoleUserInterface implements UserInterface {
 
   private boolean playTicTacToe() {
     configureGame();
-    return launchGame(new TicTacToeTurnNotificationPublisher());
+    return launchGame(new TurnNotificationPublisherImpl());
   }
 
   private void configureGame() {
@@ -117,7 +117,7 @@ public class ConsoleUserInterface implements UserInterface {
     return controller.getUserInput(input);
   }
 
-  boolean launchGame(TicTacToeTurnNotificationPublisher publisher) {
+  boolean launchGame(TurnNotificationPublisherImpl publisher) {
     publisher.subscribe(this);
     boolean gameOver = false;
     while (!gameOver)
