@@ -11,7 +11,7 @@ import java.util.Scanner;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class InputUtilitiesTest {
+class InputUtilitiesTest {
 
   private final char[] NUMBERS = "123456789".toCharArray();
   private final char[] SYMBOLS = "123456789abcdefghijklmnopqrstuvwxyz@£#$%^&*()?".toCharArray();

@@ -3,7 +3,6 @@ package uk.ashleybye.tictactoe.ui.console;
 import java.util.Scanner;
 import uk.ashleybye.tictactoe.game.GameOptions;
 import uk.ashleybye.tictactoe.game.PlayerFactory;
-import uk.ashleybye.tictactoe.ui.console.gamePlay.GamePlayView;
 
 public class ConsoleGameConfigurator {
 
@@ -83,7 +82,7 @@ public class ConsoleGameConfigurator {
     String display = "\nEnter a new one character symbol for " + name + ": ";
 
     System.out.println(display);
-    return InputUtilities.getUppercaseInput(input, GamePlayView.VALID_SYMBOLS.toCharArray());
+    return InputUtilities.getUppercaseInput(input, ConsoleGamePlayBoundary.VALID_SYMBOLS.toCharArray());
   }
 
   boolean symbolsDiffer(GameOptions options) {

@@ -8,11 +8,11 @@ import java.io.PrintStream;
 import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.ashleybye.tictactoe.game.UserInterface;
 import uk.ashleybye.tictactoe.game.player.PlayerFactoryImpl;
+import uk.ashleybye.tictactoe.ui.UserInterface;
 import uk.ashleybye.tictactoe.ui.console.ConsoleUserInterface;
 
-public class TicTacToeTest {
+class TicTacToeTest {
 
   @BeforeEach
   void setUp() {

@@ -6,6 +6,9 @@ public class GameState {
   private final int currentPlayer;
   private final int nextPlayer;
   private final Player[] players;
+  private String gameStatus;
+  private String gameResult;
+  private boolean userInputRequired = false;
 
   public GameState(Board board, int currentPlayer, int nextPlayer, Player[] players) {
     this.board = board;
@@ -28,5 +31,29 @@ public class GameState {
 
   public Player[] getPlayers() {
     return players;
+  }
+
+  public String getGameStatus() {
+    return gameStatus;
+  }
+
+  public void setGameStatus(String gameStatus) {
+    this.gameStatus = gameStatus;
+  }
+
+  public String getGameResult() {
+    return gameResult;
+  }
+
+  public void setGameResult(String gameResult) {
+    this.gameResult = gameResult;
+  }
+
+  public boolean isUserInputRequired() {
+    return userInputRequired;
+  }
+
+  public void setUserInputRequired(boolean userInputRequired) {
+    this.userInputRequired = userInputRequired;
   }
 }

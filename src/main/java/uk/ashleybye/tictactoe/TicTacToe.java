@@ -1,8 +1,8 @@
 package uk.ashleybye.tictactoe;
 
 import java.util.Scanner;
-import uk.ashleybye.tictactoe.game.UserInterface;
 import uk.ashleybye.tictactoe.game.player.PlayerFactoryImpl;
+import uk.ashleybye.tictactoe.ui.UserInterface;
 import uk.ashleybye.tictactoe.ui.console.ConsoleUserInterface;
 
 public class TicTacToe {

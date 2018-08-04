@@ -4,87 +4,76 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.ashleybye.tictactoe.game.impl.GameImpl.GameStatus.ENDED;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.ashleybye.tictactoe.game.Game;
+import uk.ashleybye.tictactoe.game.GameState;
 import uk.ashleybye.tictactoe.game.Player;
-import uk.ashleybye.tictactoe.game.TurnNotification;
 import uk.ashleybye.tictactoe.game.player.computer.ComputerPlayer;
 import uk.ashleybye.tictactoe.game.player.computer.HardArtificialIntelligence;
 import uk.ashleybye.tictactoe.game.player.computer.MediumArtificialIntelligence;
 import uk.ashleybye.tictactoe.game.player.human.HumanPlayer;
-import uk.ashleybye.tictactoe.ui.console.UserInterfaceMock;
+import uk.ashleybye.tictactoe.ui.console.GamePlayBoundaryMock;
 
-public class GameImplTest extends TurnNotificationPublisherImpl {
+class GameImplTest {
 
-  private boolean publisherShouldEndGame;
-  private TurnNotification notification;
   private GameImpl game;
-  private UserInterfaceMock userInterfaceMock;
-
-  @Override
-  public void notify(TurnNotification notification) {
-    this.notification = notification;
-    game.gameStatus = publisherShouldEndGame ? ENDED : game.gameStatus;
-  }
+  private GamePlayBoundaryMock boundaryMock;
 
   @BeforeEach
   void setUp() {
-    publisherShouldEndGame = true;
-    userInterfaceMock = new UserInterfaceMock();
-    Player player1 = new HumanPlayer("player1", "X", userInterfaceMock);
-    Player player2 = new HumanPlayer("player2", "O", userInterfaceMock);
-    game = new GameImpl(player1, player2);
+    boundaryMock = new GamePlayBoundaryMock();
+    Player player1 = new HumanPlayer("player1", "X", boundaryMock);
+    Player player2 = new HumanPlayer("player2", "O", boundaryMock);
+    game = new GameImpl(player1, player2, boundaryMock);
   }
 
   @Test
   void playerTwoCanGoFirst() {
-    userInterfaceMock.setPlayerPositionsToPlay(1);
+    boundaryMock.setPlayerPositionsToPlay(1, 2, 3, 4, 5, 6, 7);
     game.setFirstPlayer(1);
-    game.play(this);
+    game.play();
 
-    assertEquals("player2", notification.currentPlayerName);
+    assertEquals(1, boundaryMock.gameState.getCurrentPlayer());
     assertEquals(0, game.getCurrentPlayer());
   }
 
   @Test
   void gameEndsWhenPlayersAreTied() {
-    publisherShouldEndGame = false;
-    userInterfaceMock.setPlayerPositionsToPlay(9);
+    boundaryMock.setPlayerPositionsToPlay(9);
     game.board.positions = new int[]{0, 1, 0, 0, 1, 1, 1, 0, -1};
-    game.play(this);
+    game.play();
 
-    assertEquals("player1", notification.currentPlayerName);
-    assertFalse(notification.userInputIsRequired);
-    assertEquals("game_over", notification.gameState);
-    assertEquals("tied_game", notification.gameResult);
-    assertArrayEquals(new int[]{0, 1, 0, 0, 1, 1, 1, 0, 0}, notification.board);
+    GameState gameState = boundaryMock.gameState;
+    assertEquals(0, gameState.getCurrentPlayer());
+    assertFalse(gameState.isUserInputRequired());
+    assertEquals("game_over", gameState.getGameStatus());
+    assertEquals("tied_game", gameState.getGameResult());
+    assertArrayEquals(new int[]{0, 1, 0, 0, 1, 1, 1, 0, 0}, gameState.getBoard().getPositions());
   }
 
   @Test
   void gameEndsWhenPlayerWins() {
-    userInterfaceMock.setPlayerPositionsToPlay(3);
+    boundaryMock.setPlayerPositionsToPlay(3);
     game.board.positions = new int[]{0, 0, -1, 1, 1, -1, -1, -1, -1};
-    game.play(this);
+    game.play();
 
-    assertEquals("player1", notification.currentPlayerName);
-    assertFalse(notification.userInputIsRequired);
-    assertEquals("game_over", notification.gameState);
-    assertEquals("winner", notification.gameResult);
-    assertArrayEquals(new int[]{0, 0, 0, 1, 1, -1, -1, -1, -1}, notification.board);
+    GameState gameState = boundaryMock.gameState;
+    assertEquals(0, gameState.getCurrentPlayer());
+    assertFalse(gameState.isUserInputRequired());
+    assertEquals("game_over", gameState.getGameStatus());
+    assertEquals("winner", gameState.getGameResult());
+    assertArrayEquals(new int[]{0, 0, 0, 1, 1, -1, -1, -1, -1}, gameState.getBoard().getPositions());
   }
 
   @Test
   void computerCanPlayAgainstComputer() {
-    publisherShouldEndGame = false;
     Player computer1 = new ComputerPlayer("computer1", "X", new MediumArtificialIntelligence());
     Player computer2 = new ComputerPlayer("computer2", "O", new HardArtificialIntelligence());
-    game = new GameImpl(computer1, computer2);
-    game.play(this);
+    game = new GameImpl(computer1, computer2, boundaryMock);
+    game.play();
 
-    assertEquals("game_over", notification.gameState);
+    assertEquals("game_over", boundaryMock.gameState.getGameStatus());
     assertTrue(game.board.gameIsWon() || game.board.gameIsTied());
   }
 }

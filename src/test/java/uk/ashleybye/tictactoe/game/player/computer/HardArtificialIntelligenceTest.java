@@ -11,7 +11,7 @@ import uk.ashleybye.tictactoe.game.Player;
 import uk.ashleybye.tictactoe.game.impl.BoardImplMock;
 
 
-public class HardArtificialIntelligenceTest {
+class HardArtificialIntelligenceTest {
 
   private Player player;
   private Player[] players;

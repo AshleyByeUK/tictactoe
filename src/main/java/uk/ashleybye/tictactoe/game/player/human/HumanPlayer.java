@@ -1,21 +1,20 @@
 package uk.ashleybye.tictactoe.game.player.human;
 
 
+import uk.ashleybye.tictactoe.game.GamePlayBoundary;
 import uk.ashleybye.tictactoe.game.GameState;
 import uk.ashleybye.tictactoe.game.Player;
-import uk.ashleybye.tictactoe.game.TurnNotification;
-import uk.ashleybye.tictactoe.game.UserInterface;
 
 public class HumanPlayer implements Player {
 
   private final String name;
   private final String symbol;
-  private UserInterface userInterface;
+  private GamePlayBoundary gamePlayBoundary;
 
-  public HumanPlayer(String name, String symbol, UserInterface userInterface) {
+  public HumanPlayer(String name, String symbol, GamePlayBoundary gamePlayBoundary) {
     this.name = name;
     this.symbol = symbol;
-    this.userInterface = userInterface;
+    this.gamePlayBoundary = gamePlayBoundary;
   }
 
   @Override
@@ -32,16 +31,11 @@ public class HumanPlayer implements Player {
   public void playTurn(GameState gameState) {
     int positionToPlay = -1;
     while (!gameState.getBoard().positionIsAvailable(positionToPlay)) {
-      TurnNotification notification = new TurnNotification();
-      notification.players = gameState.getPlayers();
-      notification.availablePositions = gameState.getBoard().getAvailablePositions();
-      notification.board = gameState.getBoard().getPositions();
-      notification.currentPlayerName = name;
-      notification.userInputIsRequired = true;
-
-      positionToPlay = userInterface.getPositionToPlay(notification);
+      gameState.setUserInputRequired(true);
+      gamePlayBoundary.updateDisplay(gameState);
+      positionToPlay = gamePlayBoundary.getPositionToPlay();
     }
-
+    gameState.setUserInputRequired(false);
     gameState.getBoard().placeSymbolAtPosition(positionToPlay, gameState.getCurrentPlayer());
   }
 }

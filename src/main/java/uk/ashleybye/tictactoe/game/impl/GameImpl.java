@@ -1,14 +1,9 @@
 package uk.ashleybye.tictactoe.game.impl;
 
-
-import static uk.ashleybye.tictactoe.game.impl.GameImpl.GameStatus.ENDED;
-import static uk.ashleybye.tictactoe.game.impl.GameImpl.GameStatus.PLAYING;
-
 import uk.ashleybye.tictactoe.game.Game;
+import uk.ashleybye.tictactoe.game.GamePlayBoundary;
 import uk.ashleybye.tictactoe.game.GameState;
 import uk.ashleybye.tictactoe.game.Player;
-import uk.ashleybye.tictactoe.game.TurnNotification;
-import uk.ashleybye.tictactoe.game.TurnNotificationPublisher;
 
 public class GameImpl implements Game {
 
@@ -18,15 +13,17 @@ public class GameImpl implements Game {
   public static final String GAME_RESULT_WINNER = "winner";
 
   BoardImpl board;
-  GameStatus gameStatus;
+  String gameStatus;
   private Player[] players;
+  private GamePlayBoundary gamePlayBoundary;
   private int currentPlayer;
 
-  public GameImpl(Player player1, Player player2) {
+  public GameImpl(Player player1, Player player2, GamePlayBoundary gamePlayBoundary) {
+    this.gamePlayBoundary = gamePlayBoundary;
     board = new BoardImpl();
     players = new Player[]{player1, player2};
     currentPlayer = 0;
-    gameStatus = PLAYING;
+    gameStatus = GAME_STATUS_PLAYING;
   }
 
   public void setFirstPlayer(int player) {
@@ -34,41 +31,35 @@ public class GameImpl implements Game {
   }
 
   @Override
-  public boolean play(TurnNotificationPublisher publisher) {
-    while (gameStatus == PLAYING) {
-      TurnNotification notification = initialiseNotificationForTurn();
-
-      GameState gameState = new GameState(board, currentPlayer, nextPlayer(), players);
+  public boolean play() {
+    while (gameStatus.equals(GAME_STATUS_PLAYING)) {
+      GameState gameState = initialiseGameStateForTurn();
       players[currentPlayer].playTurn(gameState);
-      updateNotificationAndEndTurn(notification);
+      updateNotificationAndEndTurn(gameState);
 
-      publisher.notify(notification);
+      gamePlayBoundary.updateDisplay(gameState);
     }
 
     return true;
   }
 
-  private TurnNotification initialiseNotificationForTurn() {
-    TurnNotification notification = new TurnNotification();
-    notification.players = players;
-    notification.currentPlayerName = players[currentPlayer].getName();
-    notification.board = board.getPositions();
-    notification.gameState = GAME_STATUS_PLAYING;
-    notification.availablePositions = board.getAvailablePositions();
-    return notification;
+  private GameState initialiseGameStateForTurn() {
+    GameState gameState = new GameState(board, currentPlayer, nextPlayer(), players);
+    gameState.setGameStatus(GAME_STATUS_PLAYING);
+    return gameState;
   }
 
-  private void updateNotificationAndEndTurn(TurnNotification notification) {
-    notification.lastPositionPlayed = board.getLastPositionPlayed();
-    updateNotificationAndEndGameIfGameIsOver(notification);
+  private void updateNotificationAndEndTurn(GameState gameState) {
+    updateNotificationAndEndGameIfGameIsOver(gameState);
     currentPlayer = nextPlayer();
   }
 
-  private void updateNotificationAndEndGameIfGameIsOver(TurnNotification notification) {
+  private void updateNotificationAndEndGameIfGameIsOver(GameState gameState) {
     if (board.gameIsWon() || board.gameIsTied()) {
-      notification.gameState = GAME_STATUS_GAME_OVER;
-      notification.gameResult = board.gameIsTied() ? GAME_RESULT_TIED_GAME : GAME_RESULT_WINNER;
-      gameStatus = ENDED;
+      gameStatus = GAME_STATUS_GAME_OVER;
+      gameState.setGameStatus(gameStatus);
+      String gameResult = board.gameIsTied() ? GAME_RESULT_TIED_GAME : GAME_RESULT_WINNER;
+      gameState.setGameResult(gameResult);
     }
   }
 
@@ -82,6 +73,4 @@ public class GameImpl implements Game {
   int getCurrentPlayer() {
     return currentPlayer;
   }
-
-  enum GameStatus {ENDED, PLAYING}
 }
