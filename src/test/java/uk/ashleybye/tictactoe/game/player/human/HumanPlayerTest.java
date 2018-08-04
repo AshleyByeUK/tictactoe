@@ -8,17 +8,17 @@ import org.junit.jupiter.api.Test;
 import uk.ashleybye.tictactoe.game.GameState;
 import uk.ashleybye.tictactoe.game.Player;
 import uk.ashleybye.tictactoe.game.impl.BoardImplMock;
-import uk.ashleybye.tictactoe.ui.console.GamePlayBoundaryMock;
+import uk.ashleybye.tictactoe.ui.console.ConsoleGamePlayBoundaryMock;
 
 class HumanPlayerTest {
 
   private HumanPlayer player;
-  private GamePlayBoundaryMock userInterfaceMock;
+  private ConsoleGamePlayBoundaryMock userInterfaceMock;
   private Player[] players;
 
   @BeforeEach
   void setUp() {
-    userInterfaceMock = new GamePlayBoundaryMock();
+    userInterfaceMock = new ConsoleGamePlayBoundaryMock();
     player = new HumanPlayer("human", "X", userInterfaceMock);
     players = new Player[]{player, player};
   }

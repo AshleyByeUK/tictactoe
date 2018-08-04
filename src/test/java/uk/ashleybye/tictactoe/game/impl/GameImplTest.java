@@ -13,16 +13,16 @@ import uk.ashleybye.tictactoe.game.player.computer.ComputerPlayer;
 import uk.ashleybye.tictactoe.game.player.computer.HardDifficulty;
 import uk.ashleybye.tictactoe.game.player.computer.MediumDifficulty;
 import uk.ashleybye.tictactoe.game.player.human.HumanPlayer;
-import uk.ashleybye.tictactoe.ui.console.GamePlayBoundaryMock;
+import uk.ashleybye.tictactoe.ui.console.ConsoleGamePlayBoundaryMock;
 
 class GameImplTest {
 
   private GameImpl game;
-  private GamePlayBoundaryMock boundaryMock;
+  private ConsoleGamePlayBoundaryMock boundaryMock;
 
   @BeforeEach
   void setUp() {
-    boundaryMock = new GamePlayBoundaryMock();
+    boundaryMock = new ConsoleGamePlayBoundaryMock();
     Player player1 = new HumanPlayer("player1", "X", boundaryMock);
     Player player2 = new HumanPlayer("player2", "O", boundaryMock);
     game = new GameImpl(player1, player2, boundaryMock);

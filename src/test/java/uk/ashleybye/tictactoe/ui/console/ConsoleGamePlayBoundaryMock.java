@@ -5,7 +5,7 @@ import java.util.List;
 import uk.ashleybye.tictactoe.game.GamePlayBoundary;
 import uk.ashleybye.tictactoe.game.GameState;
 
-public class GamePlayBoundaryMock implements GamePlayBoundary {
+public class ConsoleGamePlayBoundaryMock implements GamePlayBoundary {
 
   private List<Integer> positionsToPlay;
   private int nextPositionToPlay = 0;

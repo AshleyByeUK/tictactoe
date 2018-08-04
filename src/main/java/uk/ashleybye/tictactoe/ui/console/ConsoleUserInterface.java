@@ -2,9 +2,11 @@ package uk.ashleybye.tictactoe.ui.console;
 
 import java.util.Scanner;
 import uk.ashleybye.tictactoe.game.Game;
+import uk.ashleybye.tictactoe.game.GameFactory;
 import uk.ashleybye.tictactoe.game.GameOptions;
 import uk.ashleybye.tictactoe.game.GamePlayBoundary;
 import uk.ashleybye.tictactoe.game.PlayerFactory;
+import uk.ashleybye.tictactoe.game.impl.GameFactoryImpl;
 import uk.ashleybye.tictactoe.ui.UserInterface;
 
 public class ConsoleUserInterface implements UserInterface {
@@ -34,7 +36,8 @@ public class ConsoleUserInterface implements UserInterface {
     ConsoleGameConfigurator gameConfigurator = new ConsoleGameConfigurator(input, playerFactory);
     GameOptions options = gameConfigurator.configureGame();
     GamePlayBoundary boundary = new ConsoleGamePlayBoundary(input);
-    Game game = Game.playTicTacToe(options, boundary, playerFactory);
+    GameFactory gameFactory = new GameFactoryImpl(playerFactory);
+    Game game = gameFactory.make(options, boundary);
     return game.play();
   }
 }

@@ -14,7 +14,7 @@ public class GameImpl implements Game {
 
   BoardImpl board;
   String gameStatus;
-  private Player[] players;
+  Player[] players;
   private GamePlayBoundary gamePlayBoundary;
   private int currentPlayer;
 

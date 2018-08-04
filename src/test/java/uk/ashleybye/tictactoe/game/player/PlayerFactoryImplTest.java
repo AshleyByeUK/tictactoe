@@ -15,16 +15,16 @@ import uk.ashleybye.tictactoe.game.player.computer.ComputerPlayer;
 import uk.ashleybye.tictactoe.game.player.computer.HardDifficulty;
 import uk.ashleybye.tictactoe.game.player.computer.MediumDifficulty;
 import uk.ashleybye.tictactoe.game.player.human.HumanPlayer;
-import uk.ashleybye.tictactoe.ui.console.GamePlayBoundaryMock;
+import uk.ashleybye.tictactoe.ui.console.ConsoleGamePlayBoundaryMock;
 
 class PlayerFactoryImplTest {
 
   private PlayerFactory playerFactory;
-  private GamePlayBoundaryMock userInterface;
+  private ConsoleGamePlayBoundaryMock userInterface;
 
   @BeforeEach
   void setUp() {
-    userInterface = new GamePlayBoundaryMock();
+    userInterface = new ConsoleGamePlayBoundaryMock();
     playerFactory = new PlayerFactoryImpl();
   }
 
