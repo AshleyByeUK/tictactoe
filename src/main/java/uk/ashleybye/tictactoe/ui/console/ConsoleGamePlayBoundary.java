@@ -7,8 +7,8 @@ import uk.ashleybye.tictactoe.game.GameState;
 
 public class ConsoleGamePlayBoundary implements GamePlayBoundary {
 
-  public static final String VALID_SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@£#$%^&*()?";
-  public static final String POSITION_OPTIONS = "123456789";
+  static final String VALID_SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@£#$%^&*()?";
+  private static final String POSITION_OPTIONS = "123456789";
 
   private final Scanner input;
   private boolean isFirstTurn = true;

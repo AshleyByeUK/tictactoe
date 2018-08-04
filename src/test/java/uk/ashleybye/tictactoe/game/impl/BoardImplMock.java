@@ -18,7 +18,7 @@ public class BoardImplMock extends BoardImpl {
     return board;
   }
 
-  public void setPositions(int[] positions) {
+  private void setPositions(int[] positions) {
     super.positions = positions;
   }
 

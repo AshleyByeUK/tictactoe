@@ -13,13 +13,12 @@ import uk.ashleybye.tictactoe.game.impl.BoardImplMock;
 class HardDifficultyTest {
 
   private Player player;
-  private Player[] players;
   private GameState gameState;
 
   @BeforeEach
   void setUp() {
     player = new ComputerPlayer("computer", "X", new HardDifficulty());
-    players = new Player[]{player, player};
+    Player[] players = new Player[]{player, player};
     gameState = new GameState();
     gameState.setCurrentPlayer(0);
     gameState.setNextPlayer(1);

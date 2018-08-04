@@ -15,18 +15,16 @@ public class GameImpl implements Game {
   BoardImpl board;
   Player[] players;
   private GamePlayBoundary gamePlayBoundary;
-  private String gameStatus;
   private int currentPlayer;
 
-  public GameImpl(Player player1, Player player2, GamePlayBoundary gamePlayBoundary) {
+  GameImpl(Player player1, Player player2, GamePlayBoundary gamePlayBoundary) {
     this.gamePlayBoundary = gamePlayBoundary;
     board = new BoardImpl();
     players = new Player[]{player1, player2};
     currentPlayer = 0;
-    gameStatus = GAME_STATUS_PLAYING;
   }
 
-  public void setFirstPlayer(int player) {
+  void setFirstPlayer(int player) {
     currentPlayer = player;
   }
 

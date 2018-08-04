@@ -14,14 +14,13 @@ class HumanPlayerTest {
 
   private HumanPlayer player;
   private ConsoleGamePlayBoundaryMock userInterfaceMock;
-  private Player[] players;
   private GameState gameState;
 
   @BeforeEach
   void setUp() {
     userInterfaceMock = new ConsoleGamePlayBoundaryMock();
     player = new HumanPlayer("human", "X", userInterfaceMock);
-    players = new Player[]{player, player};
+    Player[] players = new Player[]{player, player};
     gameState = new GameState();
     gameState.setCurrentPlayer(1);
     gameState.setNextPlayer(0);

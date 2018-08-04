@@ -4,7 +4,7 @@ import java.util.Scanner;
 import uk.ashleybye.tictactoe.game.GameOptions;
 import uk.ashleybye.tictactoe.game.PlayerFactory;
 
-public class ConsoleGameConfigurator {
+class ConsoleGameConfigurator {
 
   private final Scanner input;
   private final PlayerFactory playerFactory;
@@ -16,7 +16,7 @@ public class ConsoleGameConfigurator {
   private final String FIRST_PLAYER = "first";
   private final String SECOND_PLAYER = "second";
 
-  public ConsoleGameConfigurator(Scanner input, PlayerFactory playerFactory) {
+  ConsoleGameConfigurator(Scanner input, PlayerFactory playerFactory) {
     this.input = input;
     this.playerFactory = playerFactory;
   }

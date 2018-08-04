@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import uk.ashleybye.tictactoe.game.Board;
 
-
 public class BoardImpl implements Board {
 
   int[] positions = new int[9];
